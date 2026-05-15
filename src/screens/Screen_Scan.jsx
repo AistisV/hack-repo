@@ -407,69 +407,91 @@ export default function Screen_Scan({
                 </section>
               )}
 
-              {/* Signal Matrix */}
+              {/* CEO-Friendly Signal & Download Matrix */}
               <section>
-                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 12 }}>The Signal Matrix</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                  {[
-                    { name: 'llms.txt', pass: false },
-                    { name: 'JSON-LD Schema', pass: false },
-                    { name: 'Entity Anchors', pass: false },
-                    { name: 'Brand Indexing', pass: true }
-                  ].map(sig => (
-                    <div key={sig.name} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${sig.pass ? 'rgba(74,222,128,0.12)' : 'rgba(255,42,50,0.15)'}`, padding: '8px 10px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <div style={{ width: 6, height: 6, borderRadius: '50%', flexShrink: 0, background: sig.pass ? '#4ade80' : '#ff2a32', boxShadow: `0 0 8px ${sig.pass ? '#4ade80' : 'rgba(255,42,50,0.8)'}` }} />
-                      <span style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10.5, color: sig.pass ? '#a09890' : '#ffb6b9' }}>{sig.name}</span>
-                    </div>
-                  ))}
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 6 }}>The Architecture Gap</div>
+                <div style={{ fontSize: 11, color: '#7a7268', marginBottom: 12, lineHeight: 1.4 }}>Stop treating AI like Google. Inject these hardened entities directly into your architecture.</div>
+                
+                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 8, overflow: 'hidden' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#a09890', textAlign: 'left' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid rgba(244,239,230,0.1)', background: 'rgba(255,255,255,0.01)' }}>
+                        <th style={{ padding: '8px 10px', fontWeight: 'normal', color: '#cdc6ba' }}>Business Impact</th>
+                        <th style={{ padding: '8px 10px', fontWeight: 'normal', color: '#cdc6ba' }}>Status</th>
+                        <th style={{ padding: '8px 10px', fontWeight: 'normal', color: '#cdc6ba', textAlign: 'right' }}>The Fix</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { 
+                          title: 'AI Discovery Passport', 
+                          filename: 'llms.txt', 
+                          status: '🔴 Missing', 
+                          impact: 'AI agents literally cannot "see" your site.',
+                          downloadKey: 'llms_txt', ext: '.txt',
+                          highlight: true
+                        },
+                        { 
+                          title: 'Robot-Readable Logic', 
+                          filename: 'schema.json', 
+                          status: '🔴 Broken', 
+                          impact: "AI has to guess what you sell—and it's guessing wrong.",
+                          downloadKey: 'schema_json', ext: '.json'
+                        },
+                        { 
+                          title: 'Official Fact Verification', 
+                          filename: 'system_prompt.txt', 
+                          status: '🔴 Low', 
+                          impact: 'AI treats your claims as "unverified marketing".',
+                          downloadKey: 'system_prompt', ext: '.txt'
+                        },
+                        { 
+                          title: 'Search Visibility', 
+                          filename: 'Google Index', 
+                          status: '🟢 Detected', 
+                          impact: 'You exist on Google, but you are invisible to AI Search.',
+                          downloadKey: null
+                        }
+                      ].map((row, idx) => (
+                        <tr key={idx} style={{ 
+                          borderBottom: idx === 3 ? 'none' : '1px solid rgba(244,239,230,0.05)', 
+                          background: row.highlight ? 'rgba(255,42,50,0.04)' : 'transparent' 
+                        }}>
+                          <td style={{ padding: '10px', verticalAlign: 'top' }}>
+                            <div style={{ color: '#cdc6ba', fontSize: 11, fontWeight: 500, marginBottom: 2 }}>{row.title}</div>
+                            <div style={{ lineHeight: 1.35 }}>{row.impact}</div>
+                          </td>
+                          <td style={{ padding: '10px', verticalAlign: 'top', whiteSpace: 'nowrap', color: row.status.includes('🟢') ? '#4ade80' : '#ffb6b9' }}>
+                            {row.status}
+                          </td>
+                          <td style={{ padding: '10px', verticalAlign: 'top', textAlign: 'right' }}>
+                            {row.downloadKey ? (
+                              <button 
+                                onClick={() => handleDownload(row.downloadKey, row.ext)}
+                                style={{ 
+                                  padding: '5px 10px', 
+                                  borderRadius: 6, 
+                                  background: row.highlight ? '#ff2a32' : 'rgba(244,239,230,0.08)', 
+                                  border: row.highlight ? 'none' : '1px solid rgba(244,239,230,0.12)', 
+                                  color: row.highlight ? '#fff' : '#cdc6ba', 
+                                  fontSize: 10, 
+                                  fontFamily: "'Geist Mono', monospace", 
+                                  cursor: 'pointer',
+                                  whiteSpace: 'nowrap',
+                                  fontWeight: row.highlight ? 600 : 400
+                                }}
+                              >
+                                ↓ {row.filename}
+                              </button>
+                            ) : (
+                              <span style={{ color: '#544e46', fontSize: 10 }}>No action needed</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              </section>
-
-              <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
-
-              {/* Content Pack Download Area */}
-              <section style={{ paddingBottom: 4 }}>
-                <div style={{ marginBottom: 14 }}>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 4 }}>The Solution</div>
-                  <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: '#f4efe6', lineHeight: 1.25 }}>Inject these hardened entities into your architecture.</div>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                  {PACK_FILES.map(({ key, label, ext, desc }) => {
-                    const content = contentPack?.[key]
-                    const isOpen  = openFile === key
-                    return (
-                      <div key={key} style={{ borderRadius: 9, overflow: 'hidden', border: `1px solid ${isOpen ? 'rgba(255,42,50,0.25)' : 'rgba(244,239,230,0.08)'}`, transition: 'border-color 0.2s' }}>
-                        <div
-                          onClick={() => toggleFile(key)}
-                          style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', background: isOpen ? 'rgba(255,42,50,0.05)' : 'rgba(255,255,255,0.03)', cursor: 'pointer', transition: 'background 0.2s', userSelect: 'none' }}
-                        >
-                          <div style={{ width: 26, height: 26, borderRadius: 6, background: 'rgba(244,239,230,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0 }}>📄</div>
-                          <div style={{ flex: 1, fontSize: 11.5, color: '#cdc6ba', fontFamily: "'Geist Mono', monospace" }}>{label}</div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                            <button onClick={(e) => { e.stopPropagation(); handleDownload(key, ext) }} style={{ padding: '3px 7px', borderRadius: 5, background: 'rgba(244,239,230,0.08)', border: '1px solid rgba(244,239,230,0.08)', color: '#cdc6ba', fontSize: 10, fontFamily: "'Geist Mono', monospace", cursor: 'pointer' }}>↓</button>
-                            <span style={{ color: '#7a7268', fontSize: 11 }}>{isOpen ? '▲' : '▼'}</span>
-                          </div>
-                        </div>
-                        {isOpen && (
-                          <div style={{ borderTop: '1px solid rgba(244,239,230,0.06)', background: 'rgba(0,0,0,0.3)' }}>
-                            <div style={{ padding: '10px 13px', borderBottom: '1px solid rgba(244,239,230,0.05)', fontSize: 11.5, color: '#a09890', lineHeight: 1.55 }}>{desc}</div>
-                            <div style={{ maxHeight: 200, overflowY: 'auto', padding: '10px 13px' }}>
-                              <pre style={{ margin: 0, fontFamily: "'Geist Mono', monospace", fontSize: 10.5, color: '#a09890', lineHeight: 1.6, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{content}</pre>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <button
-                  onClick={handleDownloadAll}
-                  style={{ marginTop: 10, width: '100%', height: 38, borderRadius: 9, background: 'rgba(244,239,230,0.08)', border: '1px solid rgba(244,239,230,0.09)', color: '#f4efe6', fontSize: 11, fontFamily: "'Geist Mono', monospace", cursor: 'pointer', letterSpacing: '0.04em' }}
-                >
-                  ↓ Download All 4 Files
-                </button>
               </section>
             </div>
           )}
