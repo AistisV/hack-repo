@@ -168,7 +168,7 @@ export default function Screen_Scan({
     <div style={{ position: 'relative', height: '100vh', width: '100vw', background: '#0a0907', overflow: 'hidden' }}>
 
       {/* ── Background iframe ── */}
-      <div className="live-mirror-bg" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
+      <div className="live-mirror-bg" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'auto' }}>
         {iframeLoading ? (
           <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
             <div style={{ width: 36, height: 36, border: '3px solid rgba(255,42,50,0.12)', borderTopColor: '#ff2a32', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
