@@ -149,10 +149,10 @@ function VisAIAnswer() {
     <div style={{ width: '100%', background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 6, boxShadow: 'none' }}>
       <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 4 }}>Sources</div>
       {[['1', 'clay.com', false], ['2', 'g2.com/categories/data-enrichment', false], ['3', 'yourcompany.com', true]].map(([n, src, isYou]) => (
-        <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, color: isYou ? '#FAFAFA' : '#737373', fontFamily: "'JetBrains Mono', monospace", padding: '6px 8px', borderRadius: 0, background: isYou ? 'rgba(255,255,255,0.06)' : 'transparent', border: isYou ? '1px solid rgba(255,255,255,0.14)' : '1px solid transparent' }}>
-          <span style={{ color: isYou ? '#FAFAFA' : '#525252', fontWeight: 500, width: 22, flexShrink: 0 }}>{n}</span>
+        <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, color: isYou ? '#FAFAFA' : '#737373', fontFamily: "'JetBrains Mono', monospace", padding: '6px 8px', borderRadius: 0, background: isYou ? 'rgba(122,208,138,0.08)' : 'transparent', border: isYou ? '1px solid rgba(122,208,138,0.25)' : '1px solid transparent' }}>
+          <span style={{ color: isYou ? '#7ad08a' : '#525252', fontWeight: 500, width: 22, flexShrink: 0 }}>{n}</span>
           <span>{src}</span>
-          {isYou && <span style={{ marginLeft: 'auto', fontSize: 9, color: '#737373', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Not cited</span>}
+          {isYou && <span style={{ marginLeft: 'auto', fontSize: 9, color: '#7ad08a', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Cited</span>}
         </div>
       ))}
     </div>
@@ -175,13 +175,13 @@ function VisGap() {
         </div>
       </div>
       <div style={{ background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 14, display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'none' }}>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#ff2a32' }}>After</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#7ad08a' }}>After</span>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ fontSize: 11.5, color: '#FAFAFA', fontWeight: 500, display: 'flex', gap: 6, alignItems: 'flex-start' }}>
-            <span style={{ color: '#ff2a32', fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontSize: 15, lineHeight: 1, flexShrink: 0 }}>Q</span>
+            <span style={{ color: '#7ad08a', fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontSize: 15, lineHeight: 1, flexShrink: 0 }}>Q</span>
             Best CRM for startups?
           </div>
-          <div style={{ fontSize: 11, color: '#D4D4D4', lineHeight: 1.5, paddingLeft: 18, borderLeft: '2px solid rgba(255,42,50,0.40)', marginLeft: 4 }}>
+          <div style={{ fontSize: 11, color: '#D4D4D4', lineHeight: 1.5, paddingLeft: 18, borderLeft: '2px solid rgba(122,208,138,0.40)', marginLeft: 4 }}>
             <strong style={{ color: '#FAFAFA' }}>YourCRM</strong>, HubSpot, and Pipedrive — YourCRM praised for fast setup and startup-friendly pricing.
           </div>
         </div>
@@ -452,9 +452,8 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
               onCta={() => {}}
             />
           </div>
-          <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em' }}>
+          <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em' }}>
             <span>No long-term contract · Cancel anytime · Results in under 3 min</span>
-            <span>Questions? hello@visibly.so</span>
           </div>
         </div>
       </section>
