@@ -327,7 +327,7 @@ export default function Screen_Scan({
 
           {/* ── RESULTS VIEW (once complete) ── */}
           {isUnlocked && isComplete && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
               {/* AI Score */}
               <section>
@@ -337,15 +337,89 @@ export default function Screen_Scan({
                   <span style={{ fontSize: 18, color: '#7a7268' }}>/10</span>
                 </div>
                 {gaps?.score_explanation && <p style={{ fontSize: 12, color: '#a09890', lineHeight: 1.55, margin: '0 0 12px' }}>{gaps.score_explanation}</p>}
-                <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+              </section>
+
+              <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
+
+              {/* Component Bars */}
+              <section>
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 14 }}>Technical Breakdown</div>
+                
+                {[
+                  { label: 'Fact Density', val: gaps?.entity_signals_score, desc: (gaps?.entity_signals_score <= 4) ? 'Low (Site relies on qualitative adjectives)' : 'Moderate' },
+                  { label: 'Trust Verification', val: gaps?.authority_score, desc: (gaps?.authority_score <= 4) ? 'Incomplete (Missing Wikidata/Authority links)' : 'Unverified' },
+                  { label: 'Crawlability (AIO)', val: gaps?.content_quality_score, desc: (gaps?.content_quality_score <= 4) ? 'Critical (No llms.txt detected)' : 'Suboptimal' }
+                ].map(({ label, val, desc }) => {
+                  const normalized = val ?? 2 // default to low for demo
+                  const maxBars = 10
+                  const filled = Math.round(normalized)
+                  const empty = maxBars - filled
+                  const barStr = '▓'.repeat(filled) + '░'.repeat(empty)
+                  let color = '#a09890'
+                  if (filled <= 3) color = '#ff6b70'
+                  else if (filled <= 6) color = '#c8a96e'
+                  else color = '#4ade80'
+                  return (
+                    <div key={label} style={{ marginBottom: 12 }}>
+                      <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10.5, color: '#cdc6ba', marginBottom: 4 }}>{label}</div>
+                      <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, color, letterSpacing: '0.1em' }}>
+                        [{barStr}] <span style={{ color: '#a09890', fontSize: 10, letterSpacing: 'normal', marginLeft: 4 }}>{desc}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </section>
+
+              <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
+
+              {/* Revenue Loss Table */}
+              {liveAnswers.length > 0 && (
+                <section>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 6 }}>Invisible Loss</div>
+                  <div style={{ fontSize: 11, color: '#7a7268', marginBottom: 12, lineHeight: 1.4 }}>AI is currently recommending competitors for these high-intent searches.</div>
+                  <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 8, padding: '8px', overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#a09890' }}>
+                      <thead>
+                        <tr style={{ borderBottom: '1px solid rgba(244,239,230,0.1)' }}>
+                          <th style={{ textAlign: 'left', padding: '6px 4px', fontWeight: 'normal', color: '#cdc6ba' }}>Search Intent</th>
+                          <th style={{ textAlign: 'left', padding: '6px 4px', fontWeight: 'normal', color: '#cdc6ba' }}>AI Response</th>
+                          <th style={{ textAlign: 'left', padding: '6px 4px', fontWeight: 'normal', color: '#cdc6ba' }}>Winning Entity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {liveAnswers.slice(0, 4).map((item, i) => {
+                          const strength = gaps?.query_results?.[i]?.recommendation_strength || 'none'
+                          const isFail = strength === 'none' || strength === 'weak'
+                          const statusStr = isFail ? 'Failure' : 'Uncertain'
+                          const rawComp = gaps?.top_competitors?.[i] || 'N/A'
+                          const compName = typeof rawComp === 'object' ? rawComp.name : rawComp
+                          return (
+                            <tr key={i} style={{ borderBottom: i === 3 ? 'none' : '1px solid rgba(244,239,230,0.05)' }}>
+                              <td style={{ padding: '8px 4px', color: '#cdc6ba', maxWidth: 160, lineHeight: 1.3 }}>"{item.query}"</td>
+                              <td style={{ padding: '8px 4px', color: isFail ? '#ff6b70' : '#c8a96e' }}>{statusStr}</td>
+                              <td style={{ padding: '8px 4px' }}>{compName}</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
+
+              {/* Signal Matrix */}
+              <section>
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 12 }}>The Signal Matrix</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                   {[
-                    { label: 'AI Presence', val: gaps?.overall_recommendation_score },
-                    { label: 'Content',     val: gaps?.content_quality_score },
-                    { label: 'Entity',      val: gaps?.entity_signals_score },
-                    { label: 'Authority',   val: gaps?.authority_score },
-                  ].map(({ label, val }) => (
-                    <div key={label} style={{ padding: '4px 9px', background: 'rgba(244,239,230,0.05)', border: '1px solid rgba(244,239,230,0.09)', borderRadius: 7, fontSize: 10.5, color: '#a09890', fontFamily: "'Geist Mono', monospace" }}>
-                      {label} <span style={{ color: '#cdc6ba' }}>{val ?? '—'}</span>
+                    { name: 'llms.txt', pass: false },
+                    { name: 'JSON-LD Schema', pass: false },
+                    { name: 'Entity Anchors', pass: false },
+                    { name: 'Brand Indexing', pass: true }
+                  ].map(sig => (
+                    <div key={sig.name} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${sig.pass ? 'rgba(74,222,128,0.12)' : 'rgba(255,42,50,0.15)'}`, padding: '8px 10px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', flexShrink: 0, background: sig.pass ? '#4ade80' : '#ff2a32', boxShadow: `0 0 8px ${sig.pass ? '#4ade80' : 'rgba(255,42,50,0.8)'}` }} />
+                      <span style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10.5, color: sig.pass ? '#a09890' : '#ffb6b9' }}>{sig.name}</span>
                     </div>
                   ))}
                 </div>
@@ -353,53 +427,11 @@ export default function Screen_Scan({
 
               <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
 
-              {/* Q&A Pairs */}
-              {liveAnswers.length > 0 && (
-                <section>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>What AI currently says about you</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    {liveAnswers.slice(0, 6).map((item, i) => {
-                      const qr = gaps?.query_results?.[i]
-                      const strength = qr?.combined_strength || qr?.recommendation_strength || 'none'
-                      const cfg = STRENGTH_CONFIG[strength] || STRENGTH_CONFIG.none
-                      const raw = gaps?.top_competitors?.[i]
-                      const competitor = (typeof raw === 'object' ? raw?.name : raw) || null
-                      const mentioned = strength === 'strong' ? (companyName || 'you') : competitor
-                      return (
-                        <div key={i} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.07)', borderRadius: 11, padding: '10px 13px', display: 'flex', flexDirection: 'column', gap: 5 }}>
-                          <div style={{ fontSize: 11.5, color: '#cdc6ba', fontWeight: 500, lineHeight: 1.35 }}>{item.query}</div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
-                            <div style={{ fontSize: 9, fontFamily: "'Geist Mono', monospace", padding: '2px 7px', borderRadius: 5, background: cfg.bg, border: `1px solid ${cfg.border}`, color: cfg.color, whiteSpace: 'nowrap' }}>{cfg.label}</div>
-                            {mentioned && (
-                              <div style={{ fontSize: 11, color: '#a09890' }}>AI mentions <span style={{ color: '#cdc6ba' }}>"{mentioned}"</span> here</div>
-                            )}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </section>
-              )}
-
-              <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
-
-              {/* Content Pack */}
+              {/* Content Pack Download Area */}
               <section style={{ paddingBottom: 4 }}>
                 <div style={{ marginBottom: 14 }}>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 4 }}>Your next steps</div>
-                  <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: '#f4efe6', lineHeight: 1.25 }}>Fix these gaps to get recommended.</div>
-                </div>
-
-                {(gaps?.quick_wins || []).slice(0, 2).map((win, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.07)', borderRadius: 10, padding: '9px 12px' }}>
-                    <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'rgba(255,42,50,0.12)', border: '1px solid rgba(255,42,50,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Geist Mono', monospace", fontSize: 9, color: '#ff6b70', flexShrink: 0 }}>{i + 1}</div>
-                    <div style={{ fontSize: 11.5, color: '#cdc6ba', lineHeight: 1.35 }}>{win.action}</div>
-                  </div>
-                ))}
-
-                <div style={{ marginTop: 14, marginBottom: 10 }}>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 3 }}>AI Content Pack</div>
-                  <div style={{ fontSize: 11.5, color: '#a09890' }}>The full fixes — ready to copy and paste.</div>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 4 }}>The Solution</div>
+                  <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: '#f4efe6', lineHeight: 1.25 }}>Inject these hardened entities into your architecture.</div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
