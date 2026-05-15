@@ -396,8 +396,8 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           </div>
 
           {/* ── Right: main city image ── */}
-          <div ref={cityColRef} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-            <img src="/main_city.svg" alt="" style={{ width: '100%', maxWidth: 260, height: 'auto', display: 'block' }} />
+          <div ref={cityColRef} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingRight: 60, paddingTop: 40 }}>
+            <img src="/FixedBuilding.svg" alt="" style={{ width: '100%', maxWidth: 126, height: 'auto', display: 'block' }} />
           </div>
 
         </div>
