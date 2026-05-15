@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+import { PROMPT_ANALYZER } from '../prompts/prompt1_analyzer'
+import { PROMPT_QUERIES }  from '../prompts/prompt2_queries'
+import { PROMPT_GAPS }     from '../prompts/prompt3_gaps'
+import { PROMPT_CONTENT }  from '../prompts/prompt4_content'
+import { PROMPT_ENTITY_HARDENER } from '../prompts/prompt5_entity_hardener'
+import { callClaude }      from '../api/claude'
+import { supabase }        from '../lib/supabase'
+import { Analytics } from '@vercel/analytics/react'
 
 async function saveLead(email, scanned_url) {
   const { error } = await supabase.from('leads').insert({ email, scanned_url })
@@ -131,6 +138,35 @@ export default function Screen_Scan({
           ::-webkit-scrollbar { display: none; }
         `
         doc.head.appendChild(style)
+
+        // ── AIO Entity Hardener ──
+        try {
+          const bodyText = doc.body.innerText || ""
+          const textSample = bodyText.slice(0, 15000) // limit context
+          const aioResponse = await callClaude(PROMPT_ENTITY_HARDENER(textSample))
+          const aioData = JSON.parse(aioResponse)
+
+          if (aioData.original_paragraph && aioData.replacement_html) {
+            // Find the element containing this exact text
+            const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null, false)
+            let node
+            while (node = walker.nextNode()) {
+              if (node.textContent.includes(aioData.original_paragraph.trim())) {
+                const parent = node.parentElement
+                if (parent) {
+                  // Replace the node with our new HTML
+                  const wrapper = doc.createElement('div')
+                  wrapper.innerHTML = aioData.replacement_html
+                  parent.replaceChild(wrapper.firstChild, node)
+                  break // only one replacement
+                }
+              }
+            }
+          }
+        } catch (aioErr) {
+          console.warn("AIO Entity Hardener failed:", aioErr)
+          // Silent fail, just show the normal site
+        }
 
         setModifiedHtml(doc.documentElement.outerHTML)
         setIframeLoading(false)
