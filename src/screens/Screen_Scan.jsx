@@ -168,7 +168,7 @@ export default function Screen_Scan({
     <div style={{ position: 'relative', height: '100vh', width: '100vw', background: '#0a0907', overflow: 'hidden' }}>
 
       {/* ── Background iframe ── */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
+      <div className="live-mirror-bg" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
         {iframeLoading ? (
           <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
             <div style={{ width: 36, height: 36, border: '3px solid rgba(255,42,50,0.12)', borderTopColor: '#ff2a32', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -187,7 +187,7 @@ export default function Screen_Scan({
       </div>
 
       {/* ── Sidebar ── */}
-      <div style={{
+      <div className="scan-sidebar" style={{
         position: 'absolute', top: 20, left: 20, bottom: 20, width: 420, zIndex: 10,
         background: 'rgba(10,9,7,0.92)',
         backdropFilter: 'blur(32px) saturate(180%)',
@@ -210,12 +210,43 @@ export default function Screen_Scan({
         </div>
 
         {/* ── Body ── */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="scan-body" style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+          {/* ── Lead capture gate ── */}
+          {!isUnlocked && (
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(244,239,230,0.10)', borderRadius: 16, padding: '22px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div>
+                <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 20, color: '#f4efe6', lineHeight: 1.2, marginBottom: 5 }}>Start your Audit</div>
+                <div style={{ fontSize: 11.5, color: '#a09890', lineHeight: 1.5 }}>Enter your email to unlock your AI score and content pack.</div>
+              </div>
+              <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  value={leadEmail}
+                  onChange={e => setLeadEmail(e.target.value)}
+                  required
+                  autoFocus
+                  style={{ width: '100%', padding: '11px 14px', borderRadius: 9, background: 'rgba(244,239,230,0.06)', border: '1px solid rgba(244,239,230,0.14)', color: '#f4efe6', fontFamily: "'Geist Mono', monospace", fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
+                />
+                {leadError && (
+                  <div style={{ fontSize: 11, color: '#ff6b70', fontFamily: "'Geist Mono', monospace", padding: '5px 9px', background: 'rgba(255,42,50,0.08)', border: '1px solid rgba(255,42,50,0.18)', borderRadius: 7 }}>{leadError}</div>
+                )}
+                <button
+                  type="submit"
+                  disabled={leadLoading}
+                  style={{ width: '100%', padding: '11px 0', borderRadius: 9, background: leadLoading ? 'rgba(255,42,50,0.5)' : '#ff2a32', border: 'none', color: '#fff', fontFamily: "'Geist Mono', monospace", fontSize: 12, fontWeight: 600, cursor: leadLoading ? 'not-allowed' : 'pointer', letterSpacing: '0.04em', boxShadow: '0 6px 20px rgba(255,42,50,0.25)', transition: 'background 0.2s' }}
+                >
+                  {leadLoading ? 'Unlocking…' : 'See my results →'}
+                </button>
+              </form>
+              <div style={{ fontSize: 10.5, color: '#544e46', fontFamily: "'Geist Mono', monospace", textAlign: 'center' }}>No password. No spam. Just your results.</div>
+            </div>
+          )}
 
           {/* ── LOADING VIEW (while not complete) ── */}
-          {!isComplete && (
+          {isUnlocked && !isComplete && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 28, paddingTop: 20 }}>
-
               {/* Aperture spinner */}
               <div style={{ position: 'relative', width: 72, height: 72, flexShrink: 0 }}>
                 <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(244,239,230,0.08)', animation: 'spin 2.8s linear infinite' }} />
@@ -250,156 +281,119 @@ export default function Screen_Scan({
           )}
 
           {/* ── RESULTS VIEW (once complete) ── */}
-          {isComplete && (
+          {isUnlocked && isComplete && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-              {/* ── Lead capture gate ── */}
-              {!isUnlocked && (
-                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(244,239,230,0.10)', borderRadius: 16, padding: '22px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <div>
-                    <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 20, color: '#f4efe6', lineHeight: 1.2, marginBottom: 5 }}>Your results are ready</div>
-                    <div style={{ fontSize: 11.5, color: '#a09890', lineHeight: 1.5 }}>Enter your email to unlock your AI score and content pack.</div>
-                  </div>
-                  <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <input
-                      type="email"
-                      placeholder="your@email.com"
-                      value={leadEmail}
-                      onChange={e => setLeadEmail(e.target.value)}
-                      required
-                      autoFocus
-                      style={{ width: '100%', padding: '11px 14px', borderRadius: 9, background: 'rgba(244,239,230,0.06)', border: '1px solid rgba(244,239,230,0.14)', color: '#f4efe6', fontFamily: "'Geist Mono', monospace", fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
-                    />
-                    {leadError && (
-                      <div style={{ fontSize: 11, color: '#ff6b70', fontFamily: "'Geist Mono', monospace", padding: '5px 9px', background: 'rgba(255,42,50,0.08)', border: '1px solid rgba(255,42,50,0.18)', borderRadius: 7 }}>{leadError}</div>
-                    )}
-                    <button
-                      type="submit"
-                      disabled={leadLoading}
-                      style={{ width: '100%', padding: '11px 0', borderRadius: 9, background: leadLoading ? 'rgba(255,42,50,0.5)' : '#ff2a32', border: 'none', color: '#fff', fontFamily: "'Geist Mono', monospace", fontSize: 12, fontWeight: 600, cursor: leadLoading ? 'not-allowed' : 'pointer', letterSpacing: '0.04em', boxShadow: '0 6px 20px rgba(255,42,50,0.25)', transition: 'background 0.2s' }}
-                    >
-                      {leadLoading ? 'Unlocking…' : 'See my results →'}
-                    </button>
-                  </form>
-                  <div style={{ fontSize: 10.5, color: '#544e46', fontFamily: "'Geist Mono', monospace", textAlign: 'center' }}>No password. No spam. Just your results.</div>
+              {/* AI Score */}
+              <section>
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>AI Visibility Score</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 60, lineHeight: 1, color: scoreColor }}>{score ?? '—'}</span>
+                  <span style={{ fontSize: 18, color: '#7a7268' }}>/10</span>
                 </div>
-              )}
-
-              {/* Results content — blurred until email submitted */}
-              <div style={{ filter: !isUnlocked ? 'blur(5px)' : 'none', pointerEvents: !isUnlocked ? 'none' : 'auto', transition: 'filter 0.4s', display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-                {/* AI Score */}
-                <section>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>AI Visibility Score</div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
-                    <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 60, lineHeight: 1, color: scoreColor }}>{score ?? '—'}</span>
-                    <span style={{ fontSize: 18, color: '#7a7268' }}>/10</span>
-                  </div>
-                  {gaps?.score_explanation && <p style={{ fontSize: 12, color: '#a09890', lineHeight: 1.55, margin: '0 0 12px' }}>{gaps.score_explanation}</p>}
-                  <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-                    {[
-                      { label: 'AI Presence', val: gaps?.overall_recommendation_score },
-                      { label: 'Content',     val: gaps?.content_quality_score },
-                      { label: 'Entity',      val: gaps?.entity_signals_score },
-                      { label: 'Authority',   val: gaps?.authority_score },
-                    ].map(({ label, val }) => (
-                      <div key={label} style={{ padding: '4px 9px', background: 'rgba(244,239,230,0.05)', border: '1px solid rgba(244,239,230,0.09)', borderRadius: 7, fontSize: 10.5, color: '#a09890', fontFamily: "'Geist Mono', monospace" }}>
-                        {label} <span style={{ color: '#cdc6ba' }}>{val ?? '—'}</span>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
-
-                {/* Q&A Pairs */}
-                {liveAnswers.length > 0 && (
-                  <section>
-                    <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>What AI currently says about you</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {liveAnswers.slice(0, 6).map((item, i) => {
-                        const qr = gaps?.query_results?.[i]
-                        const strength = qr?.combined_strength || qr?.recommendation_strength || 'none'
-                        const cfg = STRENGTH_CONFIG[strength] || STRENGTH_CONFIG.none
-                        const raw = gaps?.top_competitors?.[i]
-                        const competitor = (typeof raw === 'object' ? raw?.name : raw) || null
-                        const mentioned = strength === 'strong' ? (companyName || 'you') : competitor
-                        return (
-                          <div key={i} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.07)', borderRadius: 11, padding: '10px 13px', display: 'flex', flexDirection: 'column', gap: 5 }}>
-                            <div style={{ fontSize: 11.5, color: '#cdc6ba', fontWeight: 500, lineHeight: 1.35 }}>{item.query}</div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
-                              <div style={{ fontSize: 9, fontFamily: "'Geist Mono', monospace", padding: '2px 7px', borderRadius: 5, background: cfg.bg, border: `1px solid ${cfg.border}`, color: cfg.color, whiteSpace: 'nowrap' }}>{cfg.label}</div>
-                              {mentioned && (
-                                <div style={{ fontSize: 11, color: '#a09890' }}>AI mentions <span style={{ color: '#cdc6ba' }}>"{mentioned}"</span> here</div>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </section>
-                )}
-
-                <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
-
-                {/* Content Pack */}
-                <section style={{ paddingBottom: 4 }}>
-                  <div style={{ marginBottom: 14 }}>
-                    <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 4 }}>Your next steps</div>
-                    <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: '#f4efe6', lineHeight: 1.25 }}>Fix these gaps to get recommended.</div>
-                  </div>
-
-                  {(gaps?.quick_wins || []).slice(0, 2).map((win, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.07)', borderRadius: 10, padding: '9px 12px' }}>
-                      <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'rgba(255,42,50,0.12)', border: '1px solid rgba(255,42,50,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Geist Mono', monospace", fontSize: 9, color: '#ff6b70', flexShrink: 0 }}>{i + 1}</div>
-                      <div style={{ fontSize: 11.5, color: '#cdc6ba', lineHeight: 1.35 }}>{win.action}</div>
+                {gaps?.score_explanation && <p style={{ fontSize: 12, color: '#a09890', lineHeight: 1.55, margin: '0 0 12px' }}>{gaps.score_explanation}</p>}
+                <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                  {[
+                    { label: 'AI Presence', val: gaps?.overall_recommendation_score },
+                    { label: 'Content',     val: gaps?.content_quality_score },
+                    { label: 'Entity',      val: gaps?.entity_signals_score },
+                    { label: 'Authority',   val: gaps?.authority_score },
+                  ].map(({ label, val }) => (
+                    <div key={label} style={{ padding: '4px 9px', background: 'rgba(244,239,230,0.05)', border: '1px solid rgba(244,239,230,0.09)', borderRadius: 7, fontSize: 10.5, color: '#a09890', fontFamily: "'Geist Mono', monospace" }}>
+                      {label} <span style={{ color: '#cdc6ba' }}>{val ?? '—'}</span>
                     </div>
                   ))}
+                </div>
+              </section>
 
-                  <div style={{ marginTop: 14, marginBottom: 10 }}>
-                    <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 3 }}>AI Content Pack</div>
-                    <div style={{ fontSize: 11.5, color: '#a09890' }}>The full fixes — ready to copy and paste.</div>
-                  </div>
+              <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                    {PACK_FILES.map(({ key, label, ext, desc }) => {
-                      const content = contentPack?.[key]
-                      const isOpen  = openFile === key
+              {/* Q&A Pairs */}
+              {liveAnswers.length > 0 && (
+                <section>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>What AI currently says about you</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {liveAnswers.slice(0, 6).map((item, i) => {
+                      const qr = gaps?.query_results?.[i]
+                      const strength = qr?.combined_strength || qr?.recommendation_strength || 'none'
+                      const cfg = STRENGTH_CONFIG[strength] || STRENGTH_CONFIG.none
+                      const raw = gaps?.top_competitors?.[i]
+                      const competitor = (typeof raw === 'object' ? raw?.name : raw) || null
+                      const mentioned = strength === 'strong' ? (companyName || 'you') : competitor
                       return (
-                        <div key={key} style={{ borderRadius: 9, overflow: 'hidden', border: `1px solid ${isOpen ? 'rgba(255,42,50,0.25)' : 'rgba(244,239,230,0.08)'}`, transition: 'border-color 0.2s' }}>
-                          <div
-                            onClick={() => toggleFile(key)}
-                            style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', background: isOpen ? 'rgba(255,42,50,0.05)' : 'rgba(255,255,255,0.03)', cursor: 'pointer', transition: 'background 0.2s', userSelect: 'none' }}
-                          >
-                            <div style={{ width: 26, height: 26, borderRadius: 6, background: 'rgba(244,239,230,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0 }}>📄</div>
-                            <div style={{ flex: 1, fontSize: 11.5, color: '#cdc6ba', fontFamily: "'Geist Mono', monospace" }}>{label}</div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                              <button onClick={(e) => { e.stopPropagation(); handleDownload(key, ext) }} style={{ padding: '3px 7px', borderRadius: 5, background: 'rgba(244,239,230,0.08)', border: '1px solid rgba(244,239,230,0.08)', color: '#cdc6ba', fontSize: 10, fontFamily: "'Geist Mono', monospace", cursor: 'pointer' }}>↓</button>
-                              <span style={{ color: '#7a7268', fontSize: 11 }}>{isOpen ? '▲' : '▼'}</span>
-                            </div>
+                        <div key={i} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.07)', borderRadius: 11, padding: '10px 13px', display: 'flex', flexDirection: 'column', gap: 5 }}>
+                          <div style={{ fontSize: 11.5, color: '#cdc6ba', fontWeight: 500, lineHeight: 1.35 }}>{item.query}</div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+                            <div style={{ fontSize: 9, fontFamily: "'Geist Mono', monospace", padding: '2px 7px', borderRadius: 5, background: cfg.bg, border: `1px solid ${cfg.border}`, color: cfg.color, whiteSpace: 'nowrap' }}>{cfg.label}</div>
+                            {mentioned && (
+                              <div style={{ fontSize: 11, color: '#a09890' }}>AI mentions <span style={{ color: '#cdc6ba' }}>"{mentioned}"</span> here</div>
+                            )}
                           </div>
-                          {isOpen && (
-                            <div style={{ borderTop: '1px solid rgba(244,239,230,0.06)', background: 'rgba(0,0,0,0.3)' }}>
-                              <div style={{ padding: '10px 13px', borderBottom: '1px solid rgba(244,239,230,0.05)', fontSize: 11.5, color: '#a09890', lineHeight: 1.55 }}>{desc}</div>
-                              <div style={{ maxHeight: 200, overflowY: 'auto', padding: '10px 13px' }}>
-                                <pre style={{ margin: 0, fontFamily: "'Geist Mono', monospace", fontSize: 10.5, color: '#a09890', lineHeight: 1.6, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{content}</pre>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       )
                     })}
                   </div>
-
-                  <button
-                    onClick={handleDownloadAll}
-                    style={{ marginTop: 10, width: '100%', height: 38, borderRadius: 9, background: 'rgba(244,239,230,0.08)', border: '1px solid rgba(244,239,230,0.09)', color: '#f4efe6', fontSize: 11, fontFamily: "'Geist Mono', monospace", cursor: 'pointer', letterSpacing: '0.04em' }}
-                  >
-                    ↓ Download All 4 Files
-                  </button>
                 </section>
-              </div>
+              )}
 
+              <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
+
+              {/* Content Pack */}
+              <section style={{ paddingBottom: 4 }}>
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 4 }}>Your next steps</div>
+                  <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: '#f4efe6', lineHeight: 1.25 }}>Fix these gaps to get recommended.</div>
+                </div>
+
+                {(gaps?.quick_wins || []).slice(0, 2).map((win, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.07)', borderRadius: 10, padding: '9px 12px' }}>
+                    <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'rgba(255,42,50,0.12)', border: '1px solid rgba(255,42,50,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Geist Mono', monospace", fontSize: 9, color: '#ff6b70', flexShrink: 0 }}>{i + 1}</div>
+                    <div style={{ fontSize: 11.5, color: '#cdc6ba', lineHeight: 1.35 }}>{win.action}</div>
+                  </div>
+                ))}
+
+                <div style={{ marginTop: 14, marginBottom: 10 }}>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 3 }}>AI Content Pack</div>
+                  <div style={{ fontSize: 11.5, color: '#a09890' }}>The full fixes — ready to copy and paste.</div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  {PACK_FILES.map(({ key, label, ext, desc }) => {
+                    const content = contentPack?.[key]
+                    const isOpen  = openFile === key
+                    return (
+                      <div key={key} style={{ borderRadius: 9, overflow: 'hidden', border: `1px solid ${isOpen ? 'rgba(255,42,50,0.25)' : 'rgba(244,239,230,0.08)'}`, transition: 'border-color 0.2s' }}>
+                        <div
+                          onClick={() => toggleFile(key)}
+                          style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', background: isOpen ? 'rgba(255,42,50,0.05)' : 'rgba(255,255,255,0.03)', cursor: 'pointer', transition: 'background 0.2s', userSelect: 'none' }}
+                        >
+                          <div style={{ width: 26, height: 26, borderRadius: 6, background: 'rgba(244,239,230,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0 }}>📄</div>
+                          <div style={{ flex: 1, fontSize: 11.5, color: '#cdc6ba', fontFamily: "'Geist Mono', monospace" }}>{label}</div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                            <button onClick={(e) => { e.stopPropagation(); handleDownload(key, ext) }} style={{ padding: '3px 7px', borderRadius: 5, background: 'rgba(244,239,230,0.08)', border: '1px solid rgba(244,239,230,0.08)', color: '#cdc6ba', fontSize: 10, fontFamily: "'Geist Mono', monospace", cursor: 'pointer' }}>↓</button>
+                            <span style={{ color: '#7a7268', fontSize: 11 }}>{isOpen ? '▲' : '▼'}</span>
+                          </div>
+                        </div>
+                        {isOpen && (
+                          <div style={{ borderTop: '1px solid rgba(244,239,230,0.06)', background: 'rgba(0,0,0,0.3)' }}>
+                            <div style={{ padding: '10px 13px', borderBottom: '1px solid rgba(244,239,230,0.05)', fontSize: 11.5, color: '#a09890', lineHeight: 1.55 }}>{desc}</div>
+                            <div style={{ maxHeight: 200, overflowY: 'auto', padding: '10px 13px' }}>
+                              <pre style={{ margin: 0, fontFamily: "'Geist Mono', monospace", fontSize: 10.5, color: '#a09890', lineHeight: 1.6, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{content}</pre>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+
+                <button
+                  onClick={handleDownloadAll}
+                  style={{ marginTop: 10, width: '100%', height: 38, borderRadius: 9, background: 'rgba(244,239,230,0.08)', border: '1px solid rgba(244,239,230,0.09)', color: '#f4efe6', fontSize: 11, fontFamily: "'Geist Mono', monospace", cursor: 'pointer', letterSpacing: '0.04em' }}
+                >
+                  ↓ Download All 4 Files
+                </button>
+              </section>
             </div>
           )}
 
@@ -413,6 +407,19 @@ export default function Screen_Scan({
           0%   { box-shadow: 0 0 0 0 rgba(255,42,50,0.5); }
           70%  { box-shadow: 0 0 0 6px rgba(255,42,50,0); }
           100% { box-shadow: 0 0 0 0 rgba(255,42,50,0); }
+        }
+        
+        @media (max-width: 768px) {
+          .live-mirror-bg { display: none !important; }
+          .scan-sidebar {
+            top: 0 !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            border: none !important;
+            border-radius: 0 !important;
+          }
+          .scan-body { padding: 16px !important; }
         }
       ` }} />
     </div>

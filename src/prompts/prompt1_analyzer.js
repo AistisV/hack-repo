@@ -11,7 +11,7 @@ export function buildPrompt1(input, country = null, webContext = null) {
       }\n`
     : ''
 
-  return `You are an AI Recommendation Engine specialist.
+  return `You are an AI Visibility specialist.
 
 ${marketBlock}Analyze this company: ${input}
 ${webBlock}

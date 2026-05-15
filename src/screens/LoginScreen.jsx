@@ -62,15 +62,6 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
           }}>
             Cited
           </div>
-          <div style={{
-            fontFamily: "'Geist Mono', monospace",
-            fontSize: 11,
-            textTransform: 'uppercase',
-            letterSpacing: '0.18em',
-            color: '#ff2a32',
-          }}>
-            AI Recommendation Engine
-          </div>
         </div>
 
         {/* Success message from signup */}

@@ -3,7 +3,7 @@ export function buildPrompt4(companyProfile, gapAnalysis, country = null) {
     ? `TARGET MARKET: ${country}\nAll content must be written for buyers and AI engines in ${country}.\n\n`
     : ''
 
-  return `You are an AI Recommendation Engine specialist.
+  return `You are an AI Visibility specialist.
 
 ${marketBlock}Generate plain-text content to make AI agents recommend this company. No markdown, no hashtags, no asterisks, no bullet dashes. Write as if it will be copy-pasted directly into LinkedIn, Wikipedia, or a directory profile.
 

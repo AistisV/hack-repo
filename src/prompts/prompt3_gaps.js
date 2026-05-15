@@ -13,7 +13,7 @@ export function buildPrompt3(companyProfile, realAnswers, country = null, entity
     ? `\nEntity platform presence (verified via web search):\n${entityPresence.map(e => `- ${e.name}: ${e.present ? 'PRESENT' : 'MISSING'}`).join('\n')}\n`
     : ''
 
-  return `You are an AI Recommendation Engine specialist.
+  return `You are an AI Visibility specialist.
 
 ${marketBlock}Company being analyzed: ${companyName}
 

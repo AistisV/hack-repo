@@ -315,7 +315,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
     }}>
 
       {/* ── Nav ── */}
-      <nav style={{
+      <nav className="nav" style={{
         position: 'sticky', top: 0, zIndex: 50,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '18px 36px',
@@ -329,7 +329,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           <img src="/logo.svg" alt="Cited" style={{ height: 80, width: 'auto', display: 'block' }} />
         </button>
 
-        <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 30 }}>
+        <div className="nav-links" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 30 }}>
           {navLink('how', 'How it works')}
           {navLink('pricing', 'Pricing')}
         </div>
@@ -348,10 +348,10 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
 
       {/* ── Hero ── */}
       <section id="hero">
-        <div style={{ position: 'relative', maxWidth: 1100, margin: '0 auto', padding: '60px 36px 100px', minHeight: 'calc(100vh - 72px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+        <div className="hero-container" style={{ position: 'relative', maxWidth: 1100, margin: '0 auto', padding: '60px 36px 100px', minHeight: 'calc(100vh - 72px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
 
           {/* Aperture rings */}
-          <div style={{ position: 'absolute', left: '50%', top: '54%', transform: 'translate(-50%, -50%)', width: 'min(820px, 86vw)', aspectRatio: '1', pointerEvents: 'none', zIndex: 1, opacity: 0.9, maskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)', WebkitMaskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)' }}>
+          <div className="hero-rings" style={{ position: 'absolute', left: '50%', top: '54%', transform: 'translate(-50%, -50%)', width: 'min(820px, 86vw)', aspectRatio: '1', pointerEvents: 'none', zIndex: 1, opacity: 0.9, maskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)', WebkitMaskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)' }}>
             <div style={{ position: 'absolute', inset: 0, animation: 'spin-slow 120s linear infinite' }}>
               {[88, 72].map((pct, i) => (
                 <div key={i} style={{ position: 'absolute', borderRadius: '50%', border: `1px solid rgba(244,239,230,${i === 0 ? '0.05' : '0.08'})`, boxShadow: 'inset 0 0 30px rgba(255,42,50,0.04)', width: `${pct}%`, height: `${pct}%`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
@@ -364,11 +364,6 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
 
           <div style={{ position: 'relative', zIndex: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 38, maxWidth: 880, margin: '0 auto', width: '100%' }}>
 
-            {/* Badge */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 14px 7px 10px', borderRadius: 999, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(244,239,230,0.16)', fontSize: 12.5, color: '#cdc6ba', letterSpacing: '0.01em', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', boxShadow: '0 0 0 1px rgba(255,42,50,0.06), 0 0 24px rgba(255,42,50,0.04)' }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', flexShrink: 0, background: '#ff2a32', animation: 'pulse-ring 2.2s ease-out infinite' }} />
-              AI Recommendation Engine
-            </div>
 
             {/* Headline */}
             <h1 style={{ fontFamily: "'DM Serif Display', serif", fontWeight: 400, fontSize: 'clamp(46px, 6.6vw, 96px)', lineHeight: 1.02, letterSpacing: '-0.01em', margin: 0, color: '#f4efe6' }}>
@@ -387,12 +382,12 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
             </p>
 
             {/* URL bar */}
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%', maxWidth: 760, height: 66, padding: '6px 6px 6px 24px', borderRadius: 999, background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))', border: `1px solid ${focused ? 'rgba(244,239,230,0.22)' : 'rgba(244,239,230,0.10)'}`, boxShadow: '0 0 0 1px rgba(255,255,255,0.02), 0 1px 0 rgba(255,255,255,0.06) inset, 0 30px 60px -20px rgba(0,0,0,0.60)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', transition: 'border-color 0.25s' }}>
+            <div className="url-bar" style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%', maxWidth: 760, height: 66, padding: '6px 6px 6px 24px', borderRadius: 999, background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))', border: `1px solid ${focused ? 'rgba(244,239,230,0.22)' : 'rgba(244,239,230,0.10)'}`, boxShadow: '0 0 0 1px rgba(255,255,255,0.02), 0 1px 0 rgba(255,255,255,0.06) inset, 0 30px 60px -20px rgba(0,0,0,0.60)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', transition: 'border-color 0.25s' }}>
               <svg style={{ flexShrink: 0, color: '#8a8378' }} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0 -18"/>
               </svg>
               <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSubmit()} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} placeholder="company name or website URL" style={{ flex: 1, background: 'transparent', border: 0, outline: 'none', color: '#f4efe6', fontSize: 16, padding: '0 14px', fontFamily: "'Geist Mono', 'SFMono-Regular', monospace" }} />
-              <div style={{ width: 1, height: 26, flexShrink: 0, background: 'rgba(244,239,230,0.10)' }} />
+              <div className="divider" style={{ width: 1, height: 26, flexShrink: 0, background: 'rgba(244,239,230,0.10)' }} />
               <select value={country} onChange={e => setCountry(e.target.value)} style={{ background: 'transparent', border: 0, outline: 'none', color: country ? '#f4efe6' : '#544e46', fontFamily: "'Geist', sans-serif", fontSize: 13, padding: '0 10px 0 14px', cursor: 'pointer', appearance: 'none', maxWidth: 140, flexShrink: 0 }}>
                 {MARKETS.map(m => (
                   <option key={m.value} value={m.value} style={{ background: '#100e0b', color: '#f4efe6' }}>{m.label}</option>
@@ -410,7 +405,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
             )}
 
             {/* Engine list */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: "'Geist Mono', monospace", fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+            <div className="engine-list" style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: "'Geist Mono', monospace", fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.02em' }}>
               <span style={{ color: '#544e46' }}>Analyzed for</span>
               {ENGINES.map((e, i) => (
                 <React.Fragment key={e}>
@@ -435,7 +430,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           <p style={{ fontSize: 18, lineHeight: 1.55, color: '#8a8378', maxWidth: 680, margin: '0 0 64px', fontWeight: 400 }}>
             Four steps, one scan. See exactly where you stand — then get the content to fix it.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
+          <div className="bento-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
             <BentoCard tag="Step 01" title="Scan your company" sub="We score how well AI engines understand who you are — across entity coverage, FAQ signals, and comparison visibility." visual={<VisScore />} />
             <BentoCard tag="Step 02" title="See live AI answers" sub="We run real buyer queries on ChatGPT, Perplexity, Gemini, Claude and Google AI and capture exactly what they say." visual={<VisAIAnswer />} />
             <BentoCard tag="Step 03" title="Uncover your gaps" sub="Find which queries you're missing from and exactly which competitors AI recommends instead of you." visual={<VisGap />} />
@@ -456,7 +451,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           <p style={{ fontSize: 18, lineHeight: 1.55, color: '#8a8378', maxWidth: 680, margin: '0 0 64px', fontWeight: 400 }}>
             Start free. Results in under 3 minutes.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+          <div className="pricing-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
             <PriceCard
               tier="Starter" price="$0" period="one-time scan"
               pitch="Your AI visibility score and top quick wins. No credit card."
@@ -557,7 +552,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           <img src="/logo.svg" alt="Cited" style={{ height: 80, width: 100, display: 'block', opacity: 0.5 }} />
           <span>2026 Cited · All rights reserved</span>
         </div>
-        <div style={{ display: 'flex', gap: 22 }}>
+        <div className="footer-links" style={{ display: 'flex', gap: 22 }}>
           {[['how', 'How it works'], ['pricing', 'Pricing']].map(([id, label]) => (
             <button key={id} onClick={() => scrollTo(id)} style={{ color: '#544e46', background: 'none', border: 0, cursor: 'pointer', fontFamily: "'Geist Mono', monospace", fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{label}</button>
           ))}
@@ -565,6 +560,41 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
         </div>
       </footer>
 
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes dot-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        @keyframes pulse-ring {
+          0% { box-shadow: 0 0 0 0 rgba(255,42,50,0.5); }
+          70% { box-shadow: 0 0 0 10px rgba(255,42,50,0); }
+          100% { box-shadow: 0 0 0 0 rgba(255,42,50,0); }
+        }
+        
+        @media (max-width: 768px) {
+          nav { padding: 12px 20px !important; }
+          .nav-links { display: none !important; }
+          .hero-container { padding: 40px 20px 60px !important; }
+          .hero-rings { display: none !important; }
+          .url-bar { 
+            flex-direction: column !important; 
+            height: auto !important; 
+            padding: 16px !important; 
+            border-radius: 24px !important;
+            gap: 12px !important;
+          }
+          .url-bar input { width: 100% !important; padding: 10px 0 !important; text-align: center; }
+          .url-bar select { width: 100% !important; max-width: none !important; text-align: center; border-top: 1px solid rgba(244,239,230,0.1); padding: 10px 0 !important; }
+          .url-bar .divider { display: none !important; }
+          .url-bar button { width: 100% !important; height: 50px !important; }
+          
+          .bento-grid { grid-template-columns: 1fr !important; }
+          .pricing-grid { grid-template-columns: 1fr !important; }
+          
+          .engine-list { flex-wrap: wrap !important; justify-content: center !important; }
+          
+          footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; }
+          footer .footer-links { justify-content: center !important; }
+        }
+      ` }} />
     </div>
   )
 }

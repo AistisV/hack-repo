@@ -3,7 +3,7 @@ export function buildPrompt2(companyProfile, country = null) {
     ? `TARGET MARKET: ${country}\nAll analysis, queries, competitors, and content must be specific to buyers, AI landscape, and business norms in ${country}.\n\n`
     : ''
 
-  return `You are an AI Recommendation Engine specialist.
+  return `You are an AI Visibility specialist.
 
 ${marketBlock}Company profile:
 ${JSON.stringify(companyProfile, null, 2)}
