@@ -387,12 +387,6 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
                 <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0 -18"/>
               </svg>
               <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSubmit()} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} placeholder="company name or website URL" style={{ flex: 1, background: 'transparent', border: 0, outline: 'none', color: '#f4efe6', fontSize: 16, padding: '0 14px', fontFamily: "'Geist Mono', 'SFMono-Regular', monospace" }} />
-              <div className="divider" style={{ width: 1, height: 26, flexShrink: 0, background: 'rgba(244,239,230,0.10)' }} />
-              <select value={country} onChange={e => setCountry(e.target.value)} style={{ background: 'transparent', border: 0, outline: 'none', color: country ? '#f4efe6' : '#544e46', fontFamily: "'Geist', sans-serif", fontSize: 13, padding: '0 10px 0 14px', cursor: 'pointer', appearance: 'none', maxWidth: 140, flexShrink: 0 }}>
-                {MARKETS.map(m => (
-                  <option key={m.value} value={m.value} style={{ background: '#100e0b', color: '#f4efe6' }}>{m.label}</option>
-                ))}
-              </select>
               <button onClick={handleSubmit} style={{ flexShrink: 0, height: 50, padding: '0 24px', borderRadius: 999, background: '#f4efe6', color: '#15110d', fontWeight: 500, fontSize: 14, display: 'inline-flex', alignItems: 'center', gap: 8, border: 0, cursor: 'pointer', boxShadow: '0 6px 18px rgba(244,239,230,0.10), 0 1px 0 rgba(255,255,255,0.5) inset', transition: 'transform 0.15s' }}>
                 <span>Scan</span><span>→</span>
               </button>
