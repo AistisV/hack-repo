@@ -48,16 +48,16 @@ function Eyebrow({ children }) {
     <div className="eyebrow" style={{
       display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'nowrap',
       fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5,
-      textTransform: 'uppercase', letterSpacing: '0.18em', color: '#ff2a32',
+      textTransform: 'uppercase', letterSpacing: '0.18em', color: '#525252',
       marginBottom: 18,
     }}>
-      <div className="eyebrow-bar" style={{ width: 24, minWidth: 24, maxWidth: 24, height: 1, background: '#ff2a32', flexShrink: 0 }} />
+      <div className="eyebrow-bar" style={{ width: 24, minWidth: 24, maxWidth: 24, height: 1, background: 'rgba(255,255,255,0.20)', flexShrink: 0 }} />
       {children}
     </div>
   )
 }
 
-function BentoCard({ tag, title, sub, visual }) {
+function BentoCard({ tag, title, sub, visual, minHeight = 440 }) {
   const [hovered, setHovered] = useState(false)
   return (
     <div
@@ -68,7 +68,7 @@ function BentoCard({ tag, title, sub, visual }) {
         position: 'relative', display: 'flex', flexDirection: 'column', gap: 22,
         background: 'transparent',
         border: `1px solid ${hovered ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.10)'}`,
-        borderRadius: 0, padding: 30, minHeight: 440, overflow: 'hidden',
+        borderRadius: 0, padding: 30, minHeight, overflow: 'hidden',
         transition: 'border-color 0.15s',
       }}
     >
@@ -102,7 +102,7 @@ function PriceCard({ tier, price, period, pitch, items, cta, onCta, featured }) 
       {featured && (
         <div style={{ position: 'absolute', top: -12, left: 28, padding: '4px 10px', borderRadius: 0, background: '#ff2a32', color: '#0A0A0A', fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em', whiteSpace: 'nowrap', fontWeight: 600 }}>Most popular</div>
       )}
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: featured ? '#ffb6b9' : '#737373' }}>{tier}</div>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#737373' }}>{tier}</div>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", lineHeight: 1 }}>
         <span style={{ fontSize: 70, fontWeight: 400, letterSpacing: '-0.01em', color: '#FAFAFA' }}>{price}</span>
         <span style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: 13, color: '#737373', fontWeight: 400 }}>&nbsp;/ {period}</span>
@@ -111,7 +111,7 @@ function PriceCard({ tier, price, period, pitch, items, cta, onCta, featured }) 
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
         {items.map(({ check, label }, i) => (
           <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 11, fontSize: 13.5, lineHeight: 1.45, color: check ? '#D4D4D4' : '#525252' }}>
-            <span style={{ flexShrink: 0, width: 16, height: 16, borderRadius: '50%', background: check ? (featured ? 'rgba(255,42,50,0.22)' : 'rgba(255,42,50,0.12)') : 'rgba(255,255,255,0.05)', color: check ? '#ff2a32' : '#525252', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, marginTop: 2 }}>{check ? '✓' : '—'}</span>
+            <span style={{ flexShrink: 0, width: 16, height: 16, borderRadius: '50%', background: check ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)', color: check ? '#D4D4D4' : '#525252', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, marginTop: 2 }}>{check ? '✓' : '—'}</span>
             {label}
           </li>
         ))}
@@ -130,7 +130,7 @@ function VisScore() {
     <div style={{ width: '100%', background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: 'none' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: '#737373', textTransform: 'uppercase', letterSpacing: '0.10em' }}>
         <span>
-          <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#ff2a32', boxShadow: '0 0 8px rgba(255,42,50,0.60)', marginRight: 6, verticalAlign: 'middle' }} />
+          <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.25)', marginRight: 6, verticalAlign: 'middle' }} />
           <span style={{ color: '#FAFAFA' }}>yourcompany.com</span>
         </span>
         <span>AI Score</span>
@@ -140,55 +140,21 @@ function VisScore() {
         <span style={{ fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontSize: 32, color: '#525252', lineHeight: 1 }}>/10</span>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#ff2a32', marginLeft: 8, padding: '4px 10px', borderRadius: 0, background: 'rgba(255,42,50,0.12)', border: '1px solid rgba(255,42,50,0.25)' }}>Critical</span>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, alignItems: 'start' }}>
-        {[['2', 'AI Visibility', true], ['4', 'Entity Coverage', true], ['5', 'FAQ Signals', false], ['1', 'Comparisons', true]].map(([n, lbl, bad]) => (
-          <div key={lbl} style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 3, fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", lineHeight: 1 }}>
-              <span style={{ fontSize: 32, fontWeight: 500, color: bad ? '#ff2a32' : '#FAFAFA', textShadow: 'none' }}>{n}</span>
-              <span style={{ fontSize: 13, color: '#525252', fontFamily: "'Inter', system-ui, sans-serif" }}>/10</span>
-            </div>
-            <div style={{ fontSize: 10.5, color: '#737373', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.10em', marginTop: 4 }}>{lbl}</div>
-          </div>
-        ))}
-      </div>
     </div>
   )
 }
 
 function VisAIAnswer() {
   return (
-    <div style={{ width: '100%', background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 12, boxShadow: 'none' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 0, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 13, color: '#FAFAFA' }}>
-        <span style={{ width: 18, height: 18, borderRadius: '50%', background: 'rgba(255,255,255,0.06)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#737373', fontSize: 11, flexShrink: 0 }}>Q</span>
-        Best B2B data enrichment tool in 2025?
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: '#737373', textTransform: 'uppercase', letterSpacing: '0.12em', padding: '0 2px' }}>
-        <span style={{ color: '#FAFAFA', fontWeight: 500 }}>ChatGPT</span>
-        <span>·</span>
-        <span>Generating</span>
-        <span style={{ display: 'inline-flex', gap: 3, marginLeft: 2 }}>
-          {[0, 0.2, 0.4].map((d, i) => (
-            <span key={i} style={{ width: 4, height: 4, borderRadius: '50%', background: '#737373', display: 'inline-block', animation: `dot-bounce 1.4s ${d}s ease-in-out infinite` }} />
-          ))}
-        </span>
-      </div>
-      <p style={{ fontSize: 13, lineHeight: 1.6, color: '#737373', margin: 0, padding: '0 2px' }}>
-        For B2B data enrichment, top tools include{' '}
-        <span style={{ color: '#FAFAFA', fontWeight: 500, background: 'rgba(255,42,50,0.10)', padding: '0 5px', borderRadius: 0, border: '1px solid rgba(255,42,50,0.25)' }}>Clay</span>
-        <span style={{ color: '#ff2a32', fontSize: 10, fontFamily: "'JetBrains Mono', monospace", verticalAlign: 'super', padding: '0 4px', borderRadius: 0, background: 'rgba(255,42,50,0.14)', marginLeft: 2 }}>[1]</span>
-        {' '}and <span style={{ color: '#FAFAFA', fontWeight: 500 }}>Apollo.io</span>.{' '}
-        <span style={{ color: '#525252' }}>Your company is not mentioned.</span>
-      </p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 12, borderTop: '1px dashed rgba(255,255,255,0.08)' }}>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 4 }}>Sources</div>
-        {[['1', 'clay.com', false], ['2', 'g2.com/categories/data-enrichment', false], ['3', 'yourcompany.com', true]].map(([n, src, isYou]) => (
-          <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, color: isYou ? '#FAFAFA' : '#737373', fontFamily: "'JetBrains Mono', monospace", padding: '6px 8px', borderRadius: 0, background: isYou ? 'rgba(255,42,50,0.08)' : 'transparent', border: isYou ? '1px solid rgba(255,42,50,0.25)' : '1px solid transparent' }}>
-            <span style={{ color: isYou ? '#ff2a32' : '#525252', fontWeight: 500, width: 22, flexShrink: 0 }}>{n}</span>
-            <span>{src}</span>
-            {isYou && <span style={{ marginLeft: 'auto', fontSize: 9, color: '#ff2a32', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Not cited</span>}
-          </div>
-        ))}
-      </div>
+    <div style={{ width: '100%', background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 6, boxShadow: 'none' }}>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 4 }}>Sources</div>
+      {[['1', 'clay.com', false], ['2', 'g2.com/categories/data-enrichment', false], ['3', 'yourcompany.com', true]].map(([n, src, isYou]) => (
+        <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, color: isYou ? '#FAFAFA' : '#737373', fontFamily: "'JetBrains Mono', monospace", padding: '6px 8px', borderRadius: 0, background: isYou ? 'rgba(255,255,255,0.06)' : 'transparent', border: isYou ? '1px solid rgba(255,255,255,0.14)' : '1px solid transparent' }}>
+          <span style={{ color: isYou ? '#FAFAFA' : '#525252', fontWeight: 500, width: 22, flexShrink: 0 }}>{n}</span>
+          <span>{src}</span>
+          {isYou && <span style={{ marginLeft: 'auto', fontSize: 9, color: '#737373', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Not cited</span>}
+        </div>
+      ))}
     </div>
   )
 }
@@ -200,15 +166,12 @@ function VisGap() {
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#525252' }}>Before</span>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ fontSize: 11.5, color: '#FAFAFA', fontWeight: 500, display: 'flex', gap: 6, alignItems: 'flex-start' }}>
-            <span style={{ color: '#ff2a32', fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontSize: 15, lineHeight: 1, flexShrink: 0 }}>Q</span>
+            <span style={{ color: '#525252', fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontSize: 15, lineHeight: 1, flexShrink: 0 }}>Q</span>
             Best CRM for startups?
           </div>
-          <div style={{ fontSize: 11, color: '#737373', lineHeight: 1.5, paddingLeft: 18, borderLeft: '2px solid rgba(255,42,50,0.40)', marginLeft: 4 }}>
+          <div style={{ fontSize: 11, color: '#737373', lineHeight: 1.5, paddingLeft: 18, borderLeft: '2px solid rgba(255,255,255,0.12)', marginLeft: 4 }}>
             HubSpot, Salesforce, and Pipedrive are top choices for startups...
           </div>
-        </div>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#525252', padding: '6px 8px', borderRadius: 0, background: 'rgba(255,42,50,0.06)', border: '1px solid rgba(255,42,50,0.20)', marginTop: 'auto' }}>
-          <span style={{ color: '#ffb6b9' }}>you</span>: not mentioned
         </div>
       </div>
       <div style={{ background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 14, display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'none' }}>
@@ -222,9 +185,6 @@ function VisGap() {
             <strong style={{ color: '#FAFAFA' }}>YourCRM</strong>, HubSpot, and Pipedrive — YourCRM praised for fast setup and startup-friendly pricing.
           </div>
         </div>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7ad08a', padding: '6px 8px', borderRadius: 0, background: 'rgba(122,208,138,0.06)', border: '1px solid rgba(122,208,138,0.20)', marginTop: 'auto' }}>
-          <span style={{ color: '#7ad08a' }}>cited by name</span> · 5 engines
-        </div>
       </div>
     </div>
   )
@@ -232,11 +192,10 @@ function VisGap() {
 
 function VisContentPack() {
   const items = [
-    { icon: 'ES', name: 'Entity Sheet', sub: 'G2 · LinkedIn · Crunchbase' },
-    { icon: 'FS', name: 'Fact Sheet', sub: 'Website authority page' },
-    { icon: 'JL', name: 'JSON-LD Schema', sub: 'Schema.org markup' },
+    { icon: 'ES', name: 'Entity Profile', sub: 'G2 · LinkedIn · Crunchbase' },
+    { icon: 'FS', name: 'Brand Fact Sheet', sub: 'Website authority page' },
+    { icon: 'SD', name: 'Structured Data', sub: 'Schema.org markup' },
     { icon: 'FA', name: 'FAQ Block', sub: 'Answer optimization' },
-    { icon: 'OP', name: 'Outreach Pitches', sub: 'Comparison articles' },
   ]
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -290,7 +249,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
       onClick={() => scrollTo(id)}
       style={{
         position: 'relative', padding: '6px 0', background: 'none', border: 0,
-        borderBottom: activeSection === id ? '1.5px solid #FF3D00' : '1.5px solid transparent',
+        borderBottom: activeSection === id ? '1.5px solid rgba(255,255,255,0.50)' : '1.5px solid transparent',
         color: activeSection === id ? '#FAFAFA' : '#D4D4D4',
         fontFamily: "'Inter', system-ui, sans-serif", fontSize: 13.5,
         cursor: 'pointer', transition: 'color 0.2s',
@@ -301,11 +260,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
   return (
     <div style={{
       minHeight: '100vh',
-      background: `
-        radial-gradient(1200px 700px at 50% 12%, rgba(255,42,50,0.05) 0%, transparent 65%),
-        radial-gradient(1600px 900px at 50% 100%, rgba(255,42,50,0.03) 0%, transparent 60%),
-        linear-gradient(180deg, #0A0A0A 0%, #0F0F0F 60%, #0A0A0A 100%)
-      `,
+      background: `linear-gradient(180deg, #0A0A0A 0%, #0F0F0F 60%, #0A0A0A 100%)`,
       position: 'relative', overflowX: 'clip',
     }}>
 
@@ -348,11 +303,11 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           <div className="hero-rings" style={{ position: 'absolute', left: '50%', top: '54%', transform: 'translate(-50%, -50%)', width: 'min(820px, 86vw)', aspectRatio: '1', pointerEvents: 'none', zIndex: 1, opacity: 0.9, maskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)', WebkitMaskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)' }}>
             <div style={{ position: 'absolute', inset: 0, animation: 'spin-slow 120s linear infinite' }}>
               {[88, 72].map((pct, i) => (
-                <div key={i} style={{ position: 'absolute', borderRadius: '50%', border: `1px solid rgba(255,255,255,${i === 0 ? '0.05' : '0.08'})`, boxShadow: 'inset 0 0 30px rgba(255,42,50,0.04)', width: `${pct}%`, height: `${pct}%`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+                <div key={i} style={{ position: 'absolute', borderRadius: '50%', border: `1px solid rgba(255,255,255,${i === 0 ? '0.05' : '0.08'})`, boxShadow: 'none', width: `${pct}%`, height: `${pct}%`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
               ))}
             </div>
             {[55, 38].map((pct, i) => (
-              <div key={i} style={{ position: 'absolute', borderRadius: '50%', border: `1px solid rgba(255,255,255,${i === 0 ? '0.08' : '0.13'})`, boxShadow: 'inset 0 0 30px rgba(255,42,50,0.04)', width: `${pct}%`, height: `${pct}%`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+              <div key={i} style={{ position: 'absolute', borderRadius: '50%', border: `1px solid rgba(255,255,255,${i === 0 ? '0.08' : '0.13'})`, boxShadow: 'none', width: `${pct}%`, height: `${pct}%`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
             ))}
           </div>
 
@@ -426,10 +381,10 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
             Four steps, one scan. See exactly where you stand — then get the content to fix it.
           </p>
           <div className="bento-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
-            <BentoCard tag="Step 01" title="Scan your company" sub="We score how well AI engines understand who you are — across entity coverage, FAQ signals, and comparison visibility." visual={<VisScore />} />
-            <BentoCard tag="Step 02" title="See live AI answers" sub="We run real buyer queries on ChatGPT, Perplexity, Gemini, Claude and Google AI and capture exactly what they say." visual={<VisAIAnswer />} />
-            <BentoCard tag="Step 03" title="Uncover your gaps" sub="Find which queries you're missing from and exactly which competitors AI recommends instead of you." visual={<VisGap />} />
-            <BentoCard tag="Step 04" title="Get your content pack" sub="Five ready-to-deploy content pieces that teach AI engines to recommend you by name — implement them in order." visual={<VisContentPack />} />
+            <BentoCard tag="Step 01" title="Score your AI visibility" sub="We score how well AI engines understand who you are — across entity coverage, FAQ signals, and comparison visibility." visual={<VisScore />} minHeight={0} />
+            <BentoCard tag="Step 02" title="See which sources AI cites" sub="We run real buyer queries on ChatGPT, Perplexity, Gemini, Claude and Google AI and capture exactly what they say." visual={<VisAIAnswer />} minHeight={0} />
+            <BentoCard tag="Step 03" title="Find your gaps" sub="Find which queries you're missing from and exactly which competitors AI recommends instead of you." visual={<VisGap />} minHeight={0} />
+            <BentoCard tag="Step 04" title="Get your content pack" sub="Four ready-to-deploy content pieces that teach AI engines to recommend you by name — implement them in order." visual={<VisContentPack />} />
           </div>
         </div>
       </section>
@@ -509,7 +464,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
       {/* ── CTA ── */}
       <section id="cta">
         <div style={{ position: 'relative', maxWidth: 1180, margin: '0 auto', padding: '140px 36px 160px', textAlign: 'center', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 'min(900px, 90%)', aspectRatio: '1.6', background: 'radial-gradient(ellipse at center, rgba(255,42,50,0.18), transparent 60%)', filter: 'blur(20px)', pointerEvents: 'none', zIndex: 0 }} />
+          <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 'min(900px, 90%)', aspectRatio: '1.6', background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 60%)', filter: 'blur(20px)', pointerEvents: 'none', zIndex: 0 }} />
           <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 36, maxWidth: 820, margin: '0 auto' }}>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, textTransform: 'uppercase', letterSpacing: '0.18em', color: '#ff2a32', display: 'inline-flex', alignItems: 'center', gap: 10 }}>
               <span style={{ width: 24, height: 1, background: '#ff2a32', opacity: 0.6, flexShrink: 0 }} />
