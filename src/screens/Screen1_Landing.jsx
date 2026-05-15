@@ -152,10 +152,10 @@ function VisAIAnswer() {
     <div style={{ width: '100%', background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 6, boxShadow: 'none' }}>
       <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 4 }}>Sources</div>
       {[['1', 'clay.com', false], ['2', 'g2.com/categories/data-enrichment', false], ['3', 'yourcompany.com', true]].map(([n, src, isYou]) => (
-        <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, color: isYou ? '#FAFAFA' : '#737373', fontFamily: "'JetBrains Mono', monospace", padding: '6px 8px', borderRadius: 0, background: isYou ? 'rgba(255,255,255,0.06)' : 'transparent', border: isYou ? '1px solid rgba(255,255,255,0.14)' : '1px solid transparent' }}>
-          <span style={{ color: isYou ? '#FAFAFA' : '#525252', fontWeight: 500, width: 22, flexShrink: 0 }}>{n}</span>
+        <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, color: isYou ? '#FAFAFA' : '#737373', fontFamily: "'JetBrains Mono', monospace", padding: '6px 8px', borderRadius: 0, background: isYou ? 'rgba(122,208,138,0.08)' : 'transparent', border: isYou ? '1px solid rgba(122,208,138,0.25)' : '1px solid transparent' }}>
+          <span style={{ color: isYou ? '#7ad08a' : '#525252', fontWeight: 500, width: 22, flexShrink: 0 }}>{n}</span>
           <span>{src}</span>
-          {isYou && <span style={{ marginLeft: 'auto', fontSize: 9, color: '#737373', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Not cited</span>}
+          {isYou && <span style={{ marginLeft: 'auto', fontSize: 9, color: '#7ad08a', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Cited</span>}
         </div>
       ))}
     </div>
@@ -178,13 +178,13 @@ function VisGap() {
         </div>
       </div>
       <div style={{ background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 0, padding: 14, display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'none' }}>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#ff2a32' }}>After</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#7ad08a' }}>After</span>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ fontSize: 11.5, color: '#FAFAFA', fontWeight: 500, display: 'flex', gap: 6, alignItems: 'flex-start' }}>
-            <span style={{ color: '#ff2a32', fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontSize: 15, lineHeight: 1, flexShrink: 0 }}>Q</span>
+            <span style={{ color: '#7ad08a', fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontSize: 15, lineHeight: 1, flexShrink: 0 }}>Q</span>
             Best CRM for startups?
           </div>
-          <div style={{ fontSize: 11, color: '#D4D4D4', lineHeight: 1.5, paddingLeft: 18, borderLeft: '2px solid rgba(255,42,50,0.40)', marginLeft: 4 }}>
+          <div style={{ fontSize: 11, color: '#D4D4D4', lineHeight: 1.5, paddingLeft: 18, borderLeft: '2px solid rgba(122,208,138,0.40)', marginLeft: 4 }}>
             <strong style={{ color: '#FAFAFA' }}>YourCRM</strong>, HubSpot, and Pipedrive — YourCRM praised for fast setup and startup-friendly pricing.
           </div>
         </div>
@@ -216,6 +216,30 @@ function VisContentPack() {
   )
 }
 
+function HeroRoofs({ excludeRects = [], minX = 0 }) {
+  const tileW = 126, tileH = 80
+  const cols = Math.ceil(1400 / tileW) + 2
+  const rows = Math.ceil(900 / (tileH / 2)) + 2
+  const tiles = []
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = c * tileW + (r % 2 === 0 ? 0 : tileW / 2)
+      const y = r * (tileH / 2)
+      if (x + tileW <= minX) continue
+      const hash = ((r * 1664525 + c * 1013904223) >>> 0) / 0xffffffff
+      if (hash > 0.42) continue
+      const pad = 16
+      const blocked = excludeRects.some(er =>
+        er && x + tileW > er.x - pad && x < er.x + er.width + pad &&
+             y + tileH > er.y - pad && y < er.y + er.height + pad
+      )
+      if (blocked) continue
+      tiles.push(<img key={`${r}-${c}`} src="/Roof.svg" alt="" style={{ position: 'absolute', left: x, top: y, width: tileW, height: tileH, display: 'block' }} />)
+    }
+  }
+  return <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', zIndex: 1, opacity: 0.35, pointerEvents: 'none' }}>{tiles}</div>
+}
+
 // ── Main component ──
 
 export default function Screen1_Landing({ onSubmit, error, onLogout, session, onGoToLogin }) {
@@ -224,6 +248,28 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
   const [focused, setFocused] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
   const [scrolled, setScrolled] = useState(false)
+  const [excludeRect, setExcludeRect] = useState(null)
+  const sectionRef = React.useRef(null)
+  const textColRef = React.useRef(null)
+  const cityColRef = React.useRef(null)
+
+  useEffect(() => {
+    function measure() {
+      if (!sectionRef.current) return
+      const sr = sectionRef.current.getBoundingClientRect()
+      const rects = []
+      for (const ref of [textColRef]) {
+        if (ref.current) {
+          const cr = ref.current.getBoundingClientRect()
+          rects.push({ x: cr.left - sr.left, y: cr.top - sr.top, width: cr.width, height: cr.height })
+        }
+      }
+      setExcludeRect(rects)
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
 
   useEffect(() => {
     function onScroll() {
@@ -277,7 +323,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
         transition: 'background 0.2s, border-color 0.2s',
       }}>
         <button onClick={() => scrollTo('hero')} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', background: 'none', border: 0, padding: 0 }}>
-          <img src="/logo.svg" alt="Cited" className="nav-logo" style={{ height: 80, width: 'auto', display: 'block' }} />
+          <img src="/logo.svg" alt="Cited" className="nav-logo" style={{ height: 28, width: 'auto', display: 'block' }} />
         </button>
 
         <div className="nav-links" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 30 }}>
@@ -299,48 +345,31 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
       </nav>
 
       {/* ── Hero ── */}
-      <section id="hero">
-        <div className="hero-container" style={{ position: 'relative', maxWidth: 1100, margin: '0 auto', padding: '60px 36px 100px', minHeight: 'calc(100vh - 72px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+      <section id="hero" ref={sectionRef} style={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Background layer */}
+        <img src="/Background.svg" alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }} />
+        {/* Roof tile layer */}
+        <HeroRoofs excludeRects={excludeRect || []} minX={excludeRect && excludeRect[0] ? Math.round(excludeRect[0].x + excludeRect[0].width) : 0} />
+        <div className="hero-container" style={{ position: 'relative', zIndex: 3, maxWidth: 1180, margin: '0 auto', padding: '0 0 0 36px', minHeight: 'calc(100vh - 72px)', display: 'grid', gridTemplateColumns: '1fr 560px', gap: 72, alignItems: 'center' }}>
 
-          {/* Aperture rings */}
-          <div className="hero-rings" style={{ position: 'absolute', left: '50%', top: '54%', transform: 'translate(-50%, -50%)', width: 'min(820px, 86vw)', aspectRatio: '1', pointerEvents: 'none', zIndex: 1, opacity: 0.9, maskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)', WebkitMaskImage: 'radial-gradient(closest-side, #000 30%, transparent 78%)' }}>
-            <div style={{ position: 'absolute', inset: 0, animation: 'spin-slow 120s linear infinite' }}>
-              {[88, 72].map((pct, i) => (
-                <div key={i} style={{ position: 'absolute', borderRadius: '50%', border: `1px solid rgba(255,255,255,${i === 0 ? '0.05' : '0.08'})`, boxShadow: 'none', width: `${pct}%`, height: `${pct}%`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-              ))}
-            </div>
-            {[55, 38].map((pct, i) => (
-              <div key={i} style={{ position: 'absolute', borderRadius: '50%', border: `1px solid rgba(255,255,255,${i === 0 ? '0.08' : '0.13'})`, boxShadow: 'none', width: `${pct}%`, height: `${pct}%`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-            ))}
-          </div>
+          {/* ── Left: text ── */}
+          <div ref={textColRef} style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 36, textAlign: 'left' }}>
 
-          <div style={{ position: 'relative', zIndex: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 38, maxWidth: 880, margin: '0 auto', width: '100%' }}>
-
-
-            {/* Headline */}
-            <h1 style={{ fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontWeight: 700, fontSize: 'clamp(46px, 6.6vw, 96px)', lineHeight: 1.0, letterSpacing: '-0.04em', margin: 0, color: '#FAFAFA' }}>
-              Get &nbsp;
-              <em style={{ fontStyle: 'italic', color: '#ff2a32' }}>
-               recommended 
-              </em>
-              &nbsp;
-               by AI
+            <h1 style={{ fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif", fontWeight: 700, fontSize: 'clamp(34px, 4.2vw, 72px)', lineHeight: 1.05, letterSpacing: '-0.04em', margin: 0, color: '#FAFAFA' }}>
+              Get&nbsp;<em style={{ fontStyle: 'italic', color: '#ff2a32' }}>recommended</em><br />by AI
             </h1>
 
-            {/* Subhead */}
-            <p style={{ margin: 0, maxWidth: 640, fontSize: 18, lineHeight: 1.55, color: '#D4D4D4', fontWeight: 400 }}>
+            <p style={{ margin: 0, fontSize: 18, lineHeight: 1.55, color: '#D4D4D4', fontWeight: 400, maxWidth: 480 }}>
               See what AI says about your company right now — then get the exact content that makes AI agents{' '}
               <strong style={{ color: '#FAFAFA', fontWeight: 500 }}>recommend you by name</strong>.
             </p>
 
             {/* URL bar */}
-            <div className="url-bar-wrapper" style={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: 760, gap: 0 }}>
-              {/* Globe shown outside bar on mobile only */}
+            <div className="url-bar-wrapper" style={{ display: 'flex', alignItems: 'center', width: '100%', gap: 0 }}>
               <svg className="url-globe-external" style={{ display: 'none', flexShrink: 0, color: '#737373' }} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0 -18"/>
               </svg>
               <div className="url-bar" style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', height: 66, padding: '6px 6px 6px 24px', borderRadius: 0, background: 'rgba(255,255,255,0.03)', border: `1px solid ${focused ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.14)'}`, transition: 'border-color 0.15s' }}>
-                {/* Globe shown inside bar on desktop only */}
                 <svg className="url-globe-internal" style={{ flexShrink: 0, color: '#737373' }} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0 -18"/>
                 </svg>
@@ -352,7 +381,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
             </div>
 
             {error && (
-              <div style={{ padding: '0.85rem 1.5rem', background: 'rgba(255,42,50,0.07)', border: '1px solid rgba(255,42,50,0.25)', borderRadius: 0, fontSize: 13.5, color: '#ffb6b9', lineHeight: 1.55, fontFamily: "'JetBrains Mono', monospace", maxWidth: 760, width: '100%' }}>
+              <div style={{ padding: '0.85rem 1.5rem', background: 'rgba(255,42,50,0.07)', border: '1px solid rgba(255,42,50,0.25)', borderRadius: 0, fontSize: 13.5, color: '#ffb6b9', lineHeight: 1.55, fontFamily: "'JetBrains Mono', monospace" }}>
                 {error}
               </div>
             )}
@@ -368,6 +397,12 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
               ))}
             </div>
           </div>
+
+          {/* ── Right: main city image ── */}
+          <div ref={cityColRef} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingRight: 60, paddingTop: 40 }}>
+            <img src="/FixedBuilding.svg" alt="" style={{ width: '100%', maxWidth: 126, height: 'auto', display: 'block' }} />
+          </div>
+
         </div>
       </section>
 
@@ -455,9 +490,8 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
               onCta={() => {}}
             />
           </div>
-          <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em' }}>
+          <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, color: '#525252', textTransform: 'uppercase', letterSpacing: '0.14em' }}>
             <span>No long-term contract · Cancel anytime · Results in under 3 min</span>
-            <span>Questions? hello@visibly.so</span>
           </div>
         </div>
       </section>
@@ -502,7 +536,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
       {/* ── Footer ── */}
       <footer style={{ position: 'relative', zIndex: 5, maxWidth: 1440, margin: '0 auto', padding: '22px 36px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#525252', fontSize: 12, letterSpacing: '0.02em', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <img src="/logo.svg" alt="Cited" style={{ height: 80, width: 100, display: 'block', opacity: 0.5 }} />
+          <img src="/logo.svg" alt="Cited" style={{ height: 28, width: 'auto', display: 'block', opacity: 0.5 }} />
           <span>2026 Cited · All rights reserved</span>
         </div>
         <div className="footer-links" style={{ display: 'flex', gap: 22 }}>
@@ -522,6 +556,10 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           100% { box-shadow: 0 0 0 0 rgba(255,42,50,0); }
         }
         
+        @media (max-width: 1024px) {
+          .hero-container { grid-template-columns: 1fr 386px !important; gap: 48px !important; }
+        }
+
         @media (max-width: 768px) {
           nav { padding: 10px 16px !important; }
           .nav-links { display: none !important; }
@@ -529,8 +567,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           .nav-signin { padding: 5px 10px !important; font-size: 12px !important; }
           .nav-cta { padding: 5px 12px !important; font-size: 12px !important; }
 
-          .hero-container { padding: 36px 20px 60px !important; min-height: auto !important; }
-          .hero-rings { display: none !important; }
+          .hero-container { padding: 60px 20px !important; min-height: auto !important; grid-template-columns: 1fr !important; gap: 36px !important; }
 
           /* Globe outside bar on mobile */
           .url-bar-wrapper { gap: 10px !important; }

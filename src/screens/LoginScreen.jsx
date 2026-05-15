@@ -53,15 +53,7 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
 
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
-          <div style={{
-            fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif",
-            fontSize: 28,
-            color: '#FAFAFA',
-            letterSpacing: '-0.02em',
-            marginBottom: 6,
-          }}>
-            Cited
-          </div>
+          <img src="/logo.svg" alt="Cited" style={{ height: 28, width: 'auto', display: 'inline-block' }} />
         </div>
 
         {/* Success message from signup */}
