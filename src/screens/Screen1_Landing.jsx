@@ -45,13 +45,13 @@ function Divider() {
 
 function Eyebrow({ children }) {
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: 10,
+    <div className="eyebrow" style={{
+      display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'nowrap',
       fontFamily: "'Geist Mono', monospace", fontSize: 11.5,
       textTransform: 'uppercase', letterSpacing: '0.18em', color: '#ff2a32',
       marginBottom: 18,
     }}>
-      <div style={{ width: 24, height: 1, background: '#ff2a32', flexShrink: 0 }} />
+      <div className="eyebrow-bar" style={{ width: 24, minWidth: 24, maxWidth: 24, height: 1, background: '#ff2a32', flexShrink: 0 }} />
       {children}
     </div>
   )
@@ -61,6 +61,7 @@ function BentoCard({ tag, title, sub, visual }) {
   const [hovered, setHovered] = useState(false)
   return (
     <div
+      className="bento-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -74,11 +75,11 @@ function BentoCard({ tag, title, sub, visual }) {
     >
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(700px 320px at 50% 0%, rgba(255,42,50,0.10), transparent 60%)', opacity: 0.55 }} />
       <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', padding: '3px 10px', borderRadius: 999, fontSize: 10.5, fontFamily: "'Geist Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.12em', width: 'fit-content', background: 'rgba(244,239,230,0.05)', border: '1px solid rgba(244,239,230,0.16)', color: '#cdc6ba' }}>{tag}</div>
+        <div style={{ display: 'inline-flex', alignItems: 'center', padding: '3px 10px', borderRadius: 999, fontSize: 10.5, fontFamily: "'Geist Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.12em', alignSelf: 'flex-start', background: 'rgba(244,239,230,0.05)', border: '1px solid rgba(244,239,230,0.16)', color: '#cdc6ba' }}>{tag}</div>
         <h3 style={{ fontFamily: "'DM Serif Display', serif", fontWeight: 400, fontSize: 32, lineHeight: 1.05, letterSpacing: '-0.005em', margin: '4px 0 0', color: '#f4efe6' }}>{title}</h3>
         <p style={{ fontSize: 15, lineHeight: 1.55, color: '#8a8378', margin: 0, maxWidth: 480, fontWeight: 400 }}>{sub}</p>
       </div>
-      <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', alignItems: 'flex-end', margin: '0 -10px -10px', minHeight: 0 }}>
+      <div className="bento-card-visual" style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', alignItems: 'flex-end', margin: '0 -10px -10px', minHeight: 0 }}>
         {visual}
       </div>
     </div>
@@ -145,7 +146,7 @@ function VisScore() {
         <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 32, color: '#544e46', lineHeight: 1 }}>/10</span>
         <span style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#ff2a32', marginLeft: 8, padding: '4px 10px', borderRadius: 999, background: 'rgba(255,42,50,0.12)', border: '1px solid rgba(255,42,50,0.25)' }}>Critical</span>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, alignItems: 'start' }}>
         {[['2', 'AI Visibility', true], ['4', 'Entity Coverage', true], ['5', 'FAQ Signals', false], ['1', 'Comparisons', true]].map(([n, lbl, bad]) => (
           <div key={lbl} style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(244,239,230,0.08)', borderRadius: 10, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 2 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 3, fontFamily: "'DM Serif Display', serif", lineHeight: 1 }}>
@@ -372,7 +373,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
                recommended 
               </em>
               &nbsp;
-               by AI.{' '}
+               by AI
             </h1>
 
             {/* Subhead */}
@@ -419,7 +420,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '80px 36px 120px', position: 'relative' }}>
           <Eyebrow>How Cited works</Eyebrow>
           <h2 style={{ fontFamily: "'DM Serif Display', serif", fontWeight: 400, fontSize: 'clamp(40px, 5.6vw, 76px)', lineHeight: 1.04, letterSpacing: '-0.008em', margin: '0 0 22px', color: '#f4efe6', maxWidth: 840 }}>
-            From invisible to <em style={{ fontStyle: 'italic', color: '#ff2a32', textShadow: '0 0 18px rgba(255,42,50,0.25)' }}>recommended by AI</em>.
+            From invisible to <em style={{ fontStyle: 'italic', color: '#ff2a32', textShadow: '0 0 18px rgba(255,42,50,0.25)' }}>recommended by AI</em>
           </h2>
           <p style={{ fontSize: 18, lineHeight: 1.55, color: '#8a8378', maxWidth: 680, margin: '0 0 64px', fontWeight: 400 }}>
             Four steps, one scan. See exactly where you stand — then get the content to fix it.
@@ -568,10 +569,10 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           .nav-links { display: none !important; }
           .hero-container { padding: 60px 20px 80px !important; min-height: auto !important; }
           .hero-rings { display: none !important; }
-          .url-bar { 
-            flex-direction: column !important; 
-            height: auto !important; 
-            padding: 16px !important; 
+          .url-bar {
+            flex-direction: column !important;
+            height: auto !important;
+            padding: 16px !important;
             border-radius: 24px !important;
             gap: 12px !important;
           }
@@ -579,16 +580,23 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
           .url-bar select { width: 100% !important; max-width: none !important; text-align: center; border-top: 1px solid rgba(244,239,230,0.1); padding: 10px 0 !important; }
           .url-bar .divider { display: none !important; }
           .url-bar button { width: 100% !important; height: 50px !important; }
-          
-          #how div:first-child { padding: 80px 20px 60px !important; }
-          #pricing { padding: 80px 20px 60px !important; }
-          #cta div:first-child { padding: 80px 20px 100px !important; }
-          
+
+          #how > div { padding: 40px 20px 40px !important; }
+          #pricing > div { padding: 60px 20px 60px !important; }
+          #cta > div { padding: 80px 20px 100px !important; }
+
           .bento-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
           .pricing-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
-          
+
+          /* Bento cards: remove fixed min-height and cap visual section */
+          .bento-card { min-height: 0 !important; padding: 20px !important; gap: 16px !important; }
+          .bento-card-visual { max-height: 240px !important; overflow: hidden !important; align-items: flex-start !important; }
+
+          /* Eyebrow bar stays fixed-width */
+          .eyebrow-bar { width: 24px !important; min-width: 24px !important; max-width: 24px !important; }
+
           .engine-list { flex-wrap: wrap !important; justify-content: center !important; gap: 10px !important; }
-          
+
           footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; }
           footer .footer-links { justify-content: center !important; }
         }
