@@ -103,11 +103,17 @@ export default function Screen_Scan({
           const forceShow = () => {
             document.querySelectorAll('*').forEach(el => {
               const s = el.getAttribute('style') || '';
-              const isHidden = s.includes('opacity: 0') || s.includes('visibility: hidden') || window.getComputedStyle(el).opacity === '0';
+              const comp = window.getComputedStyle(el);
+              const isHidden = s.includes('opacity: 0') || s.includes('visibility: hidden') || comp.opacity === '0';
               if (isHidden) {
-                // Exclude common navigation/overlay elements that should remain hidden until interacted with
-                const isOverlay = el.closest('[id*="menu"], [class*="menu"], [id*="sidebar"], [class*="sidebar"], [id*="popup"], [class*="modal"], [id*="drawer"]');
+                // Exclude common navigation/overlay elements
+                const isOverlay = el.closest('[id*="menu"], [class*="menu"], [id*="sidebar"], [class*="sidebar"], [id*="popup"], [class*="modal"], [id*="drawer"], [class*="overlay"], [id*="overlay"], nav, header');
                 if (isOverlay) return;
+
+                // Smart heuristic: If it's hidden AND absolutely/fixed positioned, it's likely a modal/dropdown. Leave it hidden.
+                if (comp.position === 'fixed' || comp.position === 'absolute') {
+                  return;
+                }
 
                 if (el.innerText.trim().length > 0 || el.tagName === 'IMG' || el.tagName === 'SVG' || el.querySelector('img, svg')) {
                   el.style.setProperty('opacity', '1', 'important');
