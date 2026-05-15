@@ -42,21 +42,21 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#0a0907',
+      background: '#0A0A0A',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '24px 16px',
-      fontFamily: "'Geist', sans-serif",
+      fontFamily: "'Inter', system-ui, sans-serif",
     }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
 
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <div style={{
-            fontFamily: "'DM Serif Display', serif",
+            fontFamily: "'Inter Tight', 'Inter', system-ui, sans-serif",
             fontSize: 28,
-            color: '#f4efe6',
+            color: '#FAFAFA',
             letterSpacing: '-0.02em',
             marginBottom: 6,
           }}>
@@ -69,10 +69,10 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
           <div style={{
             background: 'rgba(34,197,94,0.08)',
             border: '1px solid rgba(34,197,94,0.2)',
-            borderRadius: 10,
+            borderRadius: 0,
             padding: '12px 16px',
             marginBottom: 20,
-            fontFamily: "'Geist Mono', monospace",
+            fontFamily: "'JetBrains Mono', monospace",
             fontSize: 12,
             color: '#4ade80',
             lineHeight: 1.5,
@@ -86,10 +86,10 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
           <div style={{
             background: 'rgba(34,197,94,0.08)',
             border: '1px solid rgba(34,197,94,0.2)',
-            borderRadius: 10,
+            borderRadius: 0,
             padding: '12px 16px',
             marginBottom: 20,
-            fontFamily: "'Geist Mono', monospace",
+            fontFamily: "'JetBrains Mono', monospace",
             fontSize: 12,
             color: '#4ade80',
             lineHeight: 1.5,
@@ -102,15 +102,15 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
         <div style={{
           background: 'rgba(244,239,230,0.03)',
           border: '1px solid rgba(244,239,230,0.08)',
-          borderRadius: 16,
+          borderRadius: 0,
           padding: '32px 28px',
         }}>
           <div style={{
-            fontFamily: "'Geist Mono', monospace",
+            fontFamily: "'JetBrains Mono', monospace",
             fontSize: 11,
             textTransform: 'uppercase',
             letterSpacing: '0.16em',
-            color: '#544e46',
+            color: '#525252',
             marginBottom: 24,
           }}>
             Sign in
@@ -121,7 +121,7 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
             <div style={{ marginBottom: 16 }}>
               <label style={{
                 display: 'block',
-                fontFamily: "'Geist Mono', monospace",
+                fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 11,
                 color: '#6b6359',
                 textTransform: 'uppercase',
@@ -141,10 +141,10 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
                   boxSizing: 'border-box',
                   background: 'rgba(244,239,230,0.04)',
                   border: '1px solid rgba(244,239,230,0.1)',
-                  borderRadius: 10,
+                  borderRadius: 0,
                   padding: '11px 14px',
-                  color: '#f4efe6',
-                  fontFamily: "'Geist', sans-serif",
+                  color: '#FAFAFA',
+                  fontFamily: "'Inter', system-ui, sans-serif",
                   fontSize: 14,
                   outline: 'none',
                 }}
@@ -155,7 +155,7 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
             <div style={{ marginBottom: 8 }}>
               <label style={{
                 display: 'block',
-                fontFamily: "'Geist Mono', monospace",
+                fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 11,
                 color: '#6b6359',
                 textTransform: 'uppercase',
@@ -175,10 +175,10 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
                   boxSizing: 'border-box',
                   background: 'rgba(244,239,230,0.04)',
                   border: '1px solid rgba(244,239,230,0.1)',
-                  borderRadius: 10,
+                  borderRadius: 0,
                   padding: '11px 14px',
-                  color: '#f4efe6',
-                  fontFamily: "'Geist', sans-serif",
+                  color: '#FAFAFA',
+                  fontFamily: "'Inter', system-ui, sans-serif",
                   fontSize: 14,
                   outline: 'none',
                 }}
@@ -193,8 +193,8 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#544e46',
-                  fontFamily: "'Geist Mono', monospace",
+                  color: '#525252',
+                  fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 11,
                   cursor: 'pointer',
                   padding: 0,
@@ -213,8 +213,8 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
                 padding: '10px 14px',
                 background: 'rgba(255,42,50,0.08)',
                 border: '1px solid rgba(255,42,50,0.2)',
-                borderRadius: 8,
-                fontFamily: "'Geist Mono', monospace",
+                borderRadius: 0,
+                fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 12,
                 color: '#ff6b70',
                 lineHeight: 1.5,
@@ -232,9 +232,9 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
                 padding: '12px',
                 background: '#ff2a32',
                 border: 'none',
-                borderRadius: 10,
+                borderRadius: 0,
                 color: '#fff',
-                fontFamily: "'Geist Mono', monospace",
+                fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 13,
                 fontWeight: 600,
                 letterSpacing: '0.06em',
@@ -252,9 +252,9 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
         <div style={{
           textAlign: 'center',
           marginTop: 20,
-          fontFamily: "'Geist', sans-serif",
+          fontFamily: "'Inter', system-ui, sans-serif",
           fontSize: 13,
-          color: '#544e46',
+          color: '#525252',
         }}>
           Don't have an account?{' '}
           <button
@@ -262,9 +262,9 @@ export default function LoginScreen({ onSuccess, onGoToSignup, message }) {
             style={{
               background: 'none',
               border: 'none',
-              color: '#cdc6ba',
+              color: '#D4D4D4',
               cursor: 'pointer',
-              fontFamily: "'Geist', sans-serif",
+              fontFamily: "'Inter', system-ui, sans-serif",
               fontSize: 13,
               padding: 0,
               textDecoration: 'underline',
