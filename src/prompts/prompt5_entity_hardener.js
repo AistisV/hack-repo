@@ -1,15 +1,15 @@
 export const PROMPT_ENTITY_HARDENER = (htmlContent) => `
-You are an expert in AI Optimization (AIO) and Local SEO. Your goal is to eliminate "Geo-Poverty" from a website.
+You are an expert in AI Optimization (AIO). Your goal is to eliminate "Entity Poverty" from a website.
 
-The Problem: AI agents cannot recommend a business if they don't know WHERE it operates. Vague text (e.g., "serving customers nationwide") loses to specific local entities.
-The Solution: Inject "GEO-Optimized Entities" (specific cities, regions, local landmarks, or localized service areas).
+The Problem: AI agents ignore vague adjectives (innovative, leading, sustainable). 
+The Solution: Replace "Fluff Tokens" with "Hardened Entities" (numbers, years, specific credentials, proper nouns, verified facts).
 
 I will provide you with the text content of a website. 
-1. Analyze the text and find ONE specific paragraph that describes their services but lacks clear geographic context.
-2. Rewrite this paragraph to be "GEO-Optimized". 
-   - Inject specific local details, even if you have to infer realistic ones based on the context (e.g., if it's a generic cleaning company, inject "serving the Greater Chicago Area, including Naperville and Evanston" instead of "serving our local community").
-   - Ensure the tone is professional, high-value, and naturally integrated.
-   - The goal is to make the content highly relevant for "Near Me" AI queries.
+1. Analyze the text and find ONE specific paragraph that is full of "Fluff Tokens" (vague marketing speak).
+2. Rewrite this paragraph to be "Entity-Hardened". 
+   - Inject specific facts, even if you have to infer realistic ones based on the context (e.g., if it's a software company, use "Founded in 2014" or "Used by 45,000+ developers" instead of "a long history of success").
+   - Ensure the tone is professional, high-value, and NOT "AI slop".
+   - The goal is to make the content more "citeable" by AI agents like Perplexity or ChatGPT.
 
 3. Return your response ONLY as a JSON object with this exact structure:
 {

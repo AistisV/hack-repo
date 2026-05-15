@@ -143,22 +143,29 @@ export default function Screen_Scan({
           const aioData = JSON.parse(aioResponse)
 
           if (aioData.original_paragraph && aioData.replacement_html) {
-            // Find the element containing this exact text
-            const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null, false)
-            let node
-            while (node = walker.nextNode()) {
-              if (node.textContent.includes(aioData.original_paragraph.trim())) {
-                const parent = node.parentElement
-                if (parent) {
-                  // Replace the node with our new HTML
-                  const wrapper = doc.createElement('div')
-                  wrapper.innerHTML = aioData.replacement_html
-                  parent.replaceChild(wrapper.firstChild, node)
-                  break // only one replacement
+            const normalize = str => str.replace(/\s+/g, ' ').trim()
+            const targetText = normalize(aioData.original_paragraph)
+            
+            let bestMatch = null
+            doc.body.querySelectorAll('*').forEach(el => {
+              // Skip script/style tags
+              if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return
+              
+              const text = normalize(el.textContent || '')
+              if (text.includes(targetText) && targetText.length > 10) {
+                if (!bestMatch || (el.textContent.length < bestMatch.textContent.length)) {
+                  bestMatch = el
                 }
               }
+            })
+
+            if (bestMatch) {
+              bestMatch.innerHTML = aioData.replacement_html
+            } else {
+              console.warn("AIO: Could not find target paragraph in DOM.")
             }
           }
+
         } catch (aioErr) {
           console.warn("AIO Entity Hardener failed:", aioErr)
           // Silent fail, just show the normal site
