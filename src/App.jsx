@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import Screen1_Landing from './screens/Screen1_Landing'
 import Screen_Scan from './screens/Screen_Scan'
 import LoginScreen from './screens/LoginScreen'
@@ -186,39 +187,53 @@ export default function App() {
 
   if (screen === 'signup') {
     return (
-      <SignupScreen
-        onSuccess={(msg) => { setAuthMessage(msg); setScreen('login') }}
-        onGoToLogin={() => setScreen('login')}
-      />
+      <>
+        <SignupScreen
+          onSuccess={(msg) => { setAuthMessage(msg); setScreen('login') }}
+          onGoToLogin={() => setScreen('login')}
+        />
+        <Analytics />
+      </>
     )
   }
 
   if (screen === 'login') {
     return (
-      <LoginScreen
-        message={authMessage}
-        onSuccess={() => { setAuthMessage(null); setScreen('landing') }}
-        onGoToSignup={() => setScreen('signup')}
-      />
+      <>
+        <LoginScreen
+          message={authMessage}
+          onSuccess={() => { setAuthMessage(null); setScreen('landing') }}
+          onGoToSignup={() => setScreen('signup')}
+        />
+        <Analytics />
+      </>
     )
   }
 
   if (screen === 'landing') {
-    return <Screen1_Landing onSubmit={runScan} error={error} onLogout={handleLogout} session={session} onGoToLogin={() => setScreen('login')} />
+    return (
+      <>
+        <Screen1_Landing onSubmit={runScan} error={error} onLogout={handleLogout} session={session} onGoToLogin={() => setScreen('login')} />
+        <Analytics />
+      </>
+    )
   }
 
   if (screen === 'scan') {
     return (
-      <Screen_Scan
-        url={targetUrl}
-        companyName={companyName}
-        reportData={reportData}
-        contentPack={contentPack}
-        loadingStep={loadingStep}
-        session={session}
-        onBack={resetToLanding}
-        onGoToSignup={() => setScreen('signup')}
-      />
+      <>
+        <Screen_Scan
+          url={targetUrl}
+          companyName={companyName}
+          reportData={reportData}
+          contentPack={contentPack}
+          loadingStep={loadingStep}
+          session={session}
+          onBack={resetToLanding}
+          onGoToSignup={() => setScreen('signup')}
+        />
+        <Analytics />
+      </>
     )
   }
 
