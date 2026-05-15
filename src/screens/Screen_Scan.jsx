@@ -100,14 +100,27 @@ export default function Screen_Scan({
           const forceShow = () => {
             document.querySelectorAll('*').forEach(el => {
               const s = el.getAttribute('style') || '';
-              if (s.includes('opacity: 0') || s.includes('visibility: hidden')) {
-                if (el.innerText.trim().length > 0 || el.tagName === 'IMG' || el.tagName === 'SVG') {
-                  el.style.opacity = '1'; el.style.visibility = 'visible'; el.style.transform = 'none';
+              const isHidden = s.includes('opacity: 0') || s.includes('visibility: hidden') || window.getComputedStyle(el).opacity === '0';
+              if (isHidden) {
+                // Exclude common navigation/overlay elements that should remain hidden until interacted with
+                const isOverlay = el.closest('[id*="menu"], [class*="menu"], [id*="sidebar"], [class*="sidebar"], [id*="popup"], [class*="modal"], [id*="drawer"]');
+                if (isOverlay) return;
+
+                if (el.innerText.trim().length > 0 || el.tagName === 'IMG' || el.tagName === 'SVG' || el.querySelector('img, svg')) {
+                  el.style.setProperty('opacity', '1', 'important');
+                  el.style.setProperty('visibility', 'visible', 'important');
+                  el.style.setProperty('transform', 'none', 'important');
                 }
               }
             });
           };
-          window.addEventListener('load', () => { setTimeout(forceShow, 500); setTimeout(forceShow, 2000); });
+          window.addEventListener('load', () => { 
+            setTimeout(forceShow, 500); 
+            setTimeout(forceShow, 1500); 
+            setTimeout(forceShow, 3000); 
+          });
+          // Also run on scroll to catch lazy-loaded animations
+          window.addEventListener('scroll', forceShow);
         `
         doc.head.insertBefore(antiBust, doc.head.firstChild)
 
