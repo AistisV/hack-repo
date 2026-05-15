@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { PROMPT_ENTITY_HARDENER } from '../prompts/prompt5_entity_hardener'
-import { callClaude }      from '../api/claude'
-import { supabase }        from '../lib/supabase'
+import { callClaude } from '../api/claude'
+import { supabase } from '../lib/supabase'
 import { Analytics } from '@vercel/analytics/react'
 
 async function saveLead(email, scanned_url) {
@@ -46,8 +46,8 @@ const PACK_FILES = [
 
 const STRENGTH_CONFIG = {
   strong: { color: '#4ade80', bg: 'rgba(74,222,128,0.10)', border: 'rgba(74,222,128,0.2)', label: 'AI mentions you' },
-  weak:   { color: '#c8a96e', bg: 'rgba(200,169,110,0.10)', border: 'rgba(200,169,110,0.2)', label: 'Mentioned briefly' },
-  none:   { color: '#ff6b70', bg: 'rgba(255,42,50,0.10)',   border: 'rgba(255,42,50,0.2)',   label: 'Not mentioned' },
+  weak: { color: '#c8a96e', bg: 'rgba(200,169,110,0.10)', border: 'rgba(200,169,110,0.2)', label: 'Mentioned briefly' },
+  none: { color: '#ff6b70', bg: 'rgba(255,42,50,0.10)', border: 'rgba(255,42,50,0.2)', label: 'Not mentioned' },
 }
 
 export default function Screen_Scan({
@@ -55,13 +55,13 @@ export default function Screen_Scan({
   loadingStep, session, onBack, onGoToSignup,
 }) {
   const [iframeLoading, setIframeLoading] = useState(true)
-  const [iframeError, setIframeError]     = useState(null)
-  const [modifiedHtml, setModifiedHtml]   = useState('')
-  const [openFile, setOpenFile]           = useState(null)
+  const [iframeError, setIframeError] = useState(null)
+  const [modifiedHtml, setModifiedHtml] = useState('')
+  const [openFile, setOpenFile] = useState(null)
 
-  const [leadEmail, setLeadEmail]         = useState('')
-  const [leadLoading, setLeadLoading]     = useState(false)
-  const [leadError, setLeadError]         = useState(null)
+  const [leadEmail, setLeadEmail] = useState('')
+  const [leadLoading, setLeadLoading] = useState(false)
+  const [leadError, setLeadError] = useState(null)
   const [emailSubmitted, setEmailSubmitted] = useState(false)
 
   useEffect(() => {
@@ -164,7 +164,12 @@ export default function Screen_Scan({
 
         // ── AIO Entity Hardener ──
         try {
-          const bodyText = doc.body.innerText || ""
+          const tempDiv = doc.createElement('div')
+          tempDiv.innerHTML = doc.body.innerHTML
+          tempDiv.querySelectorAll('script, style, noscript, iframe, svg').forEach(el => el.remove())
+          const bodyText = tempDiv.textContent.replace(/\s+/g, ' ').trim()
+          
+          console.log("AIO: Extracted text length:", bodyText.length)
           const textSample = bodyText.slice(0, 15000) // limit context
           const aioResponse = await callClaude(PROMPT_ENTITY_HARDENER(textSample))
           const aioData = JSON.parse(aioResponse)
@@ -172,6 +177,7 @@ export default function Screen_Scan({
           if (aioData.original_paragraph && aioData.replacement_html) {
             const normalize = str => str.replace(/\s+/g, ' ').trim()
             const targetText = normalize(aioData.original_paragraph)
+            console.log("AIO: Target text to find:", targetText.substring(0, 100) + '...')
             
             let bestMatch = null
             doc.body.querySelectorAll('*').forEach(el => {
@@ -187,11 +193,14 @@ export default function Screen_Scan({
             })
 
             if (bestMatch) {
+              console.log("AIO: Found best match in tag:", bestMatch.tagName)
               bestMatch.innerHTML = aioData.replacement_html
               bestMatch.id = 'aio-optimized-element'
             } else {
               console.warn("AIO: Could not find target paragraph in DOM.")
             }
+          } else {
+            console.warn("AIO: AI returned malformed JSON or missing fields", aioData)
           }
 
         } catch (aioErr) {
@@ -209,12 +218,12 @@ export default function Screen_Scan({
     if (url) fetchAndModify()
   }, [url])
 
-  const isComplete   = !!contentPack
-  const isUnlocked   = emailSubmitted || !!session
-  const gaps         = reportData?.gaps
-  const liveAnswers  = reportData?.liveAnswers || []
-  const score        = gaps?.combined_score ?? gaps?.overall_recommendation_score ?? null
-  const scoreColor   = score === null ? '#a09890' : score <= 3 ? '#ff2a32' : score <= 6 ? '#c8a96e' : '#4ade80'
+  const isComplete = !!contentPack
+  const isUnlocked = emailSubmitted || !!session
+  const gaps = reportData?.gaps
+  const liveAnswers = reportData?.liveAnswers || []
+  const score = gaps?.combined_score ?? gaps?.overall_recommendation_score ?? null
+  const scoreColor = score === null ? '#a09890' : score <= 3 ? '#ff2a32' : score <= 6 ? '#c8a96e' : '#4ade80'
 
   const slug = (companyName || 'company').replace(/\s+/g, '-').toLowerCase()
 
@@ -342,7 +351,7 @@ export default function Screen_Scan({
               {/* Steps list */}
               <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12, padding: '18px 20px', background: 'linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005))', border: '1px solid rgba(244,239,230,0.09)', borderRadius: 16 }}>
                 {LOADING_STEPS.map((step, i) => {
-                  const isDone   = i < loadingStep
+                  const isDone = i < loadingStep
                   const isActive = i === loadingStep
                   return (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, opacity: isDone ? 0.55 : 1, transition: 'opacity 0.3s' }}>
@@ -378,7 +387,7 @@ export default function Screen_Scan({
               {/* Component Bars */}
               <section>
                 <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>Technical Breakdown</div>
-                
+
                 {[
                   { label: 'Fact Density', val: gaps?.entity_signals_score },
                   { label: 'Trust Verification', val: gaps?.authority_score },
@@ -436,7 +445,7 @@ export default function Screen_Scan({
               {/* CEO-Friendly Signal & Download Matrix */}
               <section>
                 <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 8 }}>The Architecture Gap</div>
-                
+
                 <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 8, overflow: 'hidden' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#a09890', textAlign: 'left' }}>
                     <thead>
@@ -448,39 +457,39 @@ export default function Screen_Scan({
                     </thead>
                     <tbody>
                       {[
-                        { 
-                          title: 'AI Discovery Passport', 
-                          filename: 'llms.txt', 
-                          status: '🔴 Missing', 
+                        {
+                          title: 'AI Discovery Passport',
+                          filename: 'llms.txt',
+                          status: '🔴 Missing',
                           impact: 'AI agents literally cannot "see" your site.',
                           downloadKey: 'llms_txt', ext: '.txt',
                           highlight: true
                         },
-                        { 
-                          title: 'Robot-Readable Logic', 
-                          filename: 'schema.json', 
-                          status: '🔴 Broken', 
+                        {
+                          title: 'Robot-Readable Logic',
+                          filename: 'schema.json',
+                          status: '🔴 Broken',
                           impact: "AI has to guess what you sell—and it's guessing wrong.",
                           downloadKey: 'schema_json', ext: '.json'
                         },
-                        { 
-                          title: 'Official Fact Verification', 
-                          filename: 'system_prompt.txt', 
-                          status: '🔴 Low', 
+                        {
+                          title: 'Official Fact Verification',
+                          filename: 'system_prompt.txt',
+                          status: '🔴 Low',
                           impact: 'AI treats your claims as "unverified marketing".',
                           downloadKey: 'system_prompt', ext: '.txt'
                         },
-                        { 
-                          title: 'Search Visibility', 
-                          filename: 'Google Index', 
-                          status: '🟢 Detected', 
+                        {
+                          title: 'Search Visibility',
+                          filename: 'Google Index',
+                          status: '🟢 Detected',
                           impact: 'You exist on Google, but you are invisible to AI Search.',
                           downloadKey: null
                         }
                       ].map((row, idx) => (
-                        <tr key={idx} style={{ 
-                          borderBottom: idx === 3 ? 'none' : '1px solid rgba(244,239,230,0.05)', 
-                          background: row.highlight ? 'rgba(255,42,50,0.04)' : 'transparent' 
+                        <tr key={idx} style={{
+                          borderBottom: idx === 3 ? 'none' : '1px solid rgba(244,239,230,0.05)',
+                          background: row.highlight ? 'rgba(255,42,50,0.04)' : 'transparent'
                         }}>
                           <td style={{ padding: '8px 10px', verticalAlign: 'middle' }}>
                             <div style={{ color: '#cdc6ba', fontSize: 10.5, fontWeight: 500 }}>{row.title}</div>
@@ -490,16 +499,16 @@ export default function Screen_Scan({
                           </td>
                           <td style={{ padding: '10px', verticalAlign: 'top', textAlign: 'right' }}>
                             {row.downloadKey ? (
-                              <button 
+                              <button
                                 onClick={() => handleDownload(row.downloadKey, row.ext)}
-                                style={{ 
-                                  padding: '5px 10px', 
-                                  borderRadius: 6, 
-                                  background: row.highlight ? '#ff2a32' : 'rgba(244,239,230,0.08)', 
-                                  border: row.highlight ? 'none' : '1px solid rgba(244,239,230,0.12)', 
-                                  color: row.highlight ? '#fff' : '#cdc6ba', 
-                                  fontSize: 10, 
-                                  fontFamily: "'Geist Mono', monospace", 
+                                style={{
+                                  padding: '5px 10px',
+                                  borderRadius: 6,
+                                  background: row.highlight ? '#ff2a32' : 'rgba(244,239,230,0.08)',
+                                  border: row.highlight ? 'none' : '1px solid rgba(244,239,230,0.12)',
+                                  color: row.highlight ? '#fff' : '#cdc6ba',
+                                  fontSize: 10,
+                                  fontFamily: "'Geist Mono', monospace",
                                   cursor: 'pointer',
                                   whiteSpace: 'nowrap',
                                   fontWeight: row.highlight ? 600 : 400
@@ -519,14 +528,14 @@ export default function Screen_Scan({
               </section>
               <button
                 onClick={() => window.open('https://nando.ai/contact', '_blank')}
-                style={{ 
-                  marginTop: 10, width: '100%', height: 42, borderRadius: 10, 
+                style={{
+                  marginTop: 10, width: '100%', height: 42, borderRadius: 10,
                   background: '#f4efe6', color: '#0a0907', border: 'none',
                   fontSize: 12, fontWeight: 600, cursor: 'pointer',
                   boxShadow: '0 4px 12px rgba(244,239,230,0.1)'
                 }}
               >
-                Contact Specialist →
+                Contact Us →
               </button>
             </div>
           )}
@@ -534,7 +543,8 @@ export default function Screen_Scan({
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
         @keyframes pulse-ring {
