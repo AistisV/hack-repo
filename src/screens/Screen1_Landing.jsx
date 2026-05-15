@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { CheckCircle2, ArrowRight } from 'lucide-react'
 
 const MARKETS = [
   { value: '', label: 'Global (default)' },
@@ -111,7 +112,9 @@ function PriceCard({ tier, price, period, pitch, items, cta, onCta, featured }) 
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
         {items.map(({ check, label }, i) => (
           <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 11, fontSize: 13.5, lineHeight: 1.45, color: check ? '#D4D4D4' : '#525252' }}>
-            <span style={{ flexShrink: 0, width: 16, height: 16, borderRadius: '50%', background: check ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)', color: check ? '#D4D4D4' : '#525252', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, marginTop: 2 }}>{check ? '✓' : '—'}</span>
+            <span style={{ flexShrink: 0, width: 16, height: 16, borderRadius: '50%', background: check ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)', color: check ? '#D4D4D4' : '#525252', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginTop: 2 }}>
+              {check ? <CheckCircle2 size={10} /> : <span style={{ fontSize: 9 }}>—</span>}
+            </span>
             {label}
           </li>
         ))}
@@ -206,7 +209,7 @@ function VisContentPack() {
             <span style={{ fontSize: 13, color: '#FAFAFA', fontWeight: 500, display: 'block' }}>{name}</span>
             <span style={{ fontSize: 10, color: '#525252', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.10em', marginTop: 2, display: 'block' }}>{sub}</span>
           </span>
-          <span style={{ color: '#7ad08a', fontSize: 14, flexShrink: 0 }}>✓</span>
+          <CheckCircle2 size={14} color="#7ad08a" style={{ flexShrink: 0 }} />
         </div>
       ))}
     </div>
@@ -343,7 +346,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
                 </svg>
                 <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSubmit()} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} placeholder="your website URL" style={{ flex: 1, background: 'transparent', border: 0, outline: 'none', color: '#FAFAFA', fontSize: 16, padding: '0 14px', fontFamily: "'JetBrains Mono', monospace" }} />
                 <button onClick={handleSubmit} style={{ flexShrink: 0, height: 50, padding: '0 22px', borderRadius: 0, background: 'transparent', color: '#FAFAFA', fontWeight: 600, fontSize: 12, letterSpacing: '0.10em', textTransform: 'uppercase', fontFamily: "'JetBrains Mono', monospace", display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.25)', cursor: 'pointer', transition: 'border-color 0.15s, color 0.15s' }}>
-                  <span>Scan</span><span>→</span>
+                  <span>Scan</span><ArrowRight size={14} />
                 </button>
               </div>
             </div>
@@ -479,7 +482,7 @@ export default function Screen1_Landing({ onSubmit, error, onLogout, session, on
             </p>
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <button onClick={() => scrollTo('hero')} style={{ height: 52, padding: '0 28px', borderRadius: 0, background: '#ff2a32', color: '#0A0A0A', fontSize: 12, fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase', fontFamily: "'JetBrains Mono', monospace", border: 0, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, transition: 'opacity 0.15s' }}>
-                <span>Run free scan</span><span>→</span>
+                <span>Run free scan</span><ArrowRight size={14} />
               </button>
               <button onClick={() => scrollTo('pricing')} style={{ height: 52, padding: '0 22px', borderRadius: 0, background: 'transparent', color: '#FAFAFA', fontSize: 12, fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', fontFamily: "'JetBrains Mono', monospace", border: '1px solid rgba(255,255,255,0.20)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, transition: 'border-color 0.15s' }}>
                 See pricing

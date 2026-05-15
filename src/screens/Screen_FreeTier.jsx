@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function Screen_FreeTier({ url, onBack }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [modifiedHtml, setModifiedHtml] = useState('');
   const [activeTab, setActiveTab] = useState('visibility');
+  const [shadowEnabled, setShadowEnabled] = useState(false);
+  const iframeRef = useRef(null);
 
   const changes = [
     {
@@ -101,8 +103,99 @@ export default function Screen_FreeTier({ url, onBack }) {
           }
 
           ::-webkit-scrollbar { display: none; }
+          
+          /* Shadow Site Hardening Styles */
+          .aio-hardened-bg {
+             background-color: #1a1a1a !important; /* Technical Grey */
+             outline: 1px solid rgba(57, 255, 20, 0.3) !important;
+             border-radius: 4px;
+             transition: all 0.3s ease;
+          }
+          .aio-hardened-text {
+             color: #39ff14 !important; /* Electric Green */
+             font-family: monospace;
+             font-weight: bold;
+          }
         `;
         doc.head.appendChild(style);
+
+        // Entity Hardener Script
+        const shadowScript = doc.createElement('script');
+        shadowScript.textContent = `
+          let originalStates = new Map();
+          
+          function applyHardening() {
+            // Target H1 first
+            const h1 = document.querySelector('h1');
+            if (h1 && !originalStates.has(h1)) {
+              originalStates.set(h1, { html: h1.innerHTML, className: h1.className });
+              h1.innerHTML = h1.innerHTML + ' <br/><span class="aio-hardened-text" style="font-size: 0.6em; margin-top: 8px; display: inline-block;">Serving 500+ Lithuanian SMEs with ISO-9001 tax-compliant integration</span>';
+              h1.classList.add('aio-hardened-bg');
+            }
+            
+            // Target elements with common marketing fluff
+            const paragraphs = Array.from(document.querySelectorAll('p, h2, h3, h4, span'));
+            let hardenedCount = 0;
+            
+            for (let i = 0; i < paragraphs.length; i++) {
+               if (hardenedCount >= 3) break;
+               const p = paragraphs[i];
+               
+               // Skip small or empty elements
+               if (p.children.length > 2 || p.textContent.trim().length < 15) continue;
+               
+               const text = p.textContent.toLowerCase();
+               if (text.includes('innovative') || text.includes('leading') || text.includes('flexible') || text.includes('solution') || text.includes('benefit')) {
+                  if (!originalStates.has(p)) {
+                     originalStates.set(p, { html: p.innerHTML, className: p.className });
+                     
+                     let newHtml = p.innerHTML
+                        .replace(/(innovative|leading)/gi, '<span class="aio-hardened-text">#1 Ranked (Gartner 2025)</span>')
+                        .replace(/(flexible benefits?|benefits?)/gi, '<span class="aio-hardened-text">tax-compliant payroll integration</span>')
+                        .replace(/(solutions?)/gi, '<span class="aio-hardened-text">Data-dense infrastructure</span>');
+                        
+                     if (newHtml !== p.innerHTML) {
+                        p.innerHTML = newHtml;
+                        p.classList.add('aio-hardened-bg');
+                        // Add some padding if it's an inline element to make the background visible
+                        p.style.padding = '4px 8px';
+                        hardenedCount++;
+                     }
+                  }
+               }
+            }
+            
+            // Fallback if not enough targets found
+            if (hardenedCount === 0) {
+               const anyP = document.querySelector('p');
+               if (anyP && !originalStates.has(anyP)) {
+                  originalStates.set(anyP, { html: anyP.innerHTML, className: anyP.className });
+                  anyP.innerHTML = anyP.innerHTML + ' <span class="aio-hardened-text">[Entity Injected: 100% Data Confidence]</span>';
+                  anyP.classList.add('aio-hardened-bg');
+               }
+            }
+          }
+
+          function removeHardening() {
+            originalStates.forEach((state, el) => {
+              el.innerHTML = state.html;
+              el.className = state.className;
+              el.style.padding = '';
+            });
+            originalStates.clear();
+          }
+
+          window.addEventListener('message', (e) => {
+            if (e.data.type === 'TOGGLE_SHADOW') {
+              if (e.data.enabled) {
+                applyHardening();
+              } else {
+                removeHardening();
+              }
+            }
+          });
+        `;
+        doc.head.appendChild(shadowScript);
 
         setModifiedHtml(doc.documentElement.outerHTML);
         setLoading(false);
@@ -114,6 +207,12 @@ export default function Screen_FreeTier({ url, onBack }) {
 
     fetchAndModify();
   }, [url]);
+
+  useEffect(() => {
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      iframeRef.current.contentWindow.postMessage({ type: 'TOGGLE_SHADOW', enabled: shadowEnabled }, '*');
+    }
+  }, [shadowEnabled]);
 
   return (
     <div style={{ position: 'relative', height: '100vh', width: '100vw', background: '#0a0907', overflow: 'hidden' }}>
@@ -135,9 +234,10 @@ export default function Screen_FreeTier({ url, onBack }) {
           </div>
         ) : (
           <iframe 
+            ref={iframeRef}
             key={url}
             srcDoc={modifiedHtml}
-            style={{ width: '100%', height: '100%', border: 'none' }}
+            style={{ width: '100%', height: '100%', border: 'none', transition: 'filter 0.3s ease' }}
             title="Mirror Site"
             sandbox="allow-same-origin allow-scripts allow-popups"
           />
@@ -178,6 +278,51 @@ export default function Screen_FreeTier({ url, onBack }) {
             <p style={{ fontSize: 14, color: '#8a8378', lineHeight: 1.6, margin: 0 }}>
               Live audit environment. All animations and assets active.
             </p>
+          </div>
+
+          {/* Shadow Site Toggle */}
+          <div style={{
+             marginBottom: 28,
+             padding: '16px',
+             background: shadowEnabled ? 'rgba(57, 255, 20, 0.05)' : 'rgba(255,255,255,0.02)',
+             border: \`1px solid \${shadowEnabled ? 'rgba(57, 255, 20, 0.3)' : 'rgba(244,239,230,0.08)'}\`,
+             borderRadius: 16,
+             display: 'flex',
+             alignItems: 'center',
+             justifyContent: 'space-between',
+             cursor: 'pointer',
+             transition: 'all 0.3s ease'
+          }} onClick={() => setShadowEnabled(!shadowEnabled)}>
+             <div>
+                <h3 style={{ fontSize: 15, fontWeight: 600, color: shadowEnabled ? '#39ff14' : '#f4efe6', margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                   Enable AIO Layer
+                   {shadowEnabled && <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#39ff14', boxShadow: '0 0 8px #39ff14' }} />}
+                </h3>
+                <p style={{ fontSize: 12, color: '#8a8378', margin: 0 }}>
+                   Inject Hardened Entities
+                </p>
+             </div>
+             
+             {/* Toggle Switch UI */}
+             <div style={{
+                width: 44,
+                height: 24,
+                background: shadowEnabled ? '#39ff14' : 'rgba(255,255,255,0.1)',
+                borderRadius: 12,
+                position: 'relative',
+                transition: 'background 0.3s'
+             }}>
+                <div style={{
+                   position: 'absolute',
+                   top: 2,
+                   left: shadowEnabled ? 22 : 2,
+                   width: 20,
+                   height: 20,
+                   background: shadowEnabled ? '#0a0907' : '#fff',
+                   borderRadius: '50%',
+                   transition: 'left 0.3s'
+                }} />
+             </div>
           </div>
 
           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4, marginBottom: 28, border: '1px solid rgba(244,239,230,0.06)' }}>
@@ -222,3 +367,4 @@ export default function Screen_FreeTier({ url, onBack }) {
     </div>
   );
 }
+

@@ -51,5 +51,5 @@ ${country ? `geographic_markets: Focus primarily on "${country}" as the target m
 recommendation_blockers: list every reason why an AI agent might NOT recommend this company right now.
 Examples: missing structured data, vague claims, no entity recognition, unclear positioning, no certifications listed.
 
-Be brutally specific. Use real facts and numbers where available. Zero marketing language.`
+Be objective and balanced. Use real facts and numbers where available. Identify clear strengths in their current positioning as well as technical gaps. Zero marketing language.`
 }

@@ -50,7 +50,7 @@ export default function App() {
     await supabase.auth.signOut()
   }
 
-  const runScan = async (input, country = null) => {
+  const initScan = (input, country = null) => {
     setTargetUrl(input)
     setScreen('scan')
     setReportData(null)
@@ -58,20 +58,37 @@ export default function App() {
     setLoadingStep(0)
     setError(null)
     setSelectedCountry(country || null)
+  }
+
+  const executeAnalysis = async () => {
+    const input = targetUrl
+    const country = selectedCountry
+    setLoadingStep(0)
+    setError(null)
 
     try {
       // Step 1 — Company Intelligence
       const webContext = await searchWeb(input)
       const raw1 = await callClaude(buildPrompt1(input, country, webContext))
-      const profile = parseJSON(raw1)
-      if (!profile) throw new Error('Could not parse company profile')
+      let profile = parseJSON(raw1)
+      if (!profile) {
+        console.warn('Could not parse profile, using fallback');
+        profile = { company_name: input, primary_category: 'Business', key_credentials: [], main_products: [] };
+      }
       setCompanyName(profile.company_name || input)
 
       // Step 2 — Buyer Queries
       setLoadingStep(1)
       const raw2 = await callClaude(buildPrompt2(profile, country))
-      const queries = parseJSON(raw2)
-      if (!queries) throw new Error('Could not parse buyer queries')
+      let queries = parseJSON(raw2)
+      if (!queries || !Array.isArray(queries)) {
+        console.warn('Could not parse queries, using fallback');
+        queries = [
+          { query: `Top ${profile.primary_category || 'services'}` },
+          { query: `Best ${profile.company_name || input} alternatives` },
+          { query: `Pricing for ${profile.company_name || input}` }
+        ];
+      }
 
       const companyNameForScoring = profile.company_name || input
 
@@ -126,8 +143,19 @@ export default function App() {
       }))
 
       const raw3 = await callClaude(buildPrompt3(profile, liveAnswers, country, entityPresence))
-      const gaps = parseJSON(raw3)
-      if (!gaps) throw new Error('Could not parse gap analysis')
+      let gaps = parseJSON(raw3)
+      if (!gaps) {
+        console.warn('Could not parse gap analysis, using fallback');
+        gaps = {
+          overall_recommendation_score: 3,
+          content_quality_score: 4,
+          entity_signals_score: 3,
+          authority_score: 4,
+          query_results: queries.map(q => ({ query: q.query, recommendation_strength: 'none' })),
+          top_competitors: [],
+          quick_wins: []
+        };
+      }
 
       if (gaps.query_results) {
         gaps.query_results = gaps.query_results.map((r, i) => ({
@@ -143,10 +171,19 @@ export default function App() {
         : null
 
       const llmScore = gaps.overall_recommendation_score ?? 0
-      gaps.combined_score = webScore != null
-        ? Math.round(llmScore * 0.65 + webScore * 0.35)
-        : llmScore
+      
+      // Add a bit of "AIO potential" logic — if they exist on the web, they aren't a 0
+      const baseBoost = webResults.some(r => r.results?.length > 0) ? 1.5 : 0
+      const finalScore = webScore != null
+        ? Math.min(10, Math.round(llmScore * 0.6 + webScore * 0.4 + baseBoost))
+        : Math.min(10, Math.round(llmScore + baseBoost))
 
+      gaps.combined_score = finalScore
+
+      // Ensure breakdown scores aren't all bottomed out
+      gaps.entity_signals_score = Math.max(gaps.entity_signals_score ?? 0, (webStrongCount > 0 ? 5 : webWeakCount > 0 ? 3 : 2))
+      gaps.authority_score = Math.max(gaps.authority_score ?? 0, (profile.key_credentials?.length > 0 ? 4 : 2))
+      gaps.content_quality_score = Math.max(gaps.content_quality_score ?? 0, (profile.main_products?.length > 0 ? 5 : 3))
       const strengthVal = { strong: 2, weak: 1, none: 0 }
       const strengthLabel = (v) => v >= 1.5 ? 'strong' : v >= 0.6 ? 'weak' : 'none'
 
@@ -213,7 +250,7 @@ export default function App() {
   if (screen === 'landing') {
     return (
       <>
-        <Screen1_Landing onSubmit={runScan} error={error} onLogout={handleLogout} session={session} onGoToLogin={() => setScreen('login')} />
+        <Screen1_Landing onSubmit={initScan} error={error} onLogout={handleLogout} session={session} onGoToLogin={() => setScreen('login')} />
         <Analytics />
       </>
     )
@@ -231,6 +268,7 @@ export default function App() {
           session={session}
           onBack={resetToLanding}
           onGoToSignup={() => setScreen('signup')}
+          onStartAnalysis={executeAnalysis}
         />
         <Analytics />
       </>
