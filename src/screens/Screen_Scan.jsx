@@ -327,44 +327,36 @@ export default function Screen_Scan({
 
           {/* ── RESULTS VIEW (once complete) ── */}
           {isUnlocked && isComplete && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
               {/* AI Score */}
               <section>
-                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>AI Visibility Score</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 60, lineHeight: 1, color: scoreColor }}>{score ?? '—'}</span>
-                  <span style={{ fontSize: 18, color: '#7a7268' }}>/10</span>
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 6 }}>AI Visibility Score</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                  <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 54, lineHeight: 1, color: scoreColor }}>{score ?? '—'}</span>
+                  <span style={{ fontSize: 16, color: '#7a7268' }}>/10</span>
                 </div>
-                {gaps?.score_explanation && <p style={{ fontSize: 12, color: '#a09890', lineHeight: 1.55, margin: '0 0 12px' }}>{gaps.score_explanation}</p>}
               </section>
 
               <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
 
               {/* Component Bars */}
               <section>
-                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 14 }}>Technical Breakdown</div>
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 10 }}>Technical Breakdown</div>
                 
                 {[
-                  { label: 'Fact Density', val: gaps?.entity_signals_score, desc: (gaps?.entity_signals_score <= 4) ? 'Low (Site relies on qualitative adjectives)' : 'Moderate' },
-                  { label: 'Trust Verification', val: gaps?.authority_score, desc: (gaps?.authority_score <= 4) ? 'Incomplete (Missing Wikidata/Authority links)' : 'Unverified' },
-                  { label: 'Crawlability (AIO)', val: gaps?.content_quality_score, desc: (gaps?.content_quality_score <= 4) ? 'Critical (No llms.txt detected)' : 'Suboptimal' }
-                ].map(({ label, val, desc }) => {
-                  const normalized = val ?? 2 // default to low for demo
-                  const maxBars = 10
+                  { label: 'Fact Density', val: gaps?.entity_signals_score },
+                  { label: 'Trust Verification', val: gaps?.authority_score },
+                  { label: 'Crawlability (AIO)', val: gaps?.content_quality_score }
+                ].map(({ label, val }) => {
+                  const normalized = val ?? 2
                   const filled = Math.round(normalized)
-                  const empty = maxBars - filled
-                  const barStr = '▓'.repeat(filled) + '░'.repeat(empty)
-                  let color = '#a09890'
-                  if (filled <= 3) color = '#ff6b70'
-                  else if (filled <= 6) color = '#c8a96e'
-                  else color = '#4ade80'
+                  const barStr = '▓'.repeat(filled) + '░'.repeat(10 - filled)
+                  let color = filled <= 3 ? '#ff6b70' : filled <= 6 ? '#c8a96e' : '#4ade80'
                   return (
-                    <div key={label} style={{ marginBottom: 12 }}>
-                      <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10.5, color: '#cdc6ba', marginBottom: 4 }}>{label}</div>
-                      <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, color, letterSpacing: '0.1em' }}>
-                        [{barStr}] <span style={{ color: '#a09890', fontSize: 10, letterSpacing: 'normal', marginLeft: 4 }}>{desc}</span>
-                      </div>
+                    <div key={label} style={{ marginBottom: 8 }}>
+                      <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#cdc6ba', marginBottom: 2 }}>{label}</div>
+                      <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, color, letterSpacing: '0.1em' }}>[{barStr}]</div>
                     </div>
                   )
                 })}
@@ -375,8 +367,7 @@ export default function Screen_Scan({
               {/* Revenue Loss Table */}
               {liveAnswers.length > 0 && (
                 <section>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 6 }}>Invisible Loss</div>
-                  <div style={{ fontSize: 11, color: '#7a7268', marginBottom: 12, lineHeight: 1.4 }}>AI is currently recommending competitors for these high-intent searches.</div>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 8 }}>Invisible Loss</div>
                   <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 8, padding: '8px', overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#a09890' }}>
                       <thead>
@@ -409,8 +400,7 @@ export default function Screen_Scan({
 
               {/* CEO-Friendly Signal & Download Matrix */}
               <section>
-                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 6 }}>The Architecture Gap</div>
-                <div style={{ fontSize: 11, color: '#7a7268', marginBottom: 12, lineHeight: 1.4 }}>Stop treating AI like Google. Inject these hardened entities directly into your architecture.</div>
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 8 }}>The Architecture Gap</div>
                 
                 <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 8, overflow: 'hidden' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#a09890', textAlign: 'left' }}>
@@ -457,9 +447,8 @@ export default function Screen_Scan({
                           borderBottom: idx === 3 ? 'none' : '1px solid rgba(244,239,230,0.05)', 
                           background: row.highlight ? 'rgba(255,42,50,0.04)' : 'transparent' 
                         }}>
-                          <td style={{ padding: '10px', verticalAlign: 'top' }}>
-                            <div style={{ color: '#cdc6ba', fontSize: 11, fontWeight: 500, marginBottom: 2 }}>{row.title}</div>
-                            <div style={{ lineHeight: 1.35 }}>{row.impact}</div>
+                          <td style={{ padding: '8px 10px', verticalAlign: 'middle' }}>
+                            <div style={{ color: '#cdc6ba', fontSize: 10.5, fontWeight: 500 }}>{row.title}</div>
                           </td>
                           <td style={{ padding: '10px', verticalAlign: 'top', whiteSpace: 'nowrap', color: row.status.includes('🟢') ? '#4ade80' : '#ffb6b9' }}>
                             {row.status}
@@ -493,6 +482,17 @@ export default function Screen_Scan({
                   </table>
                 </div>
               </section>
+              <button
+                onClick={() => window.open('https://nando.ai/contact', '_blank')}
+                style={{ 
+                  marginTop: 10, width: '100%', height: 42, borderRadius: 10, 
+                  background: '#f4efe6', color: '#0a0907', border: 'none',
+                  fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(244,239,230,0.1)'
+                }}
+              >
+                Contact Specialist →
+              </button>
             </div>
           )}
 
