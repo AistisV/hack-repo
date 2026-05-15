@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { PROMPT_ANALYZER } from '../prompts/prompt1_analyzer'
-import { PROMPT_QUERIES }  from '../prompts/prompt2_queries'
-import { PROMPT_GAPS }     from '../prompts/prompt3_gaps'
-import { PROMPT_CONTENT }  from '../prompts/prompt4_content'
 import { PROMPT_ENTITY_HARDENER } from '../prompts/prompt5_entity_hardener'
 import { callClaude }      from '../api/claude'
 import { supabase }        from '../lib/supabase'
