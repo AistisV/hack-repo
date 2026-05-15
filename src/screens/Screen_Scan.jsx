@@ -124,6 +124,16 @@ export default function Screen_Scan({
           });
           // Also run on scroll to catch lazy-loaded animations
           window.addEventListener('scroll', forceShow);
+
+          // Auto-scroll to AIO optimized element
+          window.addEventListener('load', () => {
+            setTimeout(() => {
+              const aioEl = document.getElementById('aio-optimized-element');
+              if (aioEl) {
+                aioEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }, 800);
+          });
         `
         doc.head.insertBefore(antiBust, doc.head.firstChild)
 
@@ -132,6 +142,17 @@ export default function Screen_Scan({
           #site-root, #SITE_CONTAINER, .site-root { opacity: 1 !important; visibility: visible !important; display: block !important; }
           #WIX_ADS, .wix-ads, #SITE_LOADER, [id*="preloader"] { display: none !important; }
           ::-webkit-scrollbar { display: none; }
+          
+          #aio-optimized-element {
+            animation: aio-pulse 2s infinite !important;
+            border-radius: 8px !important;
+            display: block !important;
+          }
+          @keyframes aio-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 42, 50, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 42, 50, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 42, 50, 0); }
+          }
         `
         doc.head.appendChild(style)
 
@@ -161,6 +182,7 @@ export default function Screen_Scan({
 
             if (bestMatch) {
               bestMatch.innerHTML = aioData.replacement_html
+              bestMatch.id = 'aio-optimized-element'
             } else {
               console.warn("AIO: Could not find target paragraph in DOM.")
             }
