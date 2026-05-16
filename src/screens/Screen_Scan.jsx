@@ -817,17 +817,17 @@ export default function Screen_Scan({
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
               {/* Top Row: Score + Leakage */}
-              <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#7a7268', marginBottom: 4 }}>AI Score</div>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'stretch' }}>
+                <div style={{ flex: 1, padding: '16px 12px', background: 'linear-gradient(180deg, rgba(244,239,230,0.05), rgba(244,239,230,0.02))', borderRadius: 16, border: '1px solid rgba(244,239,230,0.1)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#7a7268', marginBottom: 6 }}>AI Score</div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                    <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 44, lineHeight: 1, color: scoreColor }}>{score ?? '—'}</span>
+                    <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 42, lineHeight: 1, color: scoreColor }}>{score ?? '—'}</span>
                     <span style={{ fontSize: 14, color: '#544e46' }}>/10</span>
                   </div>
                 </div>
                 
-                <div style={{ flex: 1.5, padding: '12px 16px', background: 'rgba(244,239,230,0.03)', borderRadius: 12, border: '1px solid rgba(244,239,230,0.08)' }}>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#a09890', marginBottom: 4 }}>Estimated Revenue Loss</div>
+                <div style={{ flex: 1.8, padding: '16px 18px', background: 'linear-gradient(180deg, rgba(244,239,230,0.05), rgba(244,239,230,0.02))', borderRadius: 16, border: '1px solid rgba(244,239,230,0.1)' }}>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#a09890', marginBottom: 6 }}>Revenue Leakage</div>
                   {(() => {
                     const results = gaps?.query_results || []
                     const missed = results.filter(r => r.recommendation_strength === 'none').length
@@ -842,20 +842,21 @@ export default function Screen_Scan({
                     const totalLoss = missed * LEAD_VAL * reductionFactor
 
                     return (
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
                           <motion.span 
                             key={totalLoss}
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            style={{ fontFamily: "'DM Serif Display', serif", fontSize: 32, color: shadowEnabled ? '#4ade80' : '#f4efe6', transition: 'color 0.4s' }}
+                            initial={{ opacity: 0, x: -5 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            style={{ fontFamily: "'DM Serif Display', serif", fontSize: 38, color: shadowEnabled ? '#4ade80' : '#f4efe6', transition: 'color 0.4s' }}
                           >
                             ${(totalLoss / 1000).toFixed(1)}k
                           </motion.span>
                           <span style={{ fontSize: 12, color: '#544e46', fontFamily: "'Geist Mono', monospace" }}>/mo</span>
                         </div>
-                        <div style={{ fontSize: 9, color: '#544e46', fontFamily: "'Geist Mono', monospace", marginTop: 2, letterSpacing: '0.05em' }}>
-                          {missed} MISSES × ${LEAD_VAL.toLocaleString()} {shadowEnabled ? `× ${Math.round(reductionFactor * 100)}%` : ''}
+                        <div style={{ height: 24, width: 1, background: 'rgba(244,239,230,0.12)' }} />
+                        <div style={{ fontSize: 10, color: '#544e46', fontFamily: "'Geist Mono', monospace", lineHeight: 1.4, letterSpacing: '0.02em' }}>
+                          {missed} EXCLUSIONS<br/>FROM SEARCH
                         </div>
                       </div>
                     )
@@ -863,18 +864,23 @@ export default function Screen_Scan({
                 </div>
               </div>
 
-              {/* Market Influence Bar (Segmented) */}
-              <section>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#7a7268' }}>Market Influence</div>
+              {/* ── AI HEALTH VITALS (Consolidated) ── */}
+              <div style={{ padding: '20px', background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(244,239,230,0.06)', borderRadius: 18 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: "'Geist Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#7a7268' }}>
+                    <Activity size={14} color="#7a7268" />
+                    AI Discovery Health
+                  </div>
                   {(() => {
                     const results = gaps?.query_results || []
                     const strong = results.filter(r => r.recommendation_strength === 'strong').length
                     const total = results.length || 1
-                    return <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#4ade80' }}>{Math.round((strong/total)*100)}% Capture</div>
+                    return <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, color: '#4ade80', fontWeight: 600 }}>{Math.round((strong/total)*100)}% Coverage</div>
                   })()}
                 </div>
-                <div style={{ height: 10, width: '100%', background: 'rgba(255,255,255,0.02)', borderRadius: 5, overflow: 'hidden', display: 'flex', gap: 2 }}>
+                
+                {/* Visual Bar */}
+                <div style={{ height: 8, width: '100%', background: 'rgba(255,255,255,0.03)', borderRadius: 4, overflow: 'hidden', display: 'flex', gap: 2, marginBottom: 20 }}>
                   {(() => {
                     const results = gaps?.query_results || []
                     const total = results.length || 1
@@ -883,207 +889,183 @@ export default function Screen_Scan({
                     const missed = 100 - strong - weak
                     return (
                       <>
-                        <motion.div initial={{ width: 0 }} animate={{ width: `${strong}%` }} transition={{ duration: 1 }} style={{ height: '100%', background: '#4ade80' }} />
+                        <motion.div initial={{ width: 0 }} animate={{ width: `${strong}%` }} transition={{ duration: 1 }} style={{ height: '100%', background: '#4ade80', boxShadow: '0 0 10px rgba(74,222,128,0.3)' }} />
                         <motion.div initial={{ width: 0 }} animate={{ width: `${weak}%` }} transition={{ duration: 1, delay: 0.2 }} style={{ height: '100%', background: '#c8a96e' }} />
-                        <motion.div initial={{ width: 0 }} animate={{ width: `${missed}%` }} transition={{ duration: 1, delay: 0.4 }} style={{ height: '100%', background: 'rgba(255,42,50,0.2)' }} />
+                        <motion.div initial={{ width: 0 }} animate={{ width: `${missed}%` }} transition={{ duration: 1, delay: 0.4 }} style={{ height: '100%', background: 'rgba(255,42,50,0.25)' }} />
                       </>
                     )
                   })()}
                 </div>
-                <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80' }} />
-                    <span style={{ fontSize: 8, fontFamily: "'Geist Mono', monospace", color: '#a09890', textTransform: 'uppercase' }}>Dominant</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#c8a96e' }} />
-                    <span style={{ fontSize: 8, fontFamily: "'Geist Mono', monospace", color: '#a09890', textTransform: 'uppercase' }}>Signal</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,42,50,0.4)' }} />
-                    <span style={{ fontSize: 8, fontFamily: "'Geist Mono', monospace", color: '#a09890', textTransform: 'uppercase' }}>Missing</span>
-                  </div>
-                </div>
-              </section>
 
-              {/* Technical Health Matrix */}
-              <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-                {[
-                  { label: 'Fact Density', val: gaps?.entity_signals_score, defaultVal: 4.2 },
-                  { label: 'Authority', val: gaps?.authority_score, defaultVal: 3.8 },
-                  { label: 'Crawlability', val: gaps?.content_quality_score, defaultVal: 5.1 }
-                ].map(({ label, val, defaultVal }) => {
-                  const normalized = val ?? defaultVal
-                  let color = normalized <= 3.5 ? '#ff6b70' : normalized <= 6.5 ? '#c8a96e' : '#4ade80'
-                  return (
-                    <div key={label} style={{ background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 10, padding: '10px 8px', textAlign: 'center' }}>
-                      <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 8, color: '#544e46', textTransform: 'uppercase', marginBottom: 6 }}>{label}</div>
-                      <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 18, color }}>{normalized.toFixed(1)}</div>
-                      <div style={{ height: 2, width: '60%', background: 'rgba(255,255,255,0.05)', margin: '6px auto 0', borderRadius: 1, overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${normalized*10}%`, background: color }} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+                  {[
+                    { label: 'Density', val: gaps?.entity_signals_score, defaultVal: 4.2 },
+                    { label: 'Trust', val: gaps?.authority_score, defaultVal: 3.8 },
+                    { label: 'Logic', val: gaps?.content_quality_score, defaultVal: 5.1 }
+                  ].map(({ label, val, defaultVal }) => {
+                    const normalized = val ?? defaultVal
+                    let color = normalized <= 3.5 ? '#ff6b70' : normalized <= 6.5 ? '#c8a96e' : '#4ade80'
+                    return (
+                      <div key={label} style={{ textAlign: 'center' }}>
+                        <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#544e46', textTransform: 'uppercase', marginBottom: 6, letterSpacing: '0.05em' }}>{label}</div>
+                        <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color, lineHeight: 1 }}>{normalized.toFixed(1)}</div>
                       </div>
-                    </div>
-                  )
-                })}
-              </section>
+                    )
+                  })}
+                </div>
+              </div>
 
-              <div style={{ height: 1, background: 'rgba(244,239,230,0.07)', flexShrink: 0 }} />
-
-
-              {/* Revenue Loss Table */}
+              {/* ── INVISIBLE LOSS (Queries) ── */}
               {liveAnswers.length > 0 && (
                 <section>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 8 }}>Invisible Loss</div>
-                  <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 8, padding: '8px', overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#a09890' }}>
-                      <thead>
-                        <tr style={{ borderBottom: '1px solid rgba(244,239,230,0.1)' }}>
-                          <th style={{ textAlign: 'left', padding: '6px 4px', fontWeight: 'normal', color: '#cdc6ba' }}>Search Intent</th>
-                          <th style={{ textAlign: 'left', padding: '6px 4px', fontWeight: 'normal', color: '#cdc6ba' }}>AI Response</th>
-                          <th style={{ textAlign: 'left', padding: '6px 4px', fontWeight: 'normal', color: '#cdc6ba' }}>Winning Entity</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {liveAnswers.slice(0, 4).map((item, i) => {
-                          const strength = gaps?.query_results?.[i]?.recommendation_strength || 'none'
-                          const isFail = strength === 'none' || strength === 'weak'
-                          const statusStr = isFail ? 'Failure' : 'Uncertain'
-                          const rawComp = gaps?.top_competitors?.[i] || 'N/A'
-                          const compName = typeof rawComp === 'object' ? rawComp.name : rawComp
-                          return (
-                            <tr key={i} style={{ borderBottom: i === 3 ? 'none' : '1px solid rgba(244,239,230,0.05)' }}>
-                              <td style={{ padding: '8px 4px', color: '#cdc6ba', maxWidth: 160, lineHeight: 1.3 }}>"{item.query}"</td>
-                              <td style={{ padding: '8px 4px', color: isFail ? '#ff6b70' : '#c8a96e' }}>{statusStr}</td>
-                              <td style={{ padding: '8px 4px' }}>{compName}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: "'Geist Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 14 }}>
+                    <Search size={14} color="#a09890" />
+                    Invisible Loss
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {liveAnswers.slice(0, 3).map((item, i) => {
+                      const strength = gaps?.query_results?.[i]?.recommendation_strength || 'none'
+                      const isFail = strength === 'none' || strength === 'weak'
+                      const rawComp = gaps?.top_competitors?.[i] || 'N/A'
+                      const compName = typeof rawComp === 'object' ? rawComp.name : rawComp
+                      
+                      return (
+                        <div key={i} style={{ 
+                          background: isFail ? 'linear-gradient(90deg, rgba(255,42,50,0.03), transparent)' : 'rgba(255,255,255,0.015)', 
+                          border: `1px solid ${isFail ? 'rgba(255,42,50,0.12)' : 'rgba(244,239,230,0.06)'}`, 
+                          borderRadius: 12, 
+                          padding: '12px 14px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 14,
+                          transition: 'all 0.3s'
+                        }}>
+                          <div style={{ 
+                            width: 8, height: 8, borderRadius: '50%', 
+                            background: isFail ? '#ff6b70' : '#4ade80',
+                            boxShadow: isFail ? '0 0 10px rgba(255,107,112,0.4)' : '0 0 10px rgba(74,222,128,0.2)'
+                          }} />
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: 12, color: '#f4efe6', lineHeight: 1.4, fontStyle: 'italic', fontWeight: 400 }}>"{item.query}"</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
+                              <span style={{ fontSize: 11, fontFamily: "'Geist Mono', monospace", color: '#7a7268', textTransform: 'uppercase', letterSpacing: '0.02em' }}>Winner:</span>
+                              <span style={{ fontSize: 11, fontWeight: 600, color: isFail ? '#ffb6b9' : '#cdc6ba' }}>{compName}</span>
+                            </div>
+                          </div>
+                          {isFail && (
+                            <div style={{ fontSize: 10, fontFamily: "'Geist Mono', monospace", color: '#ff6b70', background: 'rgba(255,42,50,0.15)', padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.02em' }}>
+                              Excluded
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
                   </div>
                 </section>
               )}
 
-              {/* CEO-Friendly Signal & Download Matrix */}
+              {/* ── PRIORITY FIXES (Combined Gap & Action) ── */}
               <section>
-                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9.5, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 8 }}>The Architecture Gap</div>
+                <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#a09890', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <ShieldCheck size={14} color="#a09890" />
+                  Action Plan
+                  <div style={{ flex: 1, height: 1, background: 'rgba(244,239,230,0.08)' }} />
+                </div>
 
-                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(244,239,230,0.05)', borderRadius: 8, overflow: 'hidden' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Geist Mono', monospace", fontSize: 10, color: '#a09890', textAlign: 'left' }}>
-                    <thead>
-                      <tr style={{ borderBottom: '1px solid rgba(244,239,230,0.1)', background: 'rgba(255,255,255,0.01)' }}>
-                        <th style={{ padding: '8px 10px', fontWeight: 'normal', color: '#cdc6ba' }}>Business Impact</th>
-                        <th style={{ padding: '8px 10px', fontWeight: 'normal', color: '#cdc6ba' }}>Status</th>
-                        <th style={{ padding: '8px 10px', fontWeight: 'normal', color: '#cdc6ba', textAlign: 'right' }}>The Fix</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[
-                        {
-                          title: 'AI Discovery Passport',
-                          filename: 'llms.txt',
-                          status: '🔴 Missing',
-                          impact: 'AI agents literally cannot "see" your site.',
-                          downloadKey: 'llms_txt', ext: '.txt',
-                          highlight: true
-                        },
-                        {
-                          title: 'Robot-Readable Logic',
-                          filename: 'schema.json',
-                          status: '🔴 Broken',
-                          impact: "AI has to guess what you sell—and it's guessing wrong.",
-                          downloadKey: 'schema_json', ext: '.json'
-                        },
-                        {
-                          title: 'Official Fact Verification',
-                          filename: 'system_prompt.txt',
-                          status: '🔴 Low',
-                          impact: 'AI treats your claims as "unverified marketing".',
-                          downloadKey: 'system_prompt', ext: '.txt'
-                        },
-                        {
-                          title: 'Search Visibility',
-                          filename: 'Google Index',
-                          status: '🟢 Detected',
-                          impact: 'You exist on Google, but you are invisible to AI Search.',
-                          downloadKey: null
-                        }
-                      ].map((row, idx) => (
-                        <tr key={idx} style={{
-                          borderBottom: idx === 3 ? 'none' : '1px solid rgba(244,239,230,0.05)',
-                          background: row.highlight ? 'rgba(255,42,50,0.04)' : 'transparent'
-                        }}>
-                          <td style={{ padding: '8px 10px', verticalAlign: 'middle' }}>
-                            <div style={{ color: '#cdc6ba', fontSize: 10.5, fontWeight: 500 }}>{row.title}</div>
-                          </td>
-                          <td style={{ padding: '10px', verticalAlign: 'top', whiteSpace: 'nowrap', color: row.status.includes('🟢') ? '#4ade80' : '#ffb6b9', display: 'flex', alignItems: 'center', gap: 6 }}>
-                            {row.status.includes('🟢') ? <CheckCircle2 size={12} /> : <AlertCircle size={12} />}
-                            {row.status.replace(/[🟢🔴]/g, '').trim()}
-                          </td>
-                          <td style={{ padding: '10px', verticalAlign: 'top', textAlign: 'right' }}>
-                            {row.downloadKey ? (
-                              <button
-                                onClick={() => handleDownload(row.downloadKey, row.ext)}
-                                disabled={!contentPack}
-                                style={{
-                                  padding: '5px 10px',
-                                  borderRadius: 6,
-                                  background: !contentPack ? 'rgba(244,239,230,0.04)' : (row.highlight ? '#ff2a32' : 'rgba(244,239,230,0.08)'),
-                                  border: row.highlight && contentPack ? 'none' : '1px solid rgba(244,239,230,0.12)',
-                                  color: !contentPack ? '#544e46' : (row.highlight ? '#fff' : '#cdc6ba'),
-                                  fontSize: 10,
-                                  fontFamily: "'Geist Mono', monospace",
-                                  cursor: contentPack ? 'pointer' : 'wait',
-                                  whiteSpace: 'nowrap',
-                                  fontWeight: row.highlight && contentPack ? 600 : 400,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: 4,
-                                  marginLeft: 'auto',
-                                  transition: 'all 0.3s'
-                                }}
-                              >
-                                {contentPack ? <><Download size={10} /> {row.filename}</> : <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5 }}>Generating...</motion.span>}
-                              </button>
-                            ) : (
-                              <span style={{ color: '#544e46', fontSize: 10 }}>No action needed</span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {[
+                    {
+                      title: 'Discovery Passport',
+                      filename: 'llms.txt',
+                      status: 'Missing',
+                      desc: 'Enable AI agents to index your core facts.',
+                      downloadKey: 'llms_txt', ext: '.txt',
+                      priority: 'High'
+                    }
+                  ].map((row, idx) => (
+                    <div key={idx} style={{ 
+                      background: 'rgba(255,255,255,0.025)', 
+                      border: '1px solid rgba(244,239,230,0.08)', 
+                      borderRadius: 14, 
+                      padding: '14px 16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 16
+                    }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: '#f4efe6' }}>{row.title}</span>
+                          <span style={{ 
+                            fontSize: 10, 
+                            fontFamily: "'Geist Mono', monospace", 
+                            color: row.priority === 'High' ? '#ff6b70' : '#c8a96e', 
+                            background: row.priority === 'High' ? 'rgba(255,42,50,0.12)' : 'rgba(200,169,110,0.12)', 
+                            padding: '2px 8px', 
+                            borderRadius: 6,
+                            fontWeight: 700,
+                            textTransform: 'uppercase'
+                          }}>{row.priority}</span>
+                        </div>
+                        <div style={{ fontSize: 12, color: '#7a7268', lineHeight: 1.4 }}>{row.desc}</div>
+                      </div>
+                      
+                      <button
+                        onClick={() => handleDownload(row.downloadKey, row.ext)}
+                        disabled={!contentPack}
+                        style={{
+                          height: 36,
+                          padding: '0 14px',
+                          borderRadius: 10,
+                          background: !contentPack ? 'rgba(244,239,230,0.04)' : (row.priority === 'High' ? '#ff2a32' : 'rgba(244,239,230,0.1)'),
+                          border: row.priority === 'High' ? 'none' : '1px solid rgba(244,239,230,0.15)',
+                          color: !contentPack ? '#544e46' : (row.priority === 'High' ? '#fff' : '#cdc6ba'),
+                          fontSize: 11,
+                          fontFamily: "'Geist Mono', monospace",
+                          fontWeight: 600,
+                          cursor: contentPack ? 'pointer' : 'wait',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          transition: 'all 0.2s',
+                          boxShadow: row.priority === 'High' && contentPack ? '0 4px 12px rgba(255,42,50,0.2)' : 'none'
+                        }}
+                      >
+                        {contentPack ? <><Download size={13} /> {row.filename}</> : <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5 }}>...</motion.span>}
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </section>
-              {/* Flashy Integrated Multi-Stage Toggle */}
+
+              {/* ── LIVE SIMULATION ── */}
               <div 
                 style={{
-                  marginTop: 24,
-                  marginBottom: 16,
+                  marginTop: 8,
                   padding: '20px',
                   background: shadowEnabled ? 'linear-gradient(-45deg, #f4efe6, #cdc6ba, #fff, #f4efe6)' : 'rgba(255,255,255,0.02)',
                   backgroundSize: '400% 400%',
                   animation: shadowEnabled ? 'aio-gradient-move 3s ease infinite' : 'none',
                   border: '1px solid rgba(244,239,230,0.15)',
-                  borderRadius: 18,
+                  borderRadius: 20,
                   boxShadow: shadowEnabled ? '0 15px 40px rgba(0,0,0,0.4), 0 0 20px rgba(244,239,230,0.1)' : 'none',
                   transition: 'all 0.4s ease',
                   display: 'flex', flexDirection: 'column', gap: 16
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', color: shadowEnabled ? '#0a0907' : '#cdc6ba' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: "'Geist Mono', monospace", fontSize: 11, fontWeight: 800, letterSpacing: '0.15em', color: shadowEnabled ? '#0a0907' : '#cdc6ba' }}>
+                      <Zap size={14} fill={shadowEnabled ? '#0a0907' : 'transparent'} />
                       LIVE OPTIMISATION {shadowEnabled ? 'ON' : 'OFF'}
                     </div>
                     <div 
                       onClick={() => setShadowEnabled(!shadowEnabled)}
                       style={{
-                        width: 40, height: 20, background: shadowEnabled ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.05)',
-                        borderRadius: 10, position: 'relative', border: `1px solid ${shadowEnabled ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.1)'}`,
+                        width: 44, height: 22, background: shadowEnabled ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.05)',
+                        borderRadius: 11, position: 'relative', border: `1px solid ${shadowEnabled ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.1)'}`,
                         cursor: 'pointer'
                       }}>
                       <div style={{
-                        position: 'absolute', top: 2, left: shadowEnabled ? 22 : 2, width: 14, height: 14,
+                        position: 'absolute', top: 3, left: shadowEnabled ? 25 : 3, width: 14, height: 14,
                         background: shadowEnabled ? '#0a0907' : '#cdc6ba', borderRadius: '50%', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                       }} />
                     </div>
@@ -1096,8 +1078,8 @@ export default function Screen_Scan({
                         key={i}
                         onClick={() => setActiveOptIndex(i)}
                         style={{
-                          flex: 1, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          fontFamily: "'Geist Mono', monospace", fontSize: 9, fontWeight: 700,
+                          flex: 1, height: 36, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontFamily: "'Geist Mono', monospace", fontSize: 11, fontWeight: 700,
                           background: activeOptIndex === i ? '#0a0907' : 'rgba(0,0,0,0.06)',
                           color: activeOptIndex === i ? '#f4efe6' : 'rgba(10,9,7,0.5)',
                           border: `1px solid ${activeOptIndex === i ? '#0a0907' : 'rgba(0,0,0,0.1)'}`,
@@ -1114,14 +1096,14 @@ export default function Screen_Scan({
               <button
                 onClick={() => window.open('https://nando.ai/contact', '_blank')}
                 style={{
-                  width: '100%', height: 42, borderRadius: 10,
+                  width: '100%', height: 48, borderRadius: 14,
                   background: 'transparent', color: '#f4efe6', border: '1px solid rgba(244,239,230,0.2)',
-                  fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  fontSize: 14, fontWeight: 600, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
                   transition: 'all 0.3s'
                 }}
               >
-                Contact Us <ArrowRight size={14} />
+                Book Expert Audit <ArrowRight size={16} />
               </button>
             </div>
           )}
