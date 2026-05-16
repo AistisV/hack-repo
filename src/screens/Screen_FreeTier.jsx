@@ -285,7 +285,7 @@ export default function Screen_FreeTier({ url, onBack }) {
              marginBottom: 28,
              padding: '16px',
              background: shadowEnabled ? 'rgba(57, 255, 20, 0.05)' : 'rgba(255,255,255,0.02)',
-             border: \`1px solid \${shadowEnabled ? 'rgba(57, 255, 20, 0.3)' : 'rgba(244,239,230,0.08)'}\`,
+             border: `1px solid ${shadowEnabled ? 'rgba(57, 255, 20, 0.3)' : 'rgba(244,239,230,0.08)'}`,
              borderRadius: 16,
              display: 'flex',
              alignItems: 'center',
@@ -367,4 +367,3 @@ export default function Screen_FreeTier({ url, onBack }) {
     </div>
   );
 }
-

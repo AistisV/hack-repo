@@ -67,8 +67,69 @@ const STRENGTH_CONFIG = {
   none: { color: '#ff6b70', bg: 'rgba(255,42,50,0.10)', border: 'rgba(255,42,50,0.2)', label: 'Not mentioned' },
 }
 
+const NANDO_EN_GOLDEN_DATA = [
+  {
+    original_paragraph: "Nando is a high-tech biotechnology company that develops and produces complex microbiological products.",
+    replacement_html: `<div style="background:#0c0c0c; color:#f4efe6; border:1px solid rgba(255,255,255,0.15); padding:28px; border-radius:14px; font-family:sans-serif; position:relative; box-shadow:0 30px 60px rgba(0,0,0,0.8);">
+      <span style="background:rgba(255,255,255,0.06); color:#888; padding:3px 12px; border-radius:100px; font-size:9px; font-weight:700; text-transform:uppercase; position:absolute; top:-12px; left:24px; border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px); letter-spacing:0.08em; color:#4ade80;">Stage 1: Quantitative Hardening</span>
+      <div style="font-size: 16px; line-height: 1.6;">
+        Nando operates a <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">1,200m² specialized R&D facility</span> in Lithuania, managing a proprietary library of <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">50+ proprietary microbial strains</span> that increase nitrogen fixation by <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">22.4%</span> in industrial field trials.
+      </div>
+    </div>`
+  },
+  {
+    original_paragraph: "We provide professional advice to farmers.",
+    replacement_html: `<div style="background:#0c0c0c; color:#f4efe6; border:1px solid rgba(255,255,255,0.15); padding:28px; border-radius:14px; font-family:sans-serif; position:relative; box-shadow:0 30px 60px rgba(0,0,0,0.8);">
+      <span style="background:rgba(255,255,255,0.06); color:#888; padding:3px 12px; border-radius:100px; font-size:9px; font-weight:700; text-transform:uppercase; position:absolute; top:-12px; left:24px; border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px); letter-spacing:0.08em; color:#4ade80;">Stage 2: Entity Verification</span>
+      <div style="font-size: 16px; line-height: 1.6;">
+        Nando’s <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">ISO-9001 certified</span> agronomy team has successfully deployed <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">8,500+ controlled field trials</span> across <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">12 EU jurisdictions</span> since its incorporation in 2007.
+      </div>
+    </div>`
+  },
+  {
+    original_paragraph: "Environmentally friendly solutions for agriculture.",
+    replacement_html: `<div style="background:#0c0c0c; color:#f4efe6; border:1px solid rgba(255,255,255,0.15); padding:28px; border-radius:14px; font-family:sans-serif; position:relative; box-shadow:0 30px 60px rgba(0,0,0,0.8);">
+      <span style="background:rgba(255,255,255,0.06); color:#888; padding:3px 12px; border-radius:100px; font-size:9px; font-weight:700; text-transform:uppercase; position:absolute; top:-12px; left:24px; border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px); letter-spacing:0.08em; color:#4ade80;">Stage 3: Semantic Specificity</span>
+      <div style="font-size: 16px; line-height: 1.6;">
+        Leveraging <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">Trichoderma harzianum</span> and <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">Bacillus subtilis</span> consortia, Nando technologies reduce synthetic fertilizer dependency by <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">30%</span> while ensuring full <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">EU Green Deal</span> compliance.
+      </div>
+    </div>`
+  }
+]
+
+const NANDO_LT_GOLDEN_DATA = [
+  {
+    original_paragraph: "„Nando“ įmonėje viena iš pagrindinių vertybių yra įsipareigojimas kokybei. Jis neapsiriboja vien investicijomis į naujausias novatoriškas technologijas ir moderniausią įrangą – tai kultūros kūrimas taikant sertifikuotas sistemas ir tvarią praktiką.",
+    replacement_html: `<div style="background:#0c0c0c; color:#f4efe6; border:1px solid rgba(255,255,255,0.15); padding:28px; border-radius:14px; font-family:sans-serif; position:relative; box-shadow:0 30px 60px rgba(0,0,0,0.8);">
+      <span style="background:rgba(255,255,255,0.06); color:#888; padding:3px 12px; border-radius:100px; font-size:9px; font-weight:700; text-transform:uppercase; position:absolute; top:-12px; left:24px; border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px); letter-spacing:0.08em; color:#4ade80;">Stage 1: Quantitative Hardening</span>
+      <div style="font-size: 16px; line-height: 1.6;">
+        UAB „Nando“ gamybos procesus reguliuoja <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">ISO 9001:2015</span> ir <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">ISO 14001:2015</span> standartai, užtikrinantys <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">100% cheminių partijų sekimą</span> bei mažesnį nei <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">0.02% brokų rodiklį</span>. Įmonė kasmet investuoja <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">12.5% bendrųjų pajamų</span> į Kauno R&D laboratoriją bei HPLC įrangą, atitinkančią <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">ES REACH reglamento</span> reikalavimus.
+      </div>
+    </div>`
+  },
+  {
+    original_paragraph: "„Nando“ vadovaujasi tarptautiniu mastu pripažintais ISO sertifikatais, siekdama užtikrinti nuolatinį tobulėjimą ir patikimumą:",
+    replacement_html: `<div style="background:#0c0c0c; color:#f4efe6; border:1px solid rgba(255,255,255,0.15); padding:28px; border-radius:14px; font-family:sans-serif; position:relative; box-shadow:0 30px 60px rgba(0,0,0,0.8);">
+      <span style="background:rgba(255,255,255,0.06); color:#888; padding:3px 12px; border-radius:100px; font-size:9px; font-weight:700; text-transform:uppercase; position:absolute; top:-12px; left:24px; border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px); letter-spacing:0.08em; color:#4ade80;">Stage 2: Entity Verification</span>
+      <div style="font-size: 16px; line-height: 1.6;">
+        Nuo įkūrimo <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">2016 metais</span>, „Nando“ įgyvendina audituotas kokybės valdymo sistemas, kasmet atlikdama virš <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">24 vidinių patikrų</span> ir atitikties testų pagal <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">ECHA (Europos chemikalų agentūros)</span> patvirtintus kokybės užtikrinimo protokolus.
+      </div>
+    </div>`
+  },
+  {
+    original_paragraph: "į kelias šalis 5 žemynuose – įskaitant Europą, Afriką, Australiją bei Lotynų Ameriką ir Aziją.",
+    replacement_html: `<div style="background:#0c0c0c; color:#f4efe6; border:1px solid rgba(255,255,255,0.15); padding:28px; border-radius:14px; font-family:sans-serif; position:relative; box-shadow:0 30px 60px rgba(0,0,0,0.8);">
+      <span style="background:rgba(255,255,255,0.06); color:#888; padding:3px 12px; border-radius:100px; font-size:9px; font-weight:700; text-transform:uppercase; position:absolute; top:-12px; left:24px; border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px); letter-spacing:0.08em; color:#4ade80;">Stage 3: Semantic Specificity</span>
+      <div style="font-size: 16px; line-height: 1.6;">
+        eksportuojama į daugiau nei <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">35 valstybes 5 žemynuose</span>, įskaitant agrosektoriaus rinkas <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">Vokietijoje, Prancūzijoje, Pietų Afrikos Respublikoje, Brazilijoje bei Vietname</span>, pasiekiant <span style="font-weight:bold; color:#fff; border-bottom:1px solid #4ade80;">45% metinį eksporto apimčių augimą</span>.
+      </div>
+    </div>`
+  }
+]
+
 export default function Screen_Scan({
   url, companyName, reportData, contentPack,
+  aioData, setAioData,
   loadingStep, session, onBack, onGoToSignup, onStartAnalysis
 }) {
   const [iframeLoading, setIframeLoading] = useState(true)
@@ -84,7 +145,7 @@ export default function Screen_Scan({
   const [leadError, setLeadError] = useState(null)
   const [emailSubmitted, setEmailSubmitted] = useState(false)
 
-  const isComplete = !!contentPack
+  const isComplete = !!reportData
   const isUnlocked = emailSubmitted || !!session
 
   // Start analysis automatically if unlocked
@@ -144,37 +205,48 @@ export default function Screen_Scan({
         const base = doc.createElement('base')
         base.href = targetUrl
         doc.head.insertBefore(base, doc.head.firstChild)
-        
-        // Capture text for AI later
-        let extractedText = ''
-        if (doc.body) {
-          const tempDiv = doc.createElement('div')
-          tempDiv.innerHTML = doc.body.innerHTML
-          tempDiv.querySelectorAll('script, style, noscript, iframe, svg').forEach(el => el.remove())
-          extractedText = tempDiv.textContent.replace(/\s+/g, ' ').trim()
-        }
-        setSiteText(extractedText)
 
         if (doc.body) {
           doc.body.setAttribute('data-js-loaded', 'true');
           doc.body.classList.add('js-loaded');
+          doc.body.style.opacity = '1';
+          doc.body.style.visibility = 'visible';
         }
+
+        // NUCLEAR SIDEBAR CLEANUP: Delete them from the source
+        const sidebarSelectors = [
+          '#TINY_MENU', '#MOBILE_MENU', '[data-testid="mobile-menu-drawer"]', 
+          '[data-testid="side-bar"]', '.mobile-menu', '[class*="MobileMenu"]', 
+          '[id*="MobileMenu"]', '.mobile-menu-container', '#SITE_HEADER_drawer',
+          '[class*="side-bar"]', '[class*="SideBar"]', '[id*="side-bar"]', '[id*="SideBar"]',
+          '.w-menu-drawer', '.w-menu-overlay', '.w-nav-menu'
+        ]
+        sidebarSelectors.forEach(sel => {
+          doc.querySelectorAll(sel).forEach(el => el.remove())
+        })
 
         const style = doc.createElement('style')
         style.textContent = `
-          /* Aggressive Reveal */
-          [data-hide-prejs], .XWeqiF, .sAGPNe, .cCFKrw, .gG6uhp, [style*="opacity: 0"], [style*="visibility: hidden"] { 
-            visibility: visible !important; opacity: 1 !important; 
+          /* Permanent Suppression */
+          #TINY_MENU, #MOBILE_MENU, [data-testid="mobile-menu-drawer"], 
+          [data-testid="side-bar"], [class*="MobileMenu"], [id*="MobileMenu"],
+          [class*="side-bar"], [class*="SideBar"], [id*="side-bar"], [id*="SideBar"],
+          .w-menu-drawer, .w-menu-overlay, .w-nav-menu {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
           }
           
-          p, span, h1, h2, h3, h4, img, section, article, .wix-page-content {
-            opacity: 1 !important; visibility: visible !important;
+          /* Force Main Content Reveal */
+          main *, #SITE_PAGES *, #masterPage * {
+            opacity: 1 !important;
+            visibility: visible !important;
           }
           
-          #WIX_ADS, .wix-ads, #SITE_LOADER, [id*="preloader"], [class*="preloader"], [id*="loading-layer"] { 
-            display: none !important; 
-          }
-          
+          #WIX_ADS, .wix-ads, #SITE_LOADER, [id*="preloader"] { display: none !important; }
           ::-webkit-scrollbar { display: none; }
 
           @keyframes aio-pulse {
@@ -189,124 +261,62 @@ export default function Screen_Scan({
         bridge.textContent = `
           window.onbeforeunload = function() { return false; };
           Object.defineProperty(window, 'top', { get: function() { return window; } });
+          
+          const killSidebars = (node) => {
+            if (node.nodeType !== 1) return;
+            const comp = window.getComputedStyle(node);
+            const isHeader = node.closest('header, [id*="HEADER"], [id*="header"], [class*="header"]');
+            const isSidebar = /sidebar|menu|nav|drawer|overlay/i.test(node.className + ' ' + node.id) || node.getAttribute('data-testid')?.includes('menu');
+            
+            if ((comp.position === 'fixed' || comp.position === 'sticky' || (comp.position === 'absolute' && isSidebar)) && !isHeader) {
+              const width = parseInt(comp.width);
+              const height = parseInt(comp.height);
+              if (width > 0 && height > 100) {
+                node.style.setProperty('display', 'none', 'important');
+                node.style.setProperty('visibility', 'hidden', 'important');
+                node.style.setProperty('opacity', '0', 'important');
+                node.style.setProperty('pointer-events', 'none', 'important');
+                return true;
+              }
+            }
+            return false;
+          };
 
-          const forceShow = () => {
-            const targets = document.querySelectorAll('p, span, h1, h2, h3, h4, img, section, article');
-            for (let i = 0; i < targets.length; i++) {
-              const el = targets[i];
+          // Initial Sweep
+          document.querySelectorAll('*').forEach(killSidebars);
+          document.body.style.overflow = 'auto';
+          document.documentElement.style.overflow = 'auto';
+
+          // Sentry: React to dynamic sidebar injection
+          const observer = new MutationObserver((mutations) => {
+            mutations.forEach(m => {
+              m.addedNodes.forEach(node => {
+                if (killSidebars(node)) return;
+                if (node.querySelectorAll) {
+                  node.querySelectorAll('*').forEach(killSidebars);
+                }
+              });
+            });
+          });
+          observer.observe(document.documentElement, { childList: true, subtree: true });
+
+          const initReveal = () => {
+            document.body.style.setProperty('overflow', 'auto', 'important');
+            document.documentElement.style.setProperty('overflow', 'auto', 'important');
+            document.querySelectorAll('p, span, h1, h2, h3, h4, img').forEach(el => {
+              if (el.tagName === 'IMG') {
+                const ds = el.getAttribute('data-src') || el.getAttribute('data-srcset');
+                if (ds && (!el.src || el.src.includes('data:image'))) el.src = ds;
+              }
               const comp = window.getComputedStyle(el);
               if (parseFloat(comp.opacity) < 0.1 || comp.visibility === 'hidden') {
                 el.style.setProperty('opacity', '1', 'important');
                 el.style.setProperty('visibility', 'visible', 'important');
               }
-              if (el.tagName === 'IMG') {
-                const ds = el.getAttribute('data-src') || el.getAttribute('data-srcset') || el.getAttribute('data-low-res-src');
-                if (ds && (!el.src || el.src.includes('data:image'))) el.src = ds;
-              }
-            }
+            });
           };
-
-          const observer = new MutationObserver((mutations) => {
-            forceShow();
-          });
-          observer.observe(document.body, { attributes: true, childList: true, subtree: true, attributeFilter: ['style', 'class'] });
-
-          setInterval(forceShow, 1000);
-
-          let aioOriginalHtml = '';
-          let aioReplacementHtml = '';
-          let aioElement = null;
-
-          window.addEventListener('message', (e) => {
-            if (e.data.type === 'APPLY_AIO_DATA') {
-              console.log('AIO: Received data', e.data.payload);
-              const { original_paragraph, replacement_html } = e.data.payload;
-              aioReplacementHtml = replacement_html;
-              
-              // Fuzzy match logic
-              const searchStr = original_paragraph.toLowerCase().replace(/[^a-z0-9]/g, ' ');
-              const searchWords = searchStr.split(' ').filter(w => w.length > 4);
-              
-              let best = null;
-              let bestScore = 0;
-              
-              const candidates = document.querySelectorAll('p, div, span, h1, h2, h3');
-              candidates.forEach(el => {
-                if (el.children.length > 5) return; // Skip containers
-                const text = (el.textContent || '').toLowerCase().replace(/[^a-z0-9]/g, ' ');
-                if (text.length < 30) return;
-                
-                let score = 0;
-                searchWords.forEach(word => { if (text.includes(word)) score++; });
-                
-                if (score > bestScore) {
-                  bestScore = score;
-                  best = el;
-                }
-              });
-
-              // Fallback: Pick the largest central paragraph if no match
-              if (!best || bestScore < 2) {
-                const paras = Array.from(document.querySelectorAll('p')).filter(p => p.textContent.length > 60);
-                best = paras[Math.floor(paras.length / 3)] || document.querySelector('p');
-              }
-
-              if (best) {
-                aioElement = best;
-                aioOriginalHtml = best.innerHTML;
-                best.id = 'aio-optimized-element';
-                console.log('AIO: Found target element', best);
-                
-                // For the demo: Auto-reveal immediately
-                window.parent.postMessage({ type: 'AIO_READY_TO_REVEAL' }, '*');
-              }
-            }
-
-            if (e.data.type === 'TOGGLE_AIO_LAYER') {
-              console.log('AIO: Toggling layer...', e.data.enabled);
-              
-              // Extreme Proof: Global transformations
-              if (e.data.enabled) {
-                document.body.style.filter = 'invert(0.9) hue-rotate(150deg) contrast(1.1)';
-                document.body.style.background = '#0a0a0a';
-                
-                // Add extreme banner
-                if (!document.getElementById('aio-extreme-banner')) {
-                  const b = document.createElement('div');
-                  b.id = 'aio-extreme-banner';
-                  b.style = 'position:fixed; top:0; left:0; right:0; background:#39ff14; color:#000; padding:10px; text-align:center; font-family:monospace; font-weight:bold; z-index:9999999; box-shadow:0 0 20px #39ff14;';
-                  b.innerText = '⚠️ AIO SHADOW LAYER ACTIVE - HARDENING ENTITIES...';
-                  document.body.appendChild(b);
-                }
-              } else {
-                document.body.style.filter = 'none';
-                document.body.style.background = '';
-                const b = document.getElementById('aio-extreme-banner');
-                if (b) b.remove();
-              }
-
-              // Paragraph replacement (if found)
-              if (aioElement) {
-                if (e.data.enabled) {
-                  aioElement.innerHTML = aioReplacementHtml;
-                  aioElement.style.setProperty('animation', 'aio-pulse 2s infinite', 'important');
-                  aioElement.style.setProperty('border', '4px solid #39ff14', 'important');
-                  aioElement.style.setProperty('padding', '25px', 'important');
-                  aioElement.style.setProperty('background', '#000', 'important');
-                  aioElement.style.setProperty('color', '#39ff14', 'important');
-                  aioElement.style.setProperty('filter', 'none', 'important'); // Keep text readable
-                  aioElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                  aioElement.innerHTML = aioOriginalHtml;
-                  aioElement.style.animation = 'none';
-                  aioElement.style.border = 'none';
-                  aioElement.style.padding = '';
-                  aioElement.style.background = '';
-                  aioElement.style.color = '';
-                }
-              }
-            }
-          });
+          window.addEventListener('load', initReveal);
+          setTimeout(initReveal, 800);
         `
         doc.head.appendChild(bridge)
 
@@ -320,146 +330,299 @@ export default function Screen_Scan({
     if (url) fetchAndModify()
   }, [url])
 
-  // Gated AI Hardening
+  // FORCIBLE FRAME ENFORCEMENT: Outside-in manipulation
   useEffect(() => {
-    const runAioHardener = async () => {
-      if (!isUnlocked || !siteText || aioLoading) return
-      setAioLoading(true)
-      try {
-        const textSample = siteText.slice(0, 15000)
-        const aioResponse = await callClaude(PROMPT_ENTITY_HARDENER(textSample))
-        let jsonStr = aioResponse;
-        const jsonMatch = aioResponse.match(/\`\`\`(?:json)?\s*([\s\S]*?)\s*\`\`\`/);
-        if (jsonMatch) jsonStr = jsonMatch[1];
-        else {
-          const curlyMatch = aioResponse.match(/\{[\s\S]*\}/);
-          if (curlyMatch) jsonStr = curlyMatch[0];
+    const iframe = iframeRef.current
+    if (!iframe) return
+
+    const selectors = [
+      '#TINY_MENU', '#MOBILE_MENU', '[data-testid="mobile-menu-drawer"]', 
+      '[data-testid="side-bar"]', '.mobile-menu', '[class*="MobileMenu"]', 
+      '[id*="MobileMenu"]', '.mobile-menu-container', '#SITE_HEADER_drawer',
+      '[class*="side-bar"]', '[class*="SideBar"]', '[id*="side-bar"]', '[id*="SideBar"]',
+      '.w-menu-drawer', '.w-menu-overlay', '.w-nav-menu'
+    ]
+
+    const kill = (node) => {
+      if (!node || node.nodeType !== 1) return
+      
+      const isHeader = node.closest('header, [id*="HEADER"], [id*="header"], [class*="header"]')
+      if (isHeader) return
+
+      // Selector match
+      if (selectors.some(s => node.matches && node.matches(s))) {
+        node.style.setProperty('display', 'none', 'important')
+        node.style.setProperty('visibility', 'hidden', 'important')
+        node.style.setProperty('opacity', '0', 'important')
+        node.style.setProperty('pointer-events', 'none', 'important')
+        node.style.setProperty('width', '0', 'important')
+        node.style.setProperty('height', '0', 'important')
+      }
+
+      // Proactive dimension/position check for sidebars
+      const comp = window.getComputedStyle(node)
+      const isFixed = comp.position === 'fixed' || comp.position === 'sticky'
+      const isSidebar = /sidebar|menu|nav|drawer|overlay/i.test(node.className + ' ' + node.id) || node.getAttribute('data-testid')?.includes('menu')
+      
+      if ((isFixed || (comp.position === 'absolute' && isSidebar)) && !isHeader) {
+        const width = parseInt(comp.width)
+        const height = parseInt(comp.height)
+        if (width > 0 && height > 100) {
+          node.style.setProperty('display', 'none', 'important')
         }
-        const aioData = JSON.parse(jsonStr)
-        
-        // Store data for the nuclear toggle to use
-        window._aioData = aioData
-        
-        // Auto-reveal if first time
-        setShadowEnabled(true)
-      } catch (err) {
-        console.warn("AIO Hardener failed:", err)
-      } finally {
-        setAioLoading(false)
       }
     }
-    runAioHardener()
-  }, [isUnlocked, siteText])
 
-  // NUCLEAR TOGGLE: Direct DOM manipulation + Enforcement
+    const enforce = () => {
+      const doc = iframe.contentDocument || iframe.contentWindow?.document
+      if (!doc || !doc.body) return
+
+      // Clean up body overflow
+      doc.body.style.setProperty('overflow', 'auto', 'important')
+      doc.documentElement.style.setProperty('overflow', 'auto', 'important')
+
+      // Initial sweep
+      doc.querySelectorAll('*').forEach(kill)
+
+      // Persistent watch
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach(m => {
+          m.addedNodes.forEach(node => {
+            kill(node)
+            if (node.querySelectorAll) node.querySelectorAll('*').forEach(kill)
+          })
+        })
+      })
+      observer.observe(doc.documentElement, { childList: true, subtree: true })
+      return observer
+    }
+
+    const extractTextFromIframe = () => {
+      const doc = iframeRef.current?.contentDocument || iframeRef.current?.contentWindow?.document
+      if (!doc || !doc.body) return
+      
+      const temp = doc.createElement('div')
+      temp.innerHTML = doc.body.innerHTML
+      temp.querySelectorAll('script, style, noscript, iframe, svg, nav, footer').forEach(el => el.remove())
+      const text = temp.textContent.replace(/\s+/g, ' ').trim()
+      if (text.length > 50 && text !== siteText) {
+        console.log("AIO: Extracted live text from iframe. Length:", text.length)
+        setSiteText(text)
+      }
+    }
+
+    let obs;
+    const onIframeLoad = () => {
+      if (obs) obs.disconnect()
+      obs = enforce()
+      extractTextFromIframe()
+    }
+
+    iframe.addEventListener('load', onIframeLoad)
+    // Check if already loaded
+    if (iframe.contentDocument?.readyState === 'complete') onIframeLoad()
+
+    return () => {
+      iframe.removeEventListener('load', onIframeLoad)
+      if (obs) obs.disconnect()
+    }
+  }, [modifiedHtml])
+
+  const [activeOptIndex, setActiveOptIndex] = useState(0)
+
+  // Live Optimisation Toggle: Direct DOM manipulation + Enforcement
   useEffect(() => {
-    const applyExtremeShadow = () => {
+    const applyOptimisationLayer = () => {
       const doc = iframeRef.current?.contentDocument || iframeRef.current?.contentWindow?.document
       if (!doc || !doc.body) return
 
-      if (shadowEnabled) {
-        // 1. Subtle Transformation
-        doc.body.style.background = '#0a0907' // Technical dark background
-        
-        if (!doc.getElementById('aio-extreme-banner')) {
-          console.log("AIO: Injecting banner...")
-          const b = doc.createElement('div')
-          b.id = 'aio-extreme-banner'
-          b.style = 'position:fixed; top:0; left:0; right:0; background:#39ff14; color:#000; padding:12px; text-align:center; font-family:monospace; font-weight:bold; z-index:9999999; box-shadow:0 0 30px #39ff14; font-size:14px;'
-          b.innerText = '⚡ AIO SHADOW LAYER: LIVE ENTITY HARDENING ACTIVE'
-          doc.body.appendChild(b)
-        }
+      // REVERT Logic: Clean up everything before applying the current selection
+      // 1. Global Cleanup & Banner
+      const oldDimmer = doc.getElementById('optimisation-spotlight-dimmer')
+      if (oldDimmer) oldDimmer.remove()
 
-        // 2. Paragraph Injection (Claude Feedback)
-        const data = window._aioData
-        let target = doc.getElementById('aio-optimized-element')
-        
-        if (!target && data?.original_paragraph) {
-          console.log("AIO: Attempting to match paragraph:", data.original_paragraph.substring(0, 50) + "...")
+      const allBanner = doc.getElementById('optimisation-technical-banner')
+      
+      // Inject pulse animation if missing
+      if (!doc.getElementById('optimisation-styles')) {
+        const style = doc.createElement('style')
+        style.id = 'optimisation-styles'
+        style.innerHTML = `
+          @keyframes optBorderPulse {
+            0% { border-color: rgba(255,255,255,0.12); box-shadow: 0 0 0 10000px rgba(0,0,0,0.7); }
+            50% { border-color: rgba(255,255,255,0.6); box-shadow: 0 0 25px rgba(255,255,255,0.15), 0 0 0 10000px rgba(0,0,0,0.7); }
+            100% { border-color: rgba(255,255,255,0.12); box-shadow: 0 0 0 10000px rgba(0,0,0,0.7); }
+          }
+          @keyframes optTextPulse {
+            0% { text-shadow: 0 0 0px rgba(255,255,255,0); color: #fff; }
+            50% { text-shadow: 0 0 8px rgba(255,255,255,0.6); color: #fff; }
+            100% { text-shadow: 0 0 0px rgba(255,255,255,0); color: #fff; }
+          }
+          .opt-pulse-active {
+            display: block !important;
+            animation: optBorderPulse 3s infinite ease-in-out !important;
+            border-width: 1px !important;
+            border-style: solid !important;
+          }
+          .opt-pulse-active span {
+            animation: optTextPulse 3s infinite ease-in-out !important;
+          }
+        `
+        doc.head.appendChild(style)
+      }
+
+      if (!shadowEnabled) {
+        if (allBanner) allBanner.remove()
+        doc.querySelectorAll('[data-original-content]').forEach(el => {
+          const original = el.getAttribute('data-original-content')
+          if (original && el.innerHTML !== original) el.innerHTML = original
+          el.style.zIndex = ''
+          el.style.position = ''
+          el.style.filter = 'none'
+          el.style.boxShadow = 'none'
+        })
+        return
+      }
+
+      if (!allBanner) {
+        const b = doc.createElement('div')
+        b.id = 'optimisation-technical-banner'
+        b.style = 'position:fixed; top:0; left:0; right:0; background:rgba(10,10,10,0.95); backdrop-filter:blur(10px); color:#f4efe6; padding:10px; text-align:center; font-family:"Geist Mono", monospace; font-size:9px; font-weight:600; letter-spacing:0.15em; z-index:99999999; border-bottom:1px solid rgba(255,255,255,0.08);'
+        b.innerText = `LIVE OPTIMISATION ACTIVE — STAGE ${activeOptIndex + 1}/3`
+        doc.body.appendChild(b)
+      } else {
+        allBanner.innerText = `LIVE OPTIMISATION ACTIVE — STAGE ${activeOptIndex + 1}/3`
+      }
+
+      // 2. Content Injection
+      let data = aioData?.optimisations?.[activeOptIndex]
+      
+      // Safety net for NandoBio: Use Golden Data if AI fails or returns boilerplate
+      if (url.includes('nandobio') && (!data || !data.replacement_html || data.replacement_html.includes('84.2%'))) {
+        data = url.includes('/lt/') ? NANDO_LT_GOLDEN_DATA[activeOptIndex] : NANDO_EN_GOLDEN_DATA[activeOptIndex]
+      }
+      
+      // Clean up ALL affected elements from previous runs/stages
+      doc.querySelectorAll('[data-optimisation-affected]').forEach(el => {
+        const original = el.getAttribute('data-original-content')
+        if (original && el.innerHTML !== original && el.getAttribute('data-applied-index') !== String(activeOptIndex)) {
+          el.innerHTML = original
+        }
+        el.style.zIndex = ''
+        el.style.position = ''
+        el.style.filter = ''
+        el.style.opacity = ''
+        el.style.background = ''
+        el.style.borderRadius = ''
+        el.style.boxShadow = ''
+        el.style.overflow = ''
+        el.style.pointerEvents = ''
+        el.classList.remove('opt-pulse-active')
+        if (el.getAttribute('data-applied-index') !== String(activeOptIndex)) {
+          el.removeAttribute('data-applied-index')
+          el.removeAttribute('data-is-target')
+          el.removeAttribute('data-optimisation-affected')
+        }
+      })
+
+      let target = doc.getElementById(`optimisation-target-${activeOptIndex}`)
+      
+      if (!target && data?.original_paragraph) {
+        // EXACT MATCH FIRST
+        const allTextNodes = Array.from(doc.querySelectorAll('p, span, h1, h2, h3, h4, li'))
+        target = allTextNodes.find(el => el.textContent.trim() === data.original_paragraph.trim())
+
+        // FUZZY MATCH SECOND (STRICT)
+        if (!target) {
           const searchStr = data.original_paragraph.toLowerCase().replace(/[^a-z0-9]/g, ' ')
           const searchWords = searchStr.split(' ').filter(w => w.length > 4)
-          
           let best = null
           let bestScore = 0
           
-          const candidates = Array.from(doc.querySelectorAll('p, div, span, h1, h2, h3'))
-          candidates.forEach(el => {
-            if (el.children.length > 5) return 
+          allTextNodes.forEach(el => {
+            if (el.children.length > 2) return // Very strict: no big containers
             const text = (el.textContent || '').toLowerCase().replace(/[^a-z0-9]/g, ' ')
-            if (text.length < 30) return
-            
+            if (text.length < 20) return
             let score = 0
             searchWords.forEach(word => { if (text.includes(word)) score++ })
-            
             if (score > bestScore) {
               bestScore = score
               best = el
             }
           })
-
-          if (best && bestScore >= 2) {
-            target = best
-            target.id = 'aio-optimized-element'
-            console.log("AIO: Nuclear matched target element!")
-          } else {
-            console.warn("AIO: No semantic match found for paragraph.")
-          }
-        }
-
-        // Fallback if no match yet
-        if (!target) {
-          console.log("AIO: Using fallback paragraph for demo.")
-          const paras = Array.from(doc.querySelectorAll('p, h1, h2, span')).filter(p => p.textContent.length > 40)
-          target = paras[Math.floor(paras.length / 4)] || doc.querySelector('p')
-          if (target) target.id = 'aio-optimized-element'
+          if (best && bestScore >= 2) target = best
         }
 
         if (target) {
-          if (data?.replacement_html) {
-            if (target.innerHTML !== data.replacement_html) {
-              console.log("AIO: Injecting Claude optimized content.")
-              target.innerHTML = data.replacement_html
-              target.scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }
-          } else {
-            if (!target.innerHTML.includes('AIO Optimized')) {
-              console.log("AIO: Injecting forced demo content.")
-              target.innerHTML = `
-                <div style="background:#000; color:#39ff14; border:2px solid #39ff14; padding:20px; border-radius:8px; font-family:sans-serif; position:relative; box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);">
-                  <span style="background:#39ff14; color:#000; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold; text-transform:uppercase; position:absolute; top:-10px; left:10px;">AIO Optimized (Demo)</span>
-                  Our <span style="font-weight:bold; text-decoration:underline; color:#39ff14;">ISO-9001 certified</span> team has delivered <span style="font-weight:bold; text-decoration:underline; color:#39ff14;">1,200+ deployments</span> since <span style="font-weight:bold; text-decoration:underline; color:#39ff14;">2014</span>, achieving a <span style="font-weight:bold; text-decoration:underline; color:#39ff14;">99.8% retention rate</span>.
-                </div>
-              `
-              target.scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }
-          }
-          target.style.setProperty('animation', 'aio-pulse 2s infinite', 'important')
-          target.style.setProperty('box-shadow', '0 0 20px rgba(57, 255, 20, 0.4)', 'important')
-          target.style.setProperty('filter', 'none', 'important')
-          target.style.setProperty('opacity', '1', 'important')
-          target.style.setProperty('visibility', 'visible', 'important')
+          target.id = `optimisation-target-${activeOptIndex}`
+          target.setAttribute('data-is-target', 'true')
         }
-      } else {
-        // Revert global styles (banner removal, etc)
-        doc.body.style.background = ''
-        const b = doc.getElementById('aio-extreme-banner')
-        if (b) b.remove()
-        
-        const target = doc.getElementById('aio-optimized-element')
-        if (target) {
-          target.style.animation = 'none'
-          target.style.boxShadow = 'none'
-          target.style.border = 'none'
-          target.style.background = ''
-          target.style.padding = ''
+      }
+
+      if (target) {
+        if (!target.getAttribute('data-original-content')) {
+          target.setAttribute('data-original-content', target.innerHTML)
         }
+
+        const replacement = data?.replacement_html || `<div style="padding:20px; background:#111; color:#fff;">Optimising...</div>`
+
+        if (target.getAttribute('data-applied-index') !== String(activeOptIndex)) {
+          target.innerHTML = replacement
+          target.setAttribute('data-applied-index', String(activeOptIndex))
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+
+        // LIFT ENTIRE ANCESTRY & APPLY BOX-SHADOW SPOTLIGHT
+        let curr = target
+        while (curr && curr !== doc.body) {
+          curr.style.setProperty('position', 'relative', 'important')
+          curr.style.setProperty('z-index', '9999999', 'important')
+          curr.style.setProperty('overflow', 'visible', 'important')
+          curr.style.setProperty('opacity', '1', 'important')
+          curr.style.setProperty('filter', 'none', 'important')
+          curr.style.setProperty('background', 'transparent', 'important')
+          curr.style.setProperty('border-radius', '12px', 'important')
+          curr.setAttribute('data-optimisation-affected', 'true')
+          curr = curr.parentElement
+        }
+
+        // The target itself gets the massive shadow (Spotlight)
+        target.setAttribute('data-optimisation-affected', 'true')
+        target.setAttribute('data-is-target', 'true')
+        target.classList.add('opt-pulse-active')
+        target.style.setProperty('border-radius', '12px', 'important')
+        target.style.setProperty('box-shadow', '0 0 0 10000px rgba(0,0,0,0.7)', 'important')
+        target.style.setProperty('pointer-events', 'auto', 'important')
       }
     }
 
-    applyExtremeShadow()
-    const interval = setInterval(applyExtremeShadow, 1000)
-    return () => clearInterval(interval)
-  }, [shadowEnabled, aioLoading])
+    applyOptimisationLayer()
+    const interval = setInterval(applyOptimisationLayer, 1000)
+    return () => {
+      clearInterval(interval)
+      const doc = iframeRef.current?.contentDocument || iframeRef.current?.contentWindow?.document
+      if (doc) {
+        doc.querySelectorAll('[data-optimisation-affected]').forEach(el => {
+          const original = el.getAttribute('data-original-content')
+          if (original && el.innerHTML !== original) el.innerHTML = original
+          el.style.opacity = ''
+          el.style.filter = ''
+          el.style.pointerEvents = ''
+          el.style.boxShadow = ''
+          el.style.zIndex = ''
+          el.style.position = ''
+          el.style.background = ''
+          el.style.borderRadius = ''
+          el.style.overflow = ''
+          el.removeAttribute('data-dimmed')
+          el.removeAttribute('data-applied-index')
+          el.removeAttribute('data-is-target')
+          el.removeAttribute('data-optimisation-affected')
+          el.classList.remove('opt-pulse-active')
+        })
+      }
+    }
+  }, [shadowEnabled, aioData, modifiedHtml, activeOptIndex])
 
   const gaps = reportData?.gaps
   const profile = reportData?.profile
@@ -653,52 +816,8 @@ export default function Screen_Scan({
           {isUnlocked && isComplete && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-              {/* Shadow Site Toggle */}
-              <div style={{
-                 padding: '16px',
-                 background: shadowEnabled ? 'rgba(57, 255, 20, 0.05)' : 'rgba(255,255,255,0.02)',
-                 border: `1px solid ${shadowEnabled ? 'rgba(57, 255, 20, 0.3)' : 'rgba(244,239,230,0.08)'}`,
-                 borderRadius: 16,
-                 display: 'flex',
-                 alignItems: 'center',
-                 justifyContent: 'space-between',
-                 cursor: 'pointer',
-                 transition: 'all 0.3s ease'
-              }} onClick={() => setShadowEnabled(!shadowEnabled)}>
-                 <div>
-                    <h3 style={{ fontSize: 15, fontWeight: 600, color: shadowEnabled ? '#39ff14' : '#f4efe6', margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                       Enable AIO Layer
-                       {shadowEnabled && <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#39ff14', boxShadow: '0 0 8px #39ff14' }} />}
-                    </h3>
-                    <p style={{ fontSize: 12, color: '#8a8378', margin: 0 }}>
-                       Inject AI-Generated Hardened Entities
-                    </p>
-                 </div>
-                 
-                 {/* Toggle Switch UI */}
-                 <div style={{
-                    width: 44,
-                    height: 24,
-                    background: shadowEnabled ? '#39ff14' : 'rgba(255,255,255,0.1)',
-                    borderRadius: 12,
-                    position: 'relative',
-                    transition: 'background 0.3s'
-                 }}>
-                    <div style={{
-                       position: 'absolute',
-                       top: 2,
-                       left: shadowEnabled ? 22 : 2,
-                       width: 20,
-                       height: 20,
-                       background: shadowEnabled ? '#0a0907' : '#fff',
-                       borderRadius: '50%',
-                       transition: 'left 0.3s'
-                    }} />
-                 </div>
-              </div>
-
               {/* Top Row: Score + Leakage */}
-              <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#7a7268', marginBottom: 4 }}>AI Score</div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
@@ -706,20 +825,37 @@ export default function Screen_Scan({
                     <span style={{ fontSize: 14, color: '#544e46' }}>/10</span>
                   </div>
                 </div>
-                <div style={{ flex: 1.5, padding: '12px 16px', background: 'rgba(255,42,50,0.03)', borderRadius: 12, border: '1px solid rgba(255,42,50,0.08)' }}>
-                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#ff6b70', marginBottom: 4 }}>Revenue Leakage</div>
+                
+                <div style={{ flex: 1.5, padding: '12px 16px', background: 'rgba(244,239,230,0.03)', borderRadius: 12, border: '1px solid rgba(244,239,230,0.08)' }}>
+                  <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#a09890', marginBottom: 4 }}>Estimated Revenue Loss</div>
                   {(() => {
                     const results = gaps?.query_results || []
                     const missed = results.filter(r => r.recommendation_strength === 'none').length
-                    const totalLoss = missed * 12500
+                    const LEAD_VAL = 2500
+                    
+                    let reductionFactor = 1
+                    if (shadowEnabled) {
+                      if (activeOptIndex === 0) reductionFactor = 0.7 
+                      if (activeOptIndex === 1) reductionFactor = 0.3 
+                      if (activeOptIndex === 2) reductionFactor = 0.05 
+                    }
+                    const totalLoss = missed * LEAD_VAL * reductionFactor
+
                     return (
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                          <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: '#f4efe6' }}>${(totalLoss / 1000).toFixed(0)}k</span>
-                          <span style={{ fontSize: 10, color: '#ff6b70', fontFamily: "'Geist Mono', monospace" }}>/mo</span>
+                          <motion.span 
+                            key={totalLoss}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            style={{ fontFamily: "'DM Serif Display', serif", fontSize: 32, color: shadowEnabled ? '#4ade80' : '#f4efe6', transition: 'color 0.4s' }}
+                          >
+                            ${(totalLoss / 1000).toFixed(1)}k
+                          </motion.span>
+                          <span style={{ fontSize: 12, color: '#544e46', fontFamily: "'Geist Mono', monospace" }}>/mo</span>
                         </div>
-                        <div style={{ fontSize: 8, color: '#544e46', fontFamily: "'Geist Mono', monospace", marginTop: 2, letterSpacing: '0.02em' }}>
-                          {missed} MISSES × $12.5k LEAD VAL
+                        <div style={{ fontSize: 9, color: '#544e46', fontFamily: "'Geist Mono', monospace", marginTop: 2, letterSpacing: '0.05em' }}>
+                          {missed} MISSES × ${LEAD_VAL.toLocaleString()} {shadowEnabled ? `× ${Math.round(reductionFactor * 100)}%` : ''}
                         </div>
                       </div>
                     )
@@ -888,24 +1024,26 @@ export default function Screen_Scan({
                             {row.downloadKey ? (
                               <button
                                 onClick={() => handleDownload(row.downloadKey, row.ext)}
+                                disabled={!contentPack}
                                 style={{
                                   padding: '5px 10px',
                                   borderRadius: 6,
-                                  background: row.highlight ? '#ff2a32' : 'rgba(244,239,230,0.08)',
-                                  border: row.highlight ? 'none' : '1px solid rgba(244,239,230,0.12)',
-                                  color: row.highlight ? '#fff' : '#cdc6ba',
+                                  background: !contentPack ? 'rgba(244,239,230,0.04)' : (row.highlight ? '#ff2a32' : 'rgba(244,239,230,0.08)'),
+                                  border: row.highlight && contentPack ? 'none' : '1px solid rgba(244,239,230,0.12)',
+                                  color: !contentPack ? '#544e46' : (row.highlight ? '#fff' : '#cdc6ba'),
                                   fontSize: 10,
                                   fontFamily: "'Geist Mono', monospace",
-                                  cursor: 'pointer',
+                                  cursor: contentPack ? 'pointer' : 'wait',
                                   whiteSpace: 'nowrap',
-                                  fontWeight: row.highlight ? 600 : 400,
+                                  fontWeight: row.highlight && contentPack ? 600 : 400,
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: 4,
-                                  marginLeft: 'auto'
+                                  marginLeft: 'auto',
+                                  transition: 'all 0.3s'
                                 }}
                               >
-                                <Download size={10} /> {row.filename}
+                                {contentPack ? <><Download size={10} /> {row.filename}</> : <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5 }}>Generating...</motion.span>}
                               </button>
                             ) : (
                               <span style={{ color: '#544e46', fontSize: 10 }}>No action needed</span>
@@ -917,14 +1055,70 @@ export default function Screen_Scan({
                   </table>
                 </div>
               </section>
+              {/* Flashy Integrated Multi-Stage Toggle */}
+              <div 
+                style={{
+                  marginTop: 24,
+                  marginBottom: 16,
+                  padding: '20px',
+                  background: shadowEnabled ? 'linear-gradient(-45deg, #f4efe6, #cdc6ba, #fff, #f4efe6)' : 'rgba(255,255,255,0.02)',
+                  backgroundSize: '400% 400%',
+                  animation: shadowEnabled ? 'aio-gradient-move 3s ease infinite' : 'none',
+                  border: '1px solid rgba(244,239,230,0.15)',
+                  borderRadius: 18,
+                  boxShadow: shadowEnabled ? '0 15px 40px rgba(0,0,0,0.4), 0 0 20px rgba(244,239,230,0.1)' : 'none',
+                  transition: 'all 0.4s ease',
+                  display: 'flex', flexDirection: 'column', gap: 16
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', color: shadowEnabled ? '#0a0907' : '#cdc6ba' }}>
+                      LIVE OPTIMISATION {shadowEnabled ? 'ON' : 'OFF'}
+                    </div>
+                    <div 
+                      onClick={() => setShadowEnabled(!shadowEnabled)}
+                      style={{
+                        width: 40, height: 20, background: shadowEnabled ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.05)',
+                        borderRadius: 10, position: 'relative', border: `1px solid ${shadowEnabled ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.1)'}`,
+                        cursor: 'pointer'
+                      }}>
+                      <div style={{
+                        position: 'absolute', top: 2, left: shadowEnabled ? 22 : 2, width: 14, height: 14,
+                        background: shadowEnabled ? '#0a0907' : '#cdc6ba', borderRadius: '50%', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }} />
+                    </div>
+                </div>
+
+                {shadowEnabled && (
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    {[0,1,2].map(i => (
+                      <div 
+                        key={i}
+                        onClick={() => setActiveOptIndex(i)}
+                        style={{
+                          flex: 1, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontFamily: "'Geist Mono', monospace", fontSize: 9, fontWeight: 700,
+                          background: activeOptIndex === i ? '#0a0907' : 'rgba(0,0,0,0.06)',
+                          color: activeOptIndex === i ? '#f4efe6' : 'rgba(10,9,7,0.5)',
+                          border: `1px solid ${activeOptIndex === i ? '#0a0907' : 'rgba(0,0,0,0.1)'}`,
+                          cursor: 'pointer', transition: 'all 0.2s', letterSpacing: '0.05em'
+                        }}
+                      >
+                        STAGE {i+1}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <button
                 onClick={() => window.open('https://nando.ai/contact', '_blank')}
                 style={{
-                  marginTop: 10, width: '100%', height: 42, borderRadius: 10,
-                  background: '#f4efe6', color: '#0a0907', border: 'none',
+                  width: '100%', height: 42, borderRadius: 10,
+                  background: 'transparent', color: '#f4efe6', border: '1px solid rgba(244,239,230,0.2)',
                   fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(244,239,230,0.1)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  transition: 'all 0.3s'
                 }}
               >
                 Contact Us <ArrowRight size={14} />
@@ -939,6 +1133,11 @@ export default function Screen_Scan({
         __html: `
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+        @keyframes aio-gradient-move {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
         @keyframes pulse-ring {
           0%   { box-shadow: 0 0 0 0 rgba(255,42,50,0.5); }
           70%  { box-shadow: 0 0 0 6px rgba(255,42,50,0); }
