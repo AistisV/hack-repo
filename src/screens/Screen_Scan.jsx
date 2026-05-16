@@ -163,6 +163,7 @@ export default function Screen_Scan({
     const fetchAndModify = async () => {
       if (fetchLock.current === url) return
       fetchLock.current = url
+      const startTime = Date.now()
 
       try {
         setIframeLoading(true)
@@ -320,9 +321,15 @@ export default function Screen_Scan({
         `
         doc.head.appendChild(bridge)
 
+        const elapsed = Date.now() - startTime
+        if (elapsed < 3000) await new Promise(r => setTimeout(r, 3000 - elapsed))
+
         setModifiedHtml(doc.documentElement.outerHTML)
         setIframeLoading(false)
       } catch (err) {
+        const elapsed = Date.now() - startTime
+        if (elapsed < 3000) await new Promise(r => setTimeout(r, 3000 - elapsed))
+
         setIframeError(err.message)
         setIframeLoading(false)
       }
